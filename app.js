@@ -21,7 +21,7 @@ io.on('connection', function(socket){
 
 });
 
-var port = process.env.PORT | 8000;
+var port = process.env.PORT || 8000;
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
