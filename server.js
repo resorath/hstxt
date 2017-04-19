@@ -1,15 +1,8 @@
 var http = require('http');
-var ws = require("nodejs-websocket");
 
-var server = ws.createServer(function (conn) {
+http.createServer(function (req, res) {
     
-    console.log("New connection")
-    conn.on("text", function (str) {
-        console.log("Received "+str)
-        conn.sendText(str.toUpperCase()+"!!!")
-    })
-    conn.on("close", function (code, reason) {
-        console.log("Connection closed")
-    })
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end('Hello, world!!');
     
 }).listen(process.env.PORT || 8080);
