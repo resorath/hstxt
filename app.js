@@ -8,6 +8,7 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
   console.log('a user connected');
+  socket.broadcast.emit('chat message', 'Someone else connected');
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
@@ -20,8 +21,9 @@ io.on('connection', function(socket){
 
 });
 
+var port = process.env.PORT | 8000;
 
-http.listen(process.env.PORT, function(){
-  console.log('listening on *:' + process.env.PORT);
+http.listen(port, function(){
+  console.log('listening on *:' + port);
 });
 
