@@ -1,20 +1,11 @@
-var http = require('http');
-var io = require('socket.io')(http);
+var app = require('express')();
+var http = require('http').Server(app);
 
-var server = http.createServer(function(request, response) {
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.end("Hello Azure!?");
+app.get('/', function(req, res){
+  res.send('<h1>Hello world</h1>');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+http.listen(process.env.PORT, function(){
+  console.log('listening on *:' + process.env.PORT);
 });
 
-
-var port = process.env.PORT || 1337;
-server.listen(port);
-
-console.log("Server running at http://localhost:%d", port);
