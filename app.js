@@ -16,6 +16,7 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     console.log('message: ' + msg);
     io.emit('chat message', msg);
+    setTimeout(function() { io.emit('chat message', "followup")}, 1000);
   });
 
 
