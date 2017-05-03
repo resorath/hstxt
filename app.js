@@ -137,7 +137,7 @@ function printDetailedCard(card, socket)
   }
   if(card["type"] == "SPELL")
   {
-    var returnval = "\n[[b]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
+    var returnval = "\n[[b;lightblue;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
     returnval += card["rarity"] + " " + card["type"] + "\n";
     returnval += card["text"] + "\n";
     return returnval;
