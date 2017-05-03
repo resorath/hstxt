@@ -17,24 +17,43 @@
 
 	var socket = io();
 
+	var player = 0;
+
     var term = $('body').terminal(function(command) {
     	socket.emit('command', command);
     }, 
     {
-        greetings: 'TextStone',
+        greetings: 'Welcome to TextStone',
         name: 'hstxt',
         height: 500,
         prompt: 'Your turn> '
     });
+
+    socket.on('connect', function() {
+    	term.echo("Connected to server\n");
+    	socket.emit('control', 'ready');
+    });
+
+    socket.on('disconnect', function() {
+    	term.echo("[[b;red;black]Connection to server interrupted, one moment...]\n");
+    })
 
     socket.on('terminal', function(msg) {
 		term.echo(msg);
 	});
 
 	socket.on('control', function(msg) {
-		if(msg == "enemyturn");
-		term.set_prompt("Enemy turn> ");
-	})
+		console.log(msg);
+		if(msg.command == "enemyturn")
+			term.set_prompt("Enemy turn> ");
+
+		if(msg.command == "assignplayer")
+		{
+			player = msg.player;
+			console.log("Assigned player " + player);
+		}
+
+	});
 
 	</script>
   </body>

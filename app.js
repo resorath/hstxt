@@ -68,13 +68,14 @@ io.on('connection', function(socket){
   {
     p1socket = socket.id;
     socket.player = 1;
-    console.log("Assigned player 1 to " + socket.id)
+    console.log("Assigned player 1 to " + socket.id);
+
   }
   else if(!p2socket)
   {
     p2socket = socket.id;
     socket.player = 2;
-    console.log("Assigned player 2 to " + socket.id)
+    console.log("Assigned player 2 to " + socket.id);
   }
   else
     console.log("Too many players connected!")
@@ -89,6 +90,14 @@ io.on('connection', function(socket){
     parseCommand(msg, socket);
 
     //setTimeout(function() { io.emit('control', "enemyturn")}, 1000);
+  });
+
+  socket.on('control', function(msg) {
+
+    if(msg == "ready")
+      socket.emit('control', { command: "assignplayer", player: socket.player });
+
+
   });
 
 
