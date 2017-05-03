@@ -67,11 +67,13 @@ io.on('connection', function(socket){
   if(!p1socket)
   {
     p1socket = socket.id;
+    socket.player = 1;
     console.log("Assigned player 1 to " + socket.id)
   }
   else if(!p2socket)
   {
     p2socket = socket.id;
+    socket.player = 2;
     console.log("Assigned player 2 to " + socket.id)
   }
   else
@@ -82,7 +84,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('command', function(msg){
-    console.log('message: ' + msg);
+    console.log(socket.player + ": " + msg);
     
     parseCommand(msg, socket);
 
@@ -109,12 +111,28 @@ function parseCommand(command, socket)
 // nicely print a card to a player
 function printCard(card, socket)
 {
-  return card["name"];
+  if(card["type"] == "MINION")
+    return card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";
+  if(card["type"] == "SPELL")
+    return card["name"] + " (" + card["cost"] + ")";
 }
 
 function printDetailedCard(card, socket)
 {
-
+  if(card["type"] == "MINION")
+  {
+    var returnval = "\n[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
+    returnval += card["rarity"] + " " + card["type"] + " " + card["race"] + "\n";
+    returnval += card["text"] + "\n";
+    return returnval;
+  }
+  if(card["type"] == "SPELL")
+  {
+    var returnval = "\n[[b]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
+    returnval += card["rarity"] + " " + card["type"] + "\n";
+    returnval += card["text"] + "\n";
+    return returnval;
+  }
 }
 
 // wrapper for emit message to terminal
@@ -139,6 +157,34 @@ function getCardByName(name)
   return returnVal;
 }
 
+function boardIndexToCard(boardindex, socket)
+{
+
+  // opponent's board
+  if(boardindex.toLowerCase().charAt(0) == "o")
+  {
+    var index = Number(boardindex.substring(1)) - 1;
+    return getBoardBySocket(socket, true)[index];
+  }
+
+  // player's board
+  if(boardindex.toLowerCase().charAt(0) == "m")
+  {
+    var index = Number(boardindex.substring(1)) - 1;
+    return getBoardBySocket(socket, false)[index];
+  }
+
+  // player's hand
+  if(boardindex.toLowerCase().charAt(0) == "h")
+  {
+    var index = Number(boardindex.substring(1)) - 1;
+    return getHandBySocket(socket, false)[index];
+  }
+
+  return null;
+
+}
+
 // command functions
 var cfunc = { };
 
@@ -150,6 +196,13 @@ cfunc.meow = function(socket, parts)
 
 cfunc.look = function(socket, parts)
 {
+  // parse what we want to look at. 
+  var lookatindex = parts[0];
+
+  if(!lookatindex)
+    return null;
+
+  printToSender(printDetailedCard(boardIndexToCard(lookatindex, socket)), socket);
 
 }
 
@@ -159,20 +212,29 @@ cfunc.board = function(socket, parts)
     var response = "\nYour opponent has " + getHandBySocket(socket, true).length + " cards\n" +
     "\nOpponent's side:\n\n";
 
+    var i = 1;
+
     getBoardBySocket(socket, true).forEach(function(card) {
-      response += printCard(card) + "\n";
+      response += "o" + i + ": " + printCard(card) + "\n";
+      i++;
     });
 
     response += "\n------------\n\nYour side:\n\n";
 
+    i = 1;
+
     getBoardBySocket(socket, false).forEach(function(card) {
-      response += printCard(card) + "\n";
+      response += "m" + i + ": " + printCard(card) + "\n";
+      i++;
     });  
 
     response += "\nYour hand:\n\n";
 
+    i = 1;
+
     getHandBySocket(socket, false).forEach(function(card) {
-      response += printCard(card) + "\n";
+      response += "h" + i + ": " + printCard(card) + "\n";
+      i++;
     });  
 
     response += "\n";
