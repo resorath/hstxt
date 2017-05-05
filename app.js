@@ -11,51 +11,65 @@ app.get('/', function(req, res){
 
 var port = process.env.PORT || 8000;
 
-var p1socket = null;
-var p2socket = null;
-
-var hand = {
-  p1: [],
-  p2: []
-};
-
-function getHandBySocket(socket, getOppositeHand)
-{
-  if( (socket.id == p1socket && !getOppositeHand) || (socket.id == p2socket && getOppositeHand) )
-    return hand.p1;
-  else
-    return hand.p2;
-}
-
-var board = {
-  p1: [],
-  p2: []
-};
-
-function getBoardBySocket(socket, getOppositeBoard)
-{
-  if( (socket.id == p1socket && !getOppositeBoard) || (socket.id == p2socket && getOppositeBoard) )
-    return board.p1;
-  else
-    return board.p2;
-}
-
-var deck = {
-  p1: [],
-  p2: []
-};
 
 var cards = JSON.parse(fs.readFileSync("cards.json"));
 
+var game = function(name) {
+
+  this.name = name;
+  this.hand = {
+    p1: [],
+    p2: []
+  };
+
+  this.oard = {
+    p1: [],
+    p2: []
+  };
+
+  this.deck =  {
+    p1: [],
+    p2: []
+  };
+
+  this.p1socket = null;
+  this.p2socket = null;
+}
+
+// master games list
+game.prototype = {
+
+  getHandBySocket: function(socket, getOppositeHand)
+  {
+    if( (socket.id == this.p1socket && !getOppositeHand) || (socket.id == this.p2socket && getOppositeHand) )
+      return this.hand.p1;
+    else
+      return this.hand.p2;
+  },
+
+  getBoardBySocket: function (socket, getOppositeBoard)
+  {
+    if( (socket.id == this.p1socket && !getOppositeBoard) || (socket.id == this.p2socket && getOppositeBoard) )
+      return this.board.p1;
+    else
+      return this.board.p2;
+  }
+
+}
+
+// master games list.
+var games = [];
+
+
 // add card to p1 hand
-board.p1.push(getCardByName("River Crocolisk"));
+/*board.p1.push(getCardByName("River Crocolisk"));
 board.p2.push(getCardByName("Boulderfist Ogre"));
 board.p2.push(getCardByName("Doomsayer"));
 
 
 hand.p1.push(getCardByName("Fireball"));
 hand.p2.push(getCardByName("Drain Life"));
-hand.p2.push(getCardByName("Voidwalker"));
+hand.p2.push(getCardByName("Voidwalker"));*/
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
@@ -63,8 +77,11 @@ http.listen(port, function(){
 
 // on a connection
 io.on('connection', function(socket){
+
   console.log('a user connected ' + socket.id);
-  if(!p1socket)
+
+
+ /* if(!p1socket)
   {
     p1socket = socket.id;
     socket.player = 1;
@@ -79,7 +96,7 @@ io.on('connection', function(socket){
   }
   else
     console.log("Too many players connected!")
-
+*/
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
@@ -92,10 +109,53 @@ io.on('connection', function(socket){
     //setTimeout(function() { io.emit('control', "enemyturn")}, 1000);
   });
 
+  socket.on('join', function(roomname) {
+
+    // check if room already exists:
+    var found = false;
+    for(game of games)
+    {
+      if(game.name == roomname)
+      {
+        if(game.p1socket == null)
+        {
+          game.p1socket = socket;
+          break;
+        }
+        else if(game.p2socket == null)
+        {
+          game.p2socket = socket;
+          break;
+        }
+        else
+        {
+          console.log("Game " + roomname + " join failed, is full from " + socket.id);
+          return;
+        }
+
+        found = true;
+      }
+
+    }
+
+    console.log("Joining " + socket.id + " to " + roomname);
+
+    socket.join(roomname);
+
+    var game = new game(roomname);
+
+
+    games.push();
+
+    socket.emit('control', { command: "assignplayer", player: 1 });
+
+
+  });
+
   socket.on('control', function(msg) {
 
-    if(msg == "ready")
-      socket.emit('control', { command: "assignplayer", player: socket.player });
+    //if(msg == "ready")
+    //  socket.emit('control', { command: "assignplayer", player: socket.player });
 
 
   });

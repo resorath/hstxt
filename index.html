@@ -20,18 +20,29 @@
 	var player = 0;
 
     var term = $('body').terminal(function(command) {
+
+        // check if player number assigned, if not, send a game name instead
+        if(player == 0)
+        {
+            socket.emit('join', command);
+            term.pause();
+            return;
+        }
+
     	socket.emit('command', command);
     }, 
     {
         greetings: 'Welcome to TextStone',
         name: 'hstxt',
         height: 500,
-        prompt: 'Your turn> '
+        prompt: 'Loading...> '
     });
 
     socket.on('connect', function() {
     	term.echo("Connected to server\n");
     	socket.emit('control', 'ready');
+
+        term.set_prompt("Game name> ");
     });
 
     socket.on('disconnect', function() {
@@ -51,6 +62,8 @@
 		{
 			player = msg.player;
 			console.log("Assigned player " + player);
+            term.set_prompt("Ready> ");
+            term.resume();
 		}
 
 	});
