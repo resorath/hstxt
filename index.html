@@ -85,6 +85,13 @@
             term.resume();
         }
 
+        if(msg.command == "resumegame")
+        {
+            term.echo("Game resumed!");
+            term.set_prompt("Ready> ");
+            term.resume();
+        }
+
 	});
 
 	</script>

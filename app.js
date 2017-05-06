@@ -30,6 +30,21 @@ function Game(name) {
     p2: []
   };
 
+  this.player = {
+    p1: {
+      character: null,
+      health: 20,
+      attack: 0,
+      status: []
+    },
+    p2: {
+      character: null,
+      health: 20,
+      attack: 0,
+      status: []
+    }
+  }
+
   this.p1socket = null;
   this.p2socket = null;
 
@@ -117,8 +132,9 @@ io.on('connection', function(socket){
 
   console.log('a user connected ' + socket.id);
 
+  // Disconnected user, remove them from the game
   socket.on('disconnect', function(){
-    console.log('user disconnected ' + socket.id);
+    console.log('a user disconnected ' + socket.id);
 
     var playernum = getPlayerBySocket(socket);
 
@@ -214,32 +230,47 @@ io.on('connection', function(socket){
 
           var newgame = new Game(roomname);
           newgame.p1socket = socket;
+          newgame.isNewGame = true;
+
+
           socket.player = 1;
 
           games.push(newgame);
 
-
           socket.emit('control', { command: "assignplayer", player: 1 });
     }
+
 
     // init game
     agame = getGameBySocket(socket);
     if(agame.everyoneConnected())
     {
-      agame = getGameBySocket(socket);
 
-      agame.board.p1.push(getCardByName("River Crocolisk"));
-      agame.board.p2.push(getCardByName("Boulderfist Ogre"));
-      agame.board.p2.push(getCardByName("Doomsayer"));
+      if(agame.isNewGame)
+      {
+        agame.board.p1.push(getCardByName("River Crocolisk"));
+        agame.board.p2.push(getCardByName("Boulderfist Ogre"));
+        agame.board.p2.push(getCardByName("Doomsayer"));
 
 
-      agame.hand.p1.push(getCardByName("Fireball"));
-      agame.hand.p2.push(getCardByName("Drain Life"));
-      agame.hand.p2.push(getCardByName("Voidwalker"));
+        agame.hand.p1.push(getCardByName("Fireball"));
+        agame.hand.p2.push(getCardByName("Drain Life"));
+        agame.hand.p2.push(getCardByName("Voidwalker"));
 
-      // signal start.
-      console.log("Game " + roomname + " ready to start");
-      io.to(agame.name).emit('control', { command: "startgame" });
+        agame.isNewGame = false;
+
+        // signal start.
+        console.log("Game " + roomname + " ready to start");
+        io.to(agame.name).emit('control', { command: "startgame" });
+
+      }
+      else
+      {
+        console.log("Game " + roomname + " resumed due to reconnect");
+        io.to(agame.name).emit('control', { command: "resumegame" });
+      }
+
+
     }
 
 
