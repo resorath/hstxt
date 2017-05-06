@@ -73,7 +73,6 @@ function Game(name) {
 
 }
 
-
 function getHandBySocket(socket, getOppositeHand)
 {
   // find game of socket first
@@ -108,13 +107,8 @@ function getGameBySocket(socket)
 
 function getPlayerBySocket(socket)
 {
-    for(game of games)
-    {
-      if(game.p1socket != null && game.p1socket.id == socket.id)
-        return 1;
-      if(game.p2socket != null && game.p2socket.id == socket.id)
-        return 2;
-    }
+    if(socket != null && socket.player != null)
+      return socket.player;
 
     return null;
 }
@@ -170,7 +164,15 @@ io.on('connection', function(socket){
   });
 
   socket.on('command', function(msg){
-    console.log(socket.player + ": " + msg);
+
+    agame = getGameBySocket(socket);
+    if(agame == null)
+      return;
+
+    if(!agame.everyoneConnected())
+      return;
+
+    console.log(agame.name + "-" + socket.player + ": " + msg);
     
     parseCommand(msg, socket);
 
@@ -191,6 +193,7 @@ io.on('connection', function(socket){
         {
           agame.p1socket = socket;
           socket.player = 1;
+          socket.game = agame.name;
           socket.join(roomname);
           socket.emit('control', { command: "assignplayer", player: 1 });
 
@@ -203,6 +206,7 @@ io.on('connection', function(socket){
         {
           agame.p2socket = socket;
           socket.player = 2;
+          socket.game = agame.name;
           socket.join(roomname);
           socket.emit('control', { command: "assignplayer", player: 2 });
 
@@ -234,6 +238,7 @@ io.on('connection', function(socket){
 
 
           socket.player = 1;
+          socket.game = newgame.name;
 
           games.push(newgame);
 
@@ -299,6 +304,8 @@ function parseCommand(command, socket)
 
   if(typeof cfunc[root] === 'function')
     cfunc[root](socket, parts)
+  else
+    console.log("Command " + command + " not recognized by " + socket.game + ":" + socket.player);
 
 }
 
