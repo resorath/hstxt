@@ -62,9 +62,23 @@
 		{
 			player = msg.player;
 			console.log("Assigned player " + player);
+
+            if(player == 1)
+            {
+                term.echo("Waiting for second player...");
+            }
+            else
+            {
+                term.echo("Game joined!");
+            }
+		}
+
+        if(msg.command == "startgame")
+        {
+            term.echo("Game ready!");
             term.set_prompt("Ready> ");
             term.resume();
-		}
+        }
 
 	});
 

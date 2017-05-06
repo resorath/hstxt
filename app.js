@@ -14,7 +14,7 @@ var port = process.env.PORT || 8000;
 
 var cards = JSON.parse(fs.readFileSync("cards.json"));
 
-var game = function(name) {
+function Game(name) {
 
   this.name = name;
   this.hand = {
@@ -22,7 +22,7 @@ var game = function(name) {
     p2: []
   };
 
-  this.oard = {
+  this.board = {
     p1: [],
     p2: []
   };
@@ -34,42 +34,63 @@ var game = function(name) {
 
   this.p1socket = null;
   this.p2socket = null;
-}
 
-// master games list
-game.prototype = {
-
-  getHandBySocket: function(socket, getOppositeHand)
+  this.getHand = function (socket, getOppositeHand)
   {
-    if( (socket.id == this.p1socket && !getOppositeHand) || (socket.id == this.p2socket && getOppositeHand) )
+
+    if( (socket.id == this.p1socket.id && !getOppositeHand) || (socket.id == this.p2socket.id && getOppositeHand) )
       return this.hand.p1;
     else
       return this.hand.p2;
-  },
+  };
 
-  getBoardBySocket: function (socket, getOppositeBoard)
+  this.getBoard = function (socket, getOppositeBoard)
   {
-    if( (socket.id == this.p1socket && !getOppositeBoard) || (socket.id == this.p2socket && getOppositeBoard) )
+    if( (socket.id == this.p1socket.id && !getOppositeBoard) || (socket.id == this.p2socket.id && getOppositeBoard) )
       return this.board.p1;
     else
       return this.board.p2;
   }
 
+
+}
+
+
+function getHandBySocket(socket, getOppositeHand)
+{
+  // find game of socket first
+  var agame = getGameBySocket(socket);
+
+  if(agame != null)
+    return agame.getHand(socket, getOppositeHand);
+
+}
+
+function getBoardBySocket(socket, getOppositeHand)
+{
+  // find game of socket first
+  var agame = getGameBySocket(socket);
+
+  if(agame != null)
+    return agame.getBoard(socket, getOppositeHand);
+}
+
+function getGameBySocket(socket)
+{
+    for(game of games)
+    {
+      if(game.p1socket.id == socket.id)
+        return game;
+      if(game.p2socket.id == socket.id)
+        return game;
+    }
+
+    return null;
 }
 
 // master games list.
 var games = [];
 
-
-// add card to p1 hand
-/*board.p1.push(getCardByName("River Crocolisk"));
-board.p2.push(getCardByName("Boulderfist Ogre"));
-board.p2.push(getCardByName("Doomsayer"));
-
-
-hand.p1.push(getCardByName("Fireball"));
-hand.p2.push(getCardByName("Drain Life"));
-hand.p2.push(getCardByName("Voidwalker"));*/
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
@@ -109,45 +130,85 @@ io.on('connection', function(socket){
     //setTimeout(function() { io.emit('control', "enemyturn")}, 1000);
   });
 
+  // join a room
   socket.on('join', function(roomname) {
 
     // check if room already exists:
     var found = false;
-    for(game of games)
+
+    for(agame of games)
     {
-      if(game.name == roomname)
+      if(agame.name == roomname)
       {
-        if(game.p1socket == null)
+        if(agame.p1socket == null)
         {
-          game.p1socket = socket;
+          agame.p1socket = socket;
+          socket.player = 1;
+          socket.join(roomname);
+          socket.emit('control', { command: "assignplayer", player: 1 });
+
+          console.log("Joining " + socket.id + " to existing " + roomname + " as player 1");
+
+          found = true;
           break;
         }
-        else if(game.p2socket == null)
+        else if(agame.p2socket == null)
         {
-          game.p2socket = socket;
+          agame.p2socket = socket;
+          socket.player = 2;
+          socket.join(roomname);
+          socket.emit('control', { command: "assignplayer", player: 2 });
+
+          console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 2");
+
+          found = true;
           break;
         }
         else
         {
+          // needs rejoin feature
           console.log("Game " + roomname + " join failed, is full from " + socket.id);
           return;
         }
-
-        found = true;
       }
 
     }
 
-    console.log("Joining " + socket.id + " to " + roomname);
+    // no existing room
+    if(!found)
+    {
+          console.log("Joining " + socket.id + " to new game (" + roomname + ") as player 1");
+          socket.join(roomname);
 
-    socket.join(roomname);
+          var newgame = new Game(roomname);
+          newgame.p1socket = socket;
+          socket.player = 1;
 
-    var game = new game(roomname);
+          games.push(newgame);
 
 
-    games.push();
+          socket.emit('control', { command: "assignplayer", player: 1 });
+    }
 
-    socket.emit('control', { command: "assignplayer", player: 1 });
+    // init game
+    if(socket.player == 2)
+    {
+      agame = getGameBySocket(socket);
+
+      agame.board.p1.push(getCardByName("River Crocolisk"));
+      agame.board.p2.push(getCardByName("Boulderfist Ogre"));
+      agame.board.p2.push(getCardByName("Doomsayer"));
+
+
+      agame.hand.p1.push(getCardByName("Fireball"));
+      agame.hand.p2.push(getCardByName("Drain Life"));
+      agame.hand.p2.push(getCardByName("Voidwalker"));
+
+      // signal start.
+      console.log("Game " + roomname + " ready to start");
+      io.to(agame.name).emit('control', { command: "startgame" });
+    }
+
 
 
   });
