@@ -50,6 +50,11 @@ function Game(name) {
       return this.board.p2;
   }
 
+  this.everyoneConnected = function()
+  {
+    return (this.p1socket != null && this.p2socket != null);
+  }
+
 
 }
 
@@ -218,7 +223,8 @@ io.on('connection', function(socket){
     }
 
     // init game
-    if(socket.player == 2)
+    agame = getGameBySocket(socket);
+    if(agame.everyoneConnected())
     {
       agame = getGameBySocket(socket);
 
