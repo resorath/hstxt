@@ -63,15 +63,20 @@
 			player = msg.player;
 			console.log("Assigned player " + player);
 
-            if(player == 1)
-            {
-                term.echo("Waiting for second player...");
-            }
-            else
-            {
-                term.echo("Game joined!");
-            }
+            term.echo("Game joined! Waiting to start...");
 		}
+
+        if(msg.command == "roomfull")
+        {
+            term.echo("Room full");
+            term.resume();
+        }
+
+        if(msg.command == "opponentleft")
+        {
+            term.echo("Your opponent disconnected, waiting for reconnect...");
+            term.pause();
+        }
 
         if(msg.command == "startgame")
         {

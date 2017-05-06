@@ -7,13 +7,11 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-
-
 var port = process.env.PORT || 8000;
-
 
 var cards = JSON.parse(fs.readFileSync("cards.json"));
 
+// Game instance
 function Game(name) {
 
   this.name = name;
@@ -79,10 +77,23 @@ function getGameBySocket(socket)
 {
     for(game of games)
     {
-      if(game.p1socket.id == socket.id)
+      if(game.p1socket != null && game.p1socket.id == socket.id)
         return game;
-      if(game.p2socket.id == socket.id)
+      if(game.p2socket != null && game.p2socket.id == socket.id)
         return game;
+    }
+
+    return null;
+}
+
+function getPlayerBySocket(socket)
+{
+    for(game of games)
+    {
+      if(game.p1socket != null && game.p1socket.id == socket.id)
+        return 1;
+      if(game.p2socket != null && game.p2socket.id == socket.id)
+        return 2;
     }
 
     return null;
@@ -101,25 +112,40 @@ io.on('connection', function(socket){
 
   console.log('a user connected ' + socket.id);
 
-
- /* if(!p1socket)
-  {
-    p1socket = socket.id;
-    socket.player = 1;
-    console.log("Assigned player 1 to " + socket.id);
-
-  }
-  else if(!p2socket)
-  {
-    p2socket = socket.id;
-    socket.player = 2;
-    console.log("Assigned player 2 to " + socket.id);
-  }
-  else
-    console.log("Too many players connected!")
-*/
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    console.log('user disconnected ' + socket.id);
+
+    var playernum = getPlayerBySocket(socket);
+
+    if(playernum != null)
+    {
+      var agame = getGameBySocket(socket);
+
+      if(playernum == 1)
+      {
+        console.log("Removing player 1 from " + agame.name + " due to disconnect");
+        agame.p1socket = null;
+      }
+      else if(playernum == 2)
+      {
+        console.log("Removing player 2 from " + agame.name + " due to disconnect");
+        agame.p2socket = null;
+      }
+
+      io.to(agame.name).emit('control', { command: "opponentleft" });
+
+      if(agame.p1socket == null && agame.p2socket == null)
+      {
+        console.log("Removing game " + agame.name + " because it is out of players");
+        games.filter(function (el) {
+          return el.name == agame.name;
+        });
+      }
+
+
+    };
+
+
   });
 
   socket.on('command', function(msg){
@@ -168,6 +194,7 @@ io.on('connection', function(socket){
         {
           // needs rejoin feature
           console.log("Game " + roomname + " join failed, is full from " + socket.id);
+          socket.emit('control', { command: "roomfull" });
           return;
         }
       }
