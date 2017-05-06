@@ -14,22 +14,28 @@ var cards = JSON.parse(fs.readFileSync("cards.json"));
 // Game instance
 function Game(name) {
 
+  // name of the game and room
   this.name = name;
+
+  // each player's hand
   this.hand = {
     p1: [],
     p2: []
   };
 
+  // each player's side of the board
   this.board = {
     p1: [],
     p2: []
   };
 
+  // each player's deck
   this.deck =  {
     p1: [],
     p2: []
   };
 
+  // the player's actual characters
   this.player = {
     p1: {
       character: null,
@@ -45,12 +51,16 @@ function Game(name) {
     }
   }
 
+  // bind the sockets used for each player
   this.p1socket = null;
   this.p2socket = null;
 
+  // set a callback to prompt for a specific action
+  // this overrides the usual command parser if set
+  this.promptCallback = null;
+
   this.getHand = function (socket, getOppositeHand)
   {
-
     if( (socket.id == this.p1socket.id && !getOppositeHand) || (socket.id == this.p2socket.id && getOppositeHand) )
       return this.hand.p1;
     else
@@ -299,6 +309,16 @@ function parseCommand(command, socket)
   if(!command)
     return null;
 
+  var game = getGameBySocket(socket);
+
+  // check if the prompt callback override is set, and execute that instead
+  // the callback function must accept the entire command
+  if(game.promptCallback != null)
+  {
+    game.promptCallback(command, socket);
+    return;
+  }
+
   var parts = command.split(" ");
   var root = parts.shift();
 
@@ -389,10 +409,31 @@ function boardIndexToCard(boardindex, socket)
 // command functions
 var cfunc = { };
 
+// test
 cfunc.meow = function(socket, parts)
 {
   console.log("mew mew");
-  console.log(parts);
+  socket.emit('control', { command: "prompt", prompt: "mew?> " });
+
+  var agame = getGameBySocket(socket);
+  
+  agame.promptCallback = function(command, socket)
+  {
+    console.log("meow meow " + command);
+    var agame = getGameBySocket(socket);
+
+    if(command == "mew")
+    {
+      
+      agame.promptCallback = null;
+
+      socket.emit('terminal', 'meow meow');
+      socket.emit('control', { command: "prompt", prompt: "Ready> " });
+    }
+
+
+  }
+
 }
 
 cfunc.look = function(socket, parts)
@@ -403,7 +444,12 @@ cfunc.look = function(socket, parts)
   if(!lookatindex)
     return null;
 
-  printToSender(printDetailedCard(boardIndexToCard(lookatindex, socket)), socket);
+  var index = boardIndexToCard(lookatindex, socket);
+
+  if(index == null)
+    return;
+
+  printToSender(printDetailedCard(index), socket);
 
 }
 
@@ -443,3 +489,4 @@ cfunc.board = function(socket, parts)
     printToSender(response, socket);
 
 }
+

@@ -92,6 +92,11 @@
             term.resume();
         }
 
+        if(msg.command == "prompt")
+        {
+            term.set_prompt(msg.prompt);
+        }
+
 	});
 
 	</script>
