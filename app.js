@@ -52,6 +52,7 @@ function Game(name) {
       health: 20,
       attack: 0,
       mana: 0,
+      maxmana: 0,
       status: []
     },
     p2: {
@@ -60,6 +61,7 @@ function Game(name) {
       health: 20,
       attack: 0,
       mana: 0,
+      maxmana: 0,
       status: []
     }
   }
@@ -71,6 +73,14 @@ function Game(name) {
   // set a callback to prompt for a specific action
   // this overrides the usual command parser if set
   this.promptCallback = null;
+
+  // turn timer
+  // 75 second turn, rope at 20 seconds
+  this.turntimer = 50 * 1000; 
+  this.turntimerrope = 20 * 1000;
+
+  // timeout function holder
+  this.turntimercallback = null;
 
   this.getHand = function (socket, getOppositeHand)
   {
@@ -339,6 +349,7 @@ io.on('connection', function(socket){
 
         // give 1 mana to player 1
         agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).mana = 1;
+        agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).maxmana = 1;
 
         // give the coin to player 2
         agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite()), false).push(getCardById("GAME_005"));
@@ -364,6 +375,8 @@ io.on('connection', function(socket){
         // signal start.
         console.log("Game " + roomname + " ready to start");
         io.to(agame.name).emit('control', { command: "startgame" });
+
+        activateTurnTimer(agame)
 
       }
       else
@@ -418,6 +431,8 @@ function parseCommand(command, socket)
     cfunc[root](socket, parts)
   else
     console.log("Command " + command + " not recognized by " + socket.game + ":" + socket.player);
+
+  game.updatePromptsWithDefault();
 
 }
 
@@ -520,6 +535,30 @@ function boardIndexToCard(boardindex, socket)
 
 }
 
+function activateTurnTimer(agame)
+{
+  // star turn timer
+  agame.turntimercallback = setTimeout(function() {
+
+    // do rope stuff
+    // trigger character rope speech TBD
+
+    io.to(agame.name).emit('terminal', 'There is only 20 seconds left in the turn!');
+
+    agame.turntimercallback = setTimeout(function() {
+
+      io.to(agame.name).emit('terminal', 'End of turn by timeout');
+
+      var currentplayersocket = agame.getSocketByPlayerNumber(agame.playerTurn);
+
+      currentplayersocket.emit('terminal', '[[b;red;black]You ran out of time on your turn!]');
+      cfunc.end(currentplayersocket, null);
+
+    }, agame.turntimerrope);
+
+  }, agame.turntimer);
+}
+
 // Zero-based random number
 // e.g. max = 2 is 1 in 2 change when checking 0. 
 function Random(max)
@@ -567,6 +606,9 @@ cfunc.end = function(socket, parts)
     socket.emit("terminal", "It is not your turn");
     return;
   }
+
+  // clear the turn timer
+  clearTimeout(agame.turntimer);
   
   // whos turn it is that is ending
   var currentplayer = agame.getPlayer(socket, true);
@@ -584,7 +626,11 @@ cfunc.end = function(socket, parts)
   agame.round++;
 
   // increase mana for new player
-  opponent.mana++;
+  if(opponent.mana < 10)
+    opponent.maxmana++;
+
+  // refresh mana
+  opponent.mana = opponent.maxmana;
 
   // draw a card for the new player
   // NYI
@@ -593,6 +639,8 @@ cfunc.end = function(socket, parts)
   agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
   agame.updatePromptsWithDefault();
+
+  activateTurnTimer(agame);
 
 }
 
