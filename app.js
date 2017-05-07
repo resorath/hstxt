@@ -11,6 +11,8 @@ var port = process.env.PORT || 8000;
 
 var cards = JSON.parse(fs.readFileSync("cards.json"));
 
+var decks = JSON.parse(fs.readFileSync("decks.json"));
+
 // Game instance
 function Game(name) {
 
@@ -70,13 +72,10 @@ function Game(name) {
   this.p1socket = null;
   this.p2socket = null;
 
-  // set a callback to prompt for a specific action
-  // this overrides the usual command parser if set
-  this.promptCallback = null;
 
   // turn timer
   // 75 second turn, rope at 20 seconds
-  this.turntimer = 50 * 1000; 
+  this.turntimer = 55 * 1000; 
   this.turntimerrope = 20 * 1000;
 
   // timeout function holder
@@ -140,7 +139,7 @@ function Game(name) {
     {
       for(aff in player.status)
       {
-        prompt += " " + aff + " ";
+        prompt += " " + player.status[aff] + " ";
       }
     }
 
@@ -181,14 +180,14 @@ function getBoardBySocket(socket, getOppositeHand)
 
 function getGameBySocket(socket)
 {
-    for(game of games)
+    for(game in games)
     {
-      if(game.p1socket != null && game.p1socket.id == socket.id)
-        return game;
-      if(game.p2socket != null && game.p2socket.id == socket.id)
-        return game;
+      var agame = games[game];
+      if(agame.p1socket != null && agame.p1socket.id == socket.id)
+        return agame;
+      if(agame.p2socket != null && agame.p2socket.id == socket.id)
+        return agame;
     }
-
     return null;
 }
 
@@ -223,27 +222,30 @@ io.on('connection', function(socket){
     {
       var agame = getGameBySocket(socket);
 
-      if(playernum == 1)
+      if(agame != null)
       {
-        console.log("Removing player 1 from " + agame.name + " due to disconnect");
-        agame.p1socket = null;
-      }
-      else if(playernum == 2)
-      {
-        console.log("Removing player 2 from " + agame.name + " due to disconnect");
-        agame.p2socket = null;
-      }
 
-      io.to(agame.name).emit('control', { command: "opponentleft" });
+        if(playernum == 1)
+        {
+          console.log("Removing player 1 from " + agame.name + " due to disconnect");
+          agame.p1socket = null;
+        }
+        else if(playernum == 2)
+        {
+          console.log("Removing player 2 from " + agame.name + " due to disconnect");
+          agame.p2socket = null;
+        }
 
-      if(agame.p1socket == null && agame.p2socket == null)
-      {
-        console.log("Removing game " + agame.name + " because it is out of players");
-        games.filter(function (el) {
-          return el.name == agame.name;
-        });
+        io.to(agame.name).emit('control', { command: "opponentleft" });
+
+        if(agame.p1socket == null && agame.p2socket == null)
+        {
+          console.log("Removing game " + agame.name + " because it is out of players");
+          games.filter(function (el) {
+            return el.name == agame.name;
+          });
+        }
       }
-
 
     };
 
@@ -272,8 +274,9 @@ io.on('connection', function(socket){
     // check if room already exists:
     var found = false;
 
-    for(agame of games)
+    for(game in games)
     {
+      var agame = games[game];
       if(agame.name == roomname)
       {
         if(agame.p1socket == null)
@@ -322,7 +325,7 @@ io.on('connection', function(socket){
           var newgame = new Game(roomname);
           newgame.p1socket = socket;
           newgame.isNewGame = true;
-
+          newgame.name = roomname;
 
           socket.player = 1;
           socket.game = newgame.name;
@@ -335,51 +338,48 @@ io.on('connection', function(socket){
 
     // init game
     agame = getGameBySocket(socket);
-    if(agame.everyoneConnected())
+    if(agame != null && agame.everyoneConnected())
     {
 
       if(agame.isNewGame)
       {
+
         // random first player
         agame.playerTurn = (Random(2) + 1);
         console.log(agame.name + " player " + agame.playerTurn + " goes first!");
 
+        // signal start.
+        console.log("Game " + roomname + " ready to start");
+        io.to(agame.name).emit('control', { command: "startgame" });
+
+        // both players pick deck
+        printAvailableDecks(agame.p1socket);
+        printAvailableDecks(agame.p2socket);
+
+        io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
+
+        // this doesn't work right
+        agame.p1socket.promptCallback = pickDecks;
+        agame.p2socket.promptCallback = pickDecks;
+
         // do mulligan
         //agame.promptCallback = mulligan(agame);
 
-        // give 1 mana to player 1
-        agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).mana = 1;
-        agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).maxmana = 1;
 
-        // give the coin to player 2
-        agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite()), false).push(getCardById("GAME_005"));
-
-        // set round one
-        agame.round = 1;
-
-
-        // set up prompts
-        agame.updatePromptsWithDefault();
-
-        agame.board.p1.push(getCardByName("River Crocolisk"));
+        /*agame.board.p1.push(getCardByName("River Crocolisk"));
         agame.board.p2.push(getCardByName("Boulderfist Ogre"));
         agame.board.p2.push(getCardByName("Doomsayer"));
 
 
         agame.hand.p1.push(getCardByName("Fireball"));
         agame.hand.p2.push(getCardByName("Drain Life"));
-        agame.hand.p2.push(getCardByName("Voidwalker"));
+        agame.hand.p2.push(getCardByName("Voidwalker"));*/
 
         agame.isNewGame = false;
 
-        // signal start.
-        console.log("Game " + roomname + " ready to start");
-        io.to(agame.name).emit('control', { command: "startgame" });
-
-        activateTurnTimer(agame)
-
+      
       }
-      else
+      else if(agame != null && !agame.everyoneConnected())
       {
         console.log("Game " + roomname + " resumed due to reconnect");
         io.to(agame.name).emit('control', { command: "resumegame" });
@@ -403,9 +403,52 @@ io.on('connection', function(socket){
 
 });
 
+var pickDecks = function(command, socket)
+{
+
+  return;
+}
+
+function printAvailableDecks(socket)
+{
+  var printdeck = "Pick a deck: \n\n";
+
+  var i = 0;
+  for(deck in decks)
+  {
+    printdeck += i + ": " + decks[deck]["name"] + "\n";
+    i++;
+  }
+
+  socket.emit('terminal', printdeck);
+}
+
 function mulligan(agame)
 {
   // TBI
+
+  activateTurnTimer(agame);
+
+  startGame(agame);
+
+}
+
+function startGame(agame)
+{
+      // give 1 mana to player 1
+      agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).mana = 1;
+      agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).maxmana = 1;
+
+      // give the coin to player 2
+      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite()), false).push(getCardById("GAME_005"));
+
+      // set round one
+      agame.round = 1;
+
+
+      // set up prompts
+      agame.updatePromptsWithDefault();
+
 }
 
 // Parse a command sent from a player
@@ -418,9 +461,10 @@ function parseCommand(command, socket)
 
   // check if the prompt callback override is set, and execute that instead
   // the callback function must accept the entire command
-  if(game.promptCallback != null)
+  if(socket.promptCallback != null)
   {
-    game.promptCallback(command, socket);
+    console.log("prompt callback set for " + socket.id + " to " + socket.promptCallback.name);
+    socket.promptCallback(command, socket);
     return;
   }
 
@@ -543,7 +587,7 @@ function activateTurnTimer(agame)
     // do rope stuff
     // trigger character rope speech TBD
 
-    io.to(agame.name).emit('terminal', 'There is only 20 seconds left in the turn!');
+    io.to(agame.name).emit('terminal', 'There is only ' + agame.turntimerrope + ' seconds left in the turn!');
 
     agame.turntimercallback = setTimeout(function() {
 
@@ -577,7 +621,7 @@ cfunc.meow = function(socket, parts)
 
   var agame = getGameBySocket(socket);
   
-  agame.promptCallback = function(command, socket)
+  socket.promptCallback = function(command, socket)
   {
     console.log("meow meow " + command);
     var agame = getGameBySocket(socket);
@@ -585,7 +629,7 @@ cfunc.meow = function(socket, parts)
     if(command == "mew")
     {
 
-      agame.promptCallback = null;
+      socket.promptCallback = null;
 
       socket.emit('terminal', 'meow meow');
       socket.emit('control', { command: "prompt", prompt: "Ready> " });
