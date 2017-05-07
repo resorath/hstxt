@@ -20,6 +20,9 @@ function Game(name) {
   // whos turn it is
   this.playerTurn = 0;
 
+  // and whos its not...
+  this.playerTurnOpposite = function() { return (this.playerTurn == 1 ? 2 : 1) };
+
   // what round it is
   this.round = 0;
 
@@ -44,6 +47,7 @@ function Game(name) {
   // the player's actual characters
   this.player = {
     p1: {
+      number: 1,
       character: null,
       health: 20,
       attack: 0,
@@ -51,6 +55,7 @@ function Game(name) {
       status: []
     },
     p2: {
+      number: 2,
       character: null,
       health: 20,
       attack: 0,
@@ -83,14 +88,63 @@ function Game(name) {
       return this.board.p2;
   }
 
+  this.getPlayer = function (socket, getOppositePlayer)
+  {
+    if( (socket.id == this.p1socket.id && !getOppositePlayer) || (socket.id == this.p2socket.id && getOppositePlayer) )
+      return this.player.p1;
+    else
+      return this.player.p2;
+  }
+
+  this.getSocketByPlayerNumber = function (num)
+  {
+    if(num == 1)
+      return this.p1socket;
+    if(num == 2)
+      return this.p2socket;
+
+    return null;
+  }
+
   this.everyoneConnected = function()
   {
     return (this.p1socket != null && this.p2socket != null);
   }
 
+  this.updatePromptsWithDefault = function()
+  {
+    this.defaultPrompt(this.p1socket);
+    this.defaultPrompt(this.p2socket);
+  }
+
   this.defaultPrompt = function (socket)
   {
+    var player = this.getPlayer(socket, false);
 
+    var prompt = player.character + "  " + player.health + " HP | " + player.mana + " Mana ";
+
+    if(player.attack > 0)
+      prompt += player.attack + "| Attack ";
+
+    if(player.status.length > 0)
+    {
+      for(aff in player.status)
+      {
+        prompt += " " + aff + " ";
+      }
+    }
+
+    if(player.number == this.playerTurn)
+      prompt += " YOUR TURN> ";
+    else
+      prompt += " ENEMY TURN> ";
+
+    socket.emit('control', {"command": "prompt", "prompt": prompt});
+  }
+
+  this.isPlayerTurn = function (socket)
+  {
+    return (socket.player == this.playerTurn)
   }
 
 
@@ -276,6 +330,26 @@ io.on('connection', function(socket){
 
       if(agame.isNewGame)
       {
+        // random first player
+        agame.playerTurn = (Random(2) + 1);
+        console.log(agame.name + " player " + agame.playerTurn + " goes first!");
+
+        // do mulligan
+        //agame.promptCallback = mulligan(agame);
+
+        // give 1 mana to player 1
+        agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).mana = 1;
+
+        // give the coin to player 2
+        agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite()), false).push(getCardById("GAME_005"));
+
+        // set round one
+        agame.round = 1;
+
+
+        // set up prompts
+        agame.updatePromptsWithDefault();
+
         agame.board.p1.push(getCardByName("River Crocolisk"));
         agame.board.p2.push(getCardByName("Boulderfist Ogre"));
         agame.board.p2.push(getCardByName("Doomsayer"));
@@ -315,6 +389,11 @@ io.on('connection', function(socket){
 
 
 });
+
+function mulligan(agame)
+{
+  // TBI
+}
 
 // Parse a command sent from a player
 function parseCommand(command, socket)
@@ -388,6 +467,28 @@ function getCardByName(name)
     }
   })
 
+  if(returnVal == null)
+    console.log("WARNING: couldn't find card by name " + name);
+
+  return returnVal;
+}
+
+function getCardById(id)
+{
+  var returnVal = null;
+
+  cards.forEach(function(card)
+  {
+    if(card["id"] && card["id"].toUpperCase() === id.toUpperCase())
+    {
+      returnVal = card;
+      return;
+    }
+  })
+
+  if(returnVal == null)
+    console.log("WARNING: couldn't find card by id " + id);
+
   return returnVal;
 }
 
@@ -417,6 +518,13 @@ function boardIndexToCard(boardindex, socket)
 
   return null;
 
+}
+
+// Zero-based random number
+// e.g. max = 2 is 1 in 2 change when checking 0. 
+function Random(max)
+{
+  return Math.floor(Math.random() * max);
 }
 
 // command functions
@@ -449,6 +557,46 @@ cfunc.meow = function(socket, parts)
 
 }
 
+// end of turn
+cfunc.end = function(socket, parts)
+{
+  var agame = getGameBySocket(socket);
+
+  if(!agame.isPlayerTurn(socket))
+  {
+    socket.emit("terminal", "It is not your turn");
+    return;
+  }
+  
+  // whos turn it is that is ending
+  var currentplayer = agame.getPlayer(socket, true);
+
+  // whos turn it is that is starting
+  var opponent = agame.getPlayer(socket, true);
+
+
+  console.log("Ending turn of " + agame.name + ". Moving turn from " + agame.playerTurn + " to " + agame.playerTurnOpposite());
+
+  // flip whos turn it is
+  agame.playerTurn = agame.playerTurnOpposite();
+
+  // increase round count
+  agame.round++;
+
+  // increase mana for new player
+  opponent.mana++;
+
+  // draw a card for the new player
+  // NYI
+
+  // tell new player it is their turn
+  agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+
+  agame.updatePromptsWithDefault();
+
+}
+
+// look at a card
 cfunc.look = function(socket, parts)
 {
   // parse what we want to look at. 

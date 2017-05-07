@@ -55,8 +55,6 @@
 
 	socket.on('control', function(msg) {
 		console.log(msg);
-		if(msg.command == "enemyturn")
-			term.set_prompt("Enemy turn> ");
 
 		if(msg.command == "assignplayer")
 		{
@@ -81,14 +79,12 @@
         if(msg.command == "startgame")
         {
             term.echo("Game ready!");
-            term.set_prompt("Ready> ");
             term.resume();
         }
 
         if(msg.command == "resumegame")
         {
             term.echo("Game resumed!");
-            term.set_prompt("Ready> ");
             term.resume();
         }
 
