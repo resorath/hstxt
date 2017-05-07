@@ -17,6 +17,12 @@ function Game(name) {
   // name of the game and room
   this.name = name;
 
+  // whos turn it is
+  this.playerTurn = 0;
+
+  // what round it is
+  this.round = 0;
+
   // each player's hand
   this.hand = {
     p1: [],
@@ -41,12 +47,14 @@ function Game(name) {
       character: null,
       health: 20,
       attack: 0,
+      mana: 0,
       status: []
     },
     p2: {
       character: null,
       health: 20,
       attack: 0,
+      mana: 0,
       status: []
     }
   }
@@ -78,6 +86,11 @@ function Game(name) {
   this.everyoneConnected = function()
   {
     return (this.p1socket != null && this.p2socket != null);
+  }
+
+  this.defaultPrompt = function (socket)
+  {
+
   }
 
 
@@ -424,7 +437,7 @@ cfunc.meow = function(socket, parts)
 
     if(command == "mew")
     {
-      
+
       agame.promptCallback = null;
 
       socket.emit('terminal', 'meow meow');
