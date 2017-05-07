@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Basic Druid",
+    "hero": "DRUID",
+    "cards": [
+        "Boulderfist Ogre",
+        "Chillwind Yeti",
+        "Claw",
+        "Core Hound",
+        "Darkscale Healer",
+        "Elven Archer",
+        "Healing Touch",
+        "Innervate",
+        "Nightblade",
+        "Lord of the Arena",
+        "River Crocolisk",
+        "Wild Growth",
+        "Oasis Snapjaw",
+        "Silverback Patriarch",
+        "Mark of the Wild",
+        "Boulderfist Ogre",
+        "Chillwind Yeti",
+        "Claw",
+        "Core Hound",
+        "Darkscale Healer",
+        "Elven Archer",
+        "Healing Touch",
+        "Innervate",
+        "Nightblade",
+        "Lord of the Arena",
+        "River Crocolisk",
+        "Wild Growth",
+        "Oasis Snapjaw",
+        "Silverback Patriarch",
+        "Mark of the Wild"
+
+    ]
+  },
+  {
+    "name": "Basic Mage",
+    "hero": "MAGE",
+    "cards": [
+        "Sen'jin Shieldmasta",
+        "Oasis SNapjaw",
+        "Polymorph",
+        "Arcane Missiles",
+        "Arcane Explosion",
+        "Arcane Intellect",
+        "Fireball",
+        "Raid Leader",
+        "Bloodfen Raptor",
+        "Novice Engineer",
+        "Nightblade",
+        "Murloc Raider",
+        "Wolfrider",
+        "River Crocolisk",
+        "Boulderfist Ogre",
+        "Sen'jin Shieldmasta",
+        "Oasis SNapjaw",
+        "Polymorph",
+        "Arcane Missiles",
+        "Arcane Explosion",
+        "Arcane Intellect",
+        "Fireball",
+        "Raid Leader",
+        "Bloodfen Raptor",
+        "Novice Engineer",
+        "Nightblade",
+        "Murloc Raider",
+        "Wolfrider",
+        "River Crocolisk",
+        "Boulderfist Ogre"
+
+    ]
+  }
+
+]

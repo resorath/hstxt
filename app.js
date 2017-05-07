@@ -97,6 +97,14 @@ function Game(name) {
       return this.board.p2;
   }
 
+  this.getDeck = function (socket, getOppositeDeck)
+  {
+    if( (socket.id == this.p1socket.id && !getOppositeDeck) || (socket.id == this.p2socket.id && getOppositeDeck) )
+      return this.deck.p1;
+    else
+      return this.deck.p2;
+  }
+
   this.getPlayer = function (socket, getOppositePlayer)
   {
     if( (socket.id == this.p1socket.id && !getOppositePlayer) || (socket.id == this.p2socket.id && getOppositePlayer) )
@@ -169,13 +177,22 @@ function getHandBySocket(socket, getOppositeHand)
 
 }
 
-function getBoardBySocket(socket, getOppositeHand)
+function getBoardBySocket(socket, getOppositeBoard)
 {
   // find game of socket first
   var agame = getGameBySocket(socket);
 
   if(agame != null)
-    return agame.getBoard(socket, getOppositeHand);
+    return agame.getBoard(socket, getOppositeBoard);
+}
+
+function getDeckBySocket(socket, getOppositeDeck)
+{
+  // find game of socket first
+  var agame = getGameBySocket(socket);
+
+  if(agame != null)
+    return agame.getDeck(socket, getOppositeDeck);
 }
 
 function getGameBySocket(socket)
@@ -405,8 +422,70 @@ io.on('connection', function(socket){
 
 var pickDecks = function(command, socket)
 {
+  var deck = null;
+  if(!isNaN(command))
+    var deck = decks[command]
+  else 
+    return;
+
+  if(deck == null)
+    return;
+
+  // load deck
+  var playerdeck = getDeckBySocket(socket, false);
+  var game = getGameBySocket(socket);
+
+  for(cardid in deck.cards)
+  {
+    var card = deck.cards[cardid];
+  
+    playerdeck.push(getCardByName(card));
+  }
+  console.log("Loaded deck for player " + socket.player);
+
+  // check opponent
+  var opponentdeck = getDeckBySocket(socket, true)
+
+  console.log(opponentdeck.length);
+  if(opponentdeck.length > 28)
+  {
+    io.to(game.name).emit('control', { command: "resume" });
+
+    startMulligan(game);
+  }
+  else
+  {
+    socket.emit('terminal', 'Waiting for opponent to pick a deck');
+    socket.emit('control', { command: "suspend" });
+  }
+
 
   return;
+}
+
+function startMulligan(game)
+{
+  console.log(agame.name + " mulligan phase");
+
+  io.to(game.name).emit('control', { command: "prompt", prompt: "Mulligan> " });
+
+  game.p1socket.promptCallback = mulligan;
+  game.p2socket.promptCallback = mulligan;
+}
+
+var mulligan = function(command, socket)
+{
+  console.log("mulligan: " + command + " for " + socket.player);
+  var agame = getGameBySocket(socket);
+  // TBI
+
+
+  // start game
+  // check both mulligans
+  // null out callback
+  activateTurnTimer(agame);
+  startGame(agame);
+
 }
 
 function printAvailableDecks(socket)
@@ -423,15 +502,6 @@ function printAvailableDecks(socket)
   socket.emit('terminal', printdeck);
 }
 
-function mulligan(agame)
-{
-  // TBI
-
-  activateTurnTimer(agame);
-
-  startGame(agame);
-
-}
 
 function startGame(agame)
 {

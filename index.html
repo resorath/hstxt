@@ -88,6 +88,16 @@
             term.resume();
         }
 
+        if(msg.command == "suspend")
+        {
+            term.pause();
+        }
+
+        if(msg.command == "resume")
+        {
+            term.resume();
+        }
+
         if(msg.command == "prompt")
         {
             term.set_prompt(msg.prompt);
