@@ -72,6 +72,12 @@ function Game(name) {
   this.p1socket = null;
   this.p2socket = null;
 
+  // mulligan storage
+  this.mulligan = {
+    1: [],
+    2: []
+  }
+
 
   // turn timer
   // 75 second turn, rope at 20 seconds
@@ -465,26 +471,73 @@ var pickDecks = function(command, socket)
 
 function startMulligan(game)
 {
-  console.log(agame.name + " mulligan phase");
+  console.log(game.name + " mulligan phase");
+
+
+  var firstPlayer = game.getSocketByPlayerNumber(game.playerTurn);
+  var secondPlayer = game.getSocketByPlayerNumber(game.playerTurnOpposite());
+
+  io.to(game.name).emit('terminal', '\nFlipping the coin...\n');
+
+  firstPlayer.emit('terminal', 'You go first!');
+  secondPlayer.emit('terminal', 'You get an extra card!');
 
   io.to(game.name).emit('control', { command: "prompt", prompt: "Mulligan> " });
 
   game.p1socket.promptCallback = mulligan;
   game.p2socket.promptCallback = mulligan;
+
+  mulligan("", game.p1socket);
+  mulligan("", game.p2socket);
 }
 
 var mulligan = function(command, socket)
 {
   console.log("mulligan: " + command + " for " + socket.player);
+
   var agame = getGameBySocket(socket);
+  var deck = getDeckBySocket(socket);
   // TBI
+
+  // check if mulligan was already generated
+  if(agame.mulligan[socket.player].length == 0)
+  {
+    // shuffle deck
+    shuffle(deck);
+
+    // draw three cards
+    var mulligan = deck.splice(0, 3);
+
+    // if going second, get another
+    if(socket.player != agame.playerTurn)
+      mulligan.push(deck.pop());
+
+    agame.mulligan[socket.player] = mulligan;
+
+  }
+
+  // present the deck to the player:
+  var mulligantoprint = "Pick cards to mulligan\n\n";
+  var i = 1;
+
+  for(cardid in agame.mulligan[socket.player])
+  {
+    var card = agame.mulligan[socket.player][cardid];
+
+    // tmp
+    mulligantoprint += i + ": " + card['name'] + "\n";
+    i++;
+  }
+
+  socket.emit('terminal', mulligantoprint);
 
 
   // start game
   // check both mulligans
   // null out callback
-  activateTurnTimer(agame);
-  startGame(agame);
+
+  //activateTurnTimer(agame);
+  //startGame(agame);
 
 }
 
@@ -647,6 +700,20 @@ function boardIndexToCard(boardindex, socket)
 
   return null;
 
+}
+
+/**
+ * Shuffles array in place.
+ * @param {Array} a items The array containing the items.
+ */
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
 }
 
 function activateTurnTimer(agame)
