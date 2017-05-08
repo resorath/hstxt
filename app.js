@@ -7,6 +7,10 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/keyboard-event-polyfill.js', function(req, res) {
+  res.sendFile(__dirname + '/keyboard-event-polyfill.js');
+});
+
 var port = process.env.PORT || 8000;
 
 var cards = JSON.parse(fs.readFileSync("cards.json"));
