@@ -510,30 +510,108 @@ var mulligan = function(command, socket)
     shuffle(deck);
 
     // draw three cards
-    var mulligan = deck.splice(0, 3);
+    //var mulligan = deck.splice(0, 3);
+    for(i=0 ; i<3 ; i++)
+    {
+      agame.mulligan[socket.player].push({ keep: true, card: deck.pop() });
+    }
 
     // if going second, get another
     if(socket.player != agame.playerTurn)
-      mulligan.push(deck.pop());
+      agame.mulligan[socket.player].push({ keep: true, card: deck.pop() });
 
-    agame.mulligan[socket.player] = mulligan;
+  }
+
+  // user entered a number to change state
+  if(!isNaN(command))
+  {
+    // convert number user entered to array index 
+    var cardtochange = command-1;
+
+    if(agame.mulligan[socket.player][cardtochange] != null)
+    {
+      // invert "keep" state
+      agame.mulligan[socket.player][cardtochange].keep = !agame.mulligan[socket.player][cardtochange].keep;
+    }
+  }
+  else if(command == "done")
+  {
+    var mulligancount = 0;
+
+    for(cardid in agame.mulligan[socket.player])
+    {
+      var keep = agame.mulligan[socket.player][cardid].keep;
+
+      // if keeping card, push it to hand
+      // otherwise, push it to deck and increase mulligan count
+      if(keep)
+        getHandBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
+      else
+      {
+        getDeckBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
+        mulligancount++;
+      }
+    }
+
+    // now draw more cards directly into hand and tell the player
+    shuffle(getDeckBySocket(socket));
+    for(i = 0; i < mulligancount; i++)
+    {
+      var card = getDeckBySocket(socket, false).pop();
+      console.log("Mulliganed new card for " + socket.id);
+      socket.emit('terminal', "New card from mulligan: " + printCard(card));
+      getHandBySocket(socket, false).push(card);
+    }
+
+    // wait for opponent
+    if(getHandBySocket(socket, true).length < 3)
+    {
+      socket.emit('terminal', 'Waiting for opponent to finish mulligan');
+      socket.emit('control', {command: 'suspend'});
+    }
+    else
+    {
+      // begin game
+      agame.p1socket.promptCallback = null;
+      agame.p2socket.promptCallback = null;
+
+      agame.p1socket.emit('control', {command: 'resume'});
+      agame.p2socket.emit('control', {command: 'resume'});
+
+      agame.defaultPrompt(agame.p1socket);
+      agame.defaultPrompt(agame.p2socket);
+
+      agame.getSocketByPlayerNumber(agame.playerTurn).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+    }
+
+    return;
+
 
   }
 
   // present the deck to the player:
-  var mulligantoprint = "Pick cards to mulligan\n\n";
+  var mulligantoprint = "Pick cards to mulligan\nType a number to select if a card is kept or discarded. Type \"done\" when ready.\n\n";
   var i = 1;
 
   for(cardid in agame.mulligan[socket.player])
   {
-    var card = agame.mulligan[socket.player][cardid];
+    var card = agame.mulligan[socket.player][cardid].card;
+    var keep = agame.mulligan[socket.player][cardid].keep;
 
     // tmp
-    mulligantoprint += i + ": " + card['name'] + "\n";
+    mulligantoprint += i + ": ";
+
+    if(keep)
+      mulligantoprint += "[[green;black][KEEP]]";
+    else
+      mulligantoprint += "[[red;black][DISCARD]]"
+
+    mulligantoprint += " " + printDetailedCard(card) + "\n";
     i++;
   }
 
   socket.emit('terminal', mulligantoprint);
+
 
 
   // start game
@@ -646,8 +724,10 @@ function getCardByName(name)
 
   cards.forEach(function(card)
   {
-    if(card["name"] && card["name"].toUpperCase() === name.toUpperCase())
+    if(card["name"] && card["name"].toUpperCase() === name.toUpperCase() && 
+      ( card["type"] == "WEAPON" || card["type"] == "SPELL" || card["type"] == "MINION" ) )
     {
+      //console.log("Found card: " + card["name"] + " id: " + card["id"]);
       returnVal = card;
       return;
     }
