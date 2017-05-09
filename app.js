@@ -602,9 +602,9 @@ var mulligan = function(command, socket)
     mulligantoprint += i + ": ";
 
     if(keep)
-      mulligantoprint += "[[green;black][KEEP]]";
+      mulligantoprint += "[KEEP]";
     else
-      mulligantoprint += "[[red;black][DISCARD]]"
+      mulligantoprint += "[DISCARD]"
 
     mulligantoprint += " " + printDetailedCard(card) + "\n";
     i++;
