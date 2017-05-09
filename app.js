@@ -554,7 +554,7 @@ var mulligan = function(command, socket)
     }
 
     // now draw more cards directly into hand and tell the player
-    shuffle(getDeckBySocket(socket));
+    shuffle(getDeckBySocket(socket, false));
     for(i = 0; i < mulligancount; i++)
     {
       var card = getDeckBySocket(socket, false).pop();
@@ -572,15 +572,25 @@ var mulligan = function(command, socket)
     else
     {
       // begin game
+
+      // give coin to second player
+      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false)).push(getCardById("GAME_005"));
+      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\nThe Coin mysteriously appears in your hand...\n');
+      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', printDetailedCard(getCardById("GAME_005")));
+
+      // clear the callbacks
       agame.p1socket.promptCallback = null;
       agame.p2socket.promptCallback = null;
 
+      // resume consoles
       agame.p1socket.emit('control', {command: 'resume'});
       agame.p2socket.emit('control', {command: 'resume'});
 
+      // set up the default prompt
       agame.defaultPrompt(agame.p1socket);
       agame.defaultPrompt(agame.p2socket);
 
+      // tell first player to go
       agame.getSocketByPlayerNumber(agame.playerTurn).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
     }
 
@@ -602,9 +612,9 @@ var mulligan = function(command, socket)
     mulligantoprint += i + ": ";
 
     if(keep)
-      mulligantoprint += "[KEEP]";
+      mulligantoprint += "[[b;limegreen;black]&#91;KEEP&#93;]";
     else
-      mulligantoprint += "[DISCARD]"
+      mulligantoprint += "[[b;red;black]&#91;DISCARD&#93;]"
 
     mulligantoprint += " " + printDetailedCard(card) + "\n";
     i++;
@@ -643,9 +653,6 @@ function startGame(agame)
       // give 1 mana to player 1
       agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).mana = 1;
       agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).maxmana = 1;
-
-      // give the coin to player 2
-      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite()), false).push(getCardById("GAME_005"));
 
       // set round one
       agame.round = 1;
@@ -694,7 +701,7 @@ function printCard(card, socket)
     return card["name"] + " (" + card["cost"] + ")";
 }
 
-function printDetailedCard(card, socket)
+function printDetailedCard(card)
 {
   if(card["type"] == "MINION")
   {
@@ -923,7 +930,7 @@ cfunc.look = function(socket, parts)
   if(index == null)
     return;
 
-  printToSender(printDetailedCard(index), socket);
+  printToSender(printDetailedCard(index));
 
 }
 
