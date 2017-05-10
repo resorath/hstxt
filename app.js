@@ -7,6 +7,7 @@ var helpers = require('./modules/helpers');
 var execution = require('./modules/execution');
 var cfunc = require('./modules/commands');
 var display = require('./modules/display');
+var util = require('./modules/util');
 
 // cross inits
 cfunc.init(helpers, execution, display);
@@ -35,7 +36,7 @@ http.listen(port, function(){
   console.log('listening on *:' + port);
 });
 
-process.stdin.resume();
+/*process.stdin.resume();
 
 function exitHandler(options, err) {
   io.sockets.emit('terminal', '\n[[bu;red;black]server going down...]\n');
@@ -47,7 +48,7 @@ function exitHandler(options, err) {
 process.on('exit', exitHandler.bind(null,{cleanup:true}));
 process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
-
+*/
 // on a connection
 io.on('connection', function(socket){
 
@@ -84,7 +85,7 @@ io.on('connection', function(socket){
           console.log("Removing game " + agame.name + " because it is out of players");
           agame.quit();
 
-          filterInPlace(games, function (el) {
+          util.filterInPlace(games, function (el) {
             return el.name != agame.name;
           });
 
@@ -98,7 +99,7 @@ io.on('connection', function(socket){
           io.to(agame.name).emit("terminal", "The game cannot continue because your opponent left before the game started! Retry making the game...\n");
           io.to(agame.name).emit("control", {command: "endgame"} );
 
-          filterInPlace(games, function (el) {
+          util.filterInPlace(games, function (el) {
             return el.name != agame.name;
           });
 
@@ -223,7 +224,7 @@ io.on('connection', function(socket){
       {
 
         // random first player
-        agame.playerTurn = (Random(2) + 1);
+        agame.playerTurn = (util.Random(2) + 1);
         console.log(agame.name + " player " + agame.playerTurn + " goes first!");
 
         // signal start.
@@ -347,7 +348,7 @@ var mulligan = function(command, socket)
   if(agame.mulligan[socket.player].length == 0)
   {
     // shuffle deck
-    shuffle(deck);
+    util.shuffle(deck);
 
     // draw three cards
     //var mulligan = deck.splice(0, 3);
@@ -394,7 +395,7 @@ var mulligan = function(command, socket)
     }
 
     // now draw more cards directly into hand and tell the player
-    shuffle(helpers.getDeckBySocket(socket, false));
+    util.shuffle(helpers.getDeckBySocket(socket, false));
 
     if(mulligancount > 0)
     {
@@ -521,37 +522,3 @@ function parseCommand(command, socket)
 
 
 
-
-/**
- * Shuffles array in place.
- * @param {Array} a items The array containing the items.
- */
-function shuffle(a) {
-    var j, x, i;
-    for (i = a.length; i; i--) {
-        j = Math.floor(Math.random() * i);
-        x = a[i - 1];
-        a[i - 1] = a[j];
-        a[j] = x;
-    }
-}
-
-// Zero-based random number
-// e.g. max = 2 is 1 in 2 change when checking 0. 
-function Random(max)
-{
-  return Math.floor(Math.random() * max);
-}
-
-function filterInPlace(a, condition) {
-  let i = 0, j = 0;
-
-  while (i < a.length) {
-    const val = a[i];
-    if (condition(val, i, a)) a[j++] = val;
-    i++;
-  }
-
-  a.length = j;
-  return a;
-}
