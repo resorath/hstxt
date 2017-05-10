@@ -50,6 +50,10 @@
     	term.echo("Connected to server\n");
     	socket.emit('control', 'ready');
 
+        term.echo("To start a new game, enter a unique game name.");
+        term.echo("To join a friend's game, enter their game name.");
+        term.echo("To rejoin a game you disconnected from, enter the game name you left.\n");
+
         term.set_prompt("Game name> ");
     });
 
@@ -107,6 +111,13 @@
         if(msg.command == "prompt")
         {
             term.set_prompt(msg.prompt);
+        }
+
+        if(msg.command == "endgame")
+        {
+            player = 0;
+            term.set_prompt("Game name> ");
+            term.resume();
         }
 
 	});

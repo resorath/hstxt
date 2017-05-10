@@ -70,9 +70,23 @@ io.on('connection', function(socket){
         {
           console.log("Removing game " + agame.name + " because it is out of players");
           agame.quit();
-          games.filter(function (el) {
-            return el.name == agame.name;
+          games = games.filter(function (el) {
+            return el.name != agame.name;
           });
+        }
+
+        // can't resume a game if it hasn't started, so kill the game.
+        if(agame.round == 0)
+        {
+          console.log("Removing game " + agame.name + " because a player left before it started");
+          agame.quit();
+          io.to(agame.name).emit("terminal", "The game cannot continue because your opponent left before the game started! Retry making the game...\n");
+          io.to(agame.name).emit("control", {command: "endgame"} );
+
+          games = games.filter(function (el) {
+            return el.name != agame.name;
+          });
+
         }
       }
 
@@ -102,6 +116,7 @@ io.on('connection', function(socket){
 
     // check if room already exists:
     var found = false;
+    var existinggame = null;
 
     for(game in games)
     {
@@ -118,9 +133,10 @@ io.on('connection', function(socket){
           socket.emit('terminal', 'Game joined! Your opponent is already here...');
           socket.emit('control', { command: "assignplayer", player: 1 });
 
-          console.log("Joining " + socket.id + " to existing " + roomname + " as player 1");
+          console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 1");
 
           found = true;
+          existinggame = agame;
           break;
         }
         else if(agame.p2socket == null)
@@ -136,6 +152,7 @@ io.on('connection', function(socket){
           console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 2");
 
           found = true;
+          existingame = agame;
           break;
         }
         else
@@ -168,6 +185,17 @@ io.on('connection', function(socket){
 
           socket.emit('terminal', 'Game joined! Waiting for an opponent...\nHint: Tell a friend to join the game using the same game name (' +  roomname + ')!');
           socket.emit('control', { command: "assignplayer", player: 1 });
+    }
+    else
+    {
+      // a game is already in progress, rejoin
+      if(existingame.round > 0)
+      {
+        console.log("Resuming existing game " + existingame.round);
+        existingame.defaultPrompt(socket);
+        io.to(roomname).emit('control', { command: "resumegame" });
+
+      }
     }
 
     // init game
