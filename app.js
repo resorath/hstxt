@@ -208,8 +208,8 @@ io.on('connection', function(socket){
       // a game is already in progress, rejoin
       if(existinggame.round > 0)
       {
-        console.log("Resuming existing game " + existingame.round);
-        existingame.defaultPrompt(socket);
+        console.log("Resuming existing game " + existinggame.round);
+        existinggame.defaultPrompt(socket);
         io.to(roomname).emit('control', { command: "resumegame" });
 
       }
