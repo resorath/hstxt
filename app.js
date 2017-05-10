@@ -544,7 +544,8 @@ function Random(max)
 }
 
 function filterInPlace(a, condition) {
-  let i = 0, j = 0;
+  var i = 0;
+  var j = 0;
 
   while (i < a.length) {
     const val = a[i];
