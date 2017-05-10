@@ -47,6 +47,8 @@
     });
 
     socket.on('connect', function() {
+        player = 0;
+
     	term.echo("Connected to server\n");
     	socket.emit('control', 'ready');
 
@@ -55,10 +57,12 @@
         term.echo("To rejoin a game you disconnected from, enter the game name you left.\n");
 
         term.set_prompt("Game name> ");
+        term.resume();
     });
 
     socket.on('disconnect', function() {
     	term.echo("[[b;red;black]Connection to server interrupted, one moment...]\n");
+        term.pause();
     })
 
     socket.on('terminal', function(msg) {
@@ -114,6 +118,13 @@
         }
 
         if(msg.command == "endgame")
+        {
+            player = 0;
+            term.set_prompt("Game name> ");
+            term.resume();
+        }
+
+        if(msg.command == "serverrestart")
         {
             player = 0;
             term.set_prompt("Game name> ");

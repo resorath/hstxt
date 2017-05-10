@@ -35,6 +35,19 @@ http.listen(port, function(){
   console.log('listening on *:' + port);
 });
 
+process.stdin.resume();
+
+function exitHandler(options, err) {
+  io.sockets.emit('terminal', '\n[[bu;red;black]server going down...]\n');
+
+  if (options.cleanup) console.log('clean');
+  if (err)console.log(err.stack);
+  if (options.exit) process.exit();}
+
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
 // on a connection
 io.on('connection', function(socket){
 
