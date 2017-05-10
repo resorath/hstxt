@@ -2,6 +2,15 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var components = require('./modules/Game');
+var helpers = require('./modules/helpers');
+var execution = require('./modules/execution');
+var cfunc = require('./modules/commands');
+var display = require('./modules/display');
+
+// cross inits
+cfunc.init(helpers, execution, display);
+execution.init(helpers, display);
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -17,218 +26,10 @@ var cards = JSON.parse(fs.readFileSync("cards.json"));
 
 var decks = JSON.parse(fs.readFileSync("decks.json"));
 
-// Game instance
-function Game(name) {
-
-  // name of the game and room
-  this.name = name;
-
-  // whos turn it is
-  this.playerTurn = 0;
-
-  // and whos its not...
-  this.playerTurnOpposite = function() { return (this.playerTurn == 1 ? 2 : 1) };
-
-  // what round it is
-  this.round = 0;
-
-  // each player's hand
-  this.hand = {
-    p1: [],
-    p2: []
-  };
-
-  // each player's side of the board
-  this.board = {
-    p1: [],
-    p2: []
-  };
-
-  // each player's deck
-  this.deck =  {
-    p1: [],
-    p2: []
-  };
-
-  // the player's actual characters
-  this.player = {
-    p1: {
-      number: 1,
-      character: null,
-      health: 20,
-      attack: 0,
-      mana: 0,
-      maxmana: 0,
-      status: []
-    },
-    p2: {
-      number: 2,
-      character: null,
-      health: 20,
-      attack: 0,
-      mana: 0,
-      maxmana: 0,
-      status: []
-    }
-  }
-
-  // bind the sockets used for each player
-  this.p1socket = null;
-  this.p2socket = null;
-
-  // mulligan storage
-  this.mulligan = {
-    1: [],
-    2: []
-  }
-
-
-  // turn timer
-  // 75 second turn, rope at 20 seconds
-  this.turntimer = 55 * 1000; 
-  this.turntimerrope = 20 * 1000;
-
-  // timeout function holder
-  this.turntimercallback = null;
-
-  this.getHand = function (socket, getOppositeHand)
-  {
-    if( (socket.id == this.p1socket.id && !getOppositeHand) || (socket.id == this.p2socket.id && getOppositeHand) )
-      return this.hand.p1;
-    else
-      return this.hand.p2;
-  };
-
-  this.getBoard = function (socket, getOppositeBoard)
-  {
-    if( (socket.id == this.p1socket.id && !getOppositeBoard) || (socket.id == this.p2socket.id && getOppositeBoard) )
-      return this.board.p1;
-    else
-      return this.board.p2;
-  }
-
-  this.getDeck = function (socket, getOppositeDeck)
-  {
-    if( (socket.id == this.p1socket.id && !getOppositeDeck) || (socket.id == this.p2socket.id && getOppositeDeck) )
-      return this.deck.p1;
-    else
-      return this.deck.p2;
-  }
-
-  this.getPlayer = function (socket, getOppositePlayer)
-  {
-    if( (socket.id == this.p1socket.id && !getOppositePlayer) || (socket.id == this.p2socket.id && getOppositePlayer) )
-      return this.player.p1;
-    else
-      return this.player.p2;
-  }
-
-  this.getSocketByPlayerNumber = function (num)
-  {
-    if(num == 1)
-      return this.p1socket;
-    if(num == 2)
-      return this.p2socket;
-
-    return null;
-  }
-
-  this.everyoneConnected = function()
-  {
-    return (this.p1socket != null && this.p2socket != null);
-  }
-
-  this.updatePromptsWithDefault = function()
-  {
-    this.defaultPrompt(this.p1socket);
-    this.defaultPrompt(this.p2socket);
-  }
-
-  this.defaultPrompt = function (socket)
-  {
-    var player = this.getPlayer(socket, false);
-
-    var prompt = player.character + "  " + player.health + " HP | " + player.mana + " Mana ";
-
-    if(player.attack > 0)
-      prompt += player.attack + "| Attack ";
-
-    if(player.status.length > 0)
-    {
-      for(aff in player.status)
-      {
-        prompt += " " + player.status[aff] + " ";
-      }
-    }
-
-    if(player.number == this.playerTurn)
-      prompt += " YOUR TURN> ";
-    else
-      prompt += " ENEMY TURN> ";
-
-    socket.emit('control', {"command": "prompt", "prompt": prompt});
-  }
-
-  this.isPlayerTurn = function (socket)
-  {
-    return (socket.player == this.playerTurn)
-  }
-
-
-}
-
-function getHandBySocket(socket, getOppositeHand)
-{
-  // find game of socket first
-  var agame = getGameBySocket(socket);
-
-  if(agame != null)
-    return agame.getHand(socket, getOppositeHand);
-
-}
-
-function getBoardBySocket(socket, getOppositeBoard)
-{
-  // find game of socket first
-  var agame = getGameBySocket(socket);
-
-  if(agame != null)
-    return agame.getBoard(socket, getOppositeBoard);
-}
-
-function getDeckBySocket(socket, getOppositeDeck)
-{
-  // find game of socket first
-  var agame = getGameBySocket(socket);
-
-  if(agame != null)
-    return agame.getDeck(socket, getOppositeDeck);
-}
-
-function getGameBySocket(socket)
-{
-    for(game in games)
-    {
-      var agame = games[game];
-      if(agame.p1socket != null && agame.p1socket.id == socket.id)
-        return agame;
-      if(agame.p2socket != null && agame.p2socket.id == socket.id)
-        return agame;
-    }
-    return null;
-}
-
-function getPlayerBySocket(socket)
-{
-    if(socket != null && socket.player != null)
-      return socket.player;
-
-    return null;
-}
 
 // master games list.
 var games = [];
-
+helpers.init(games, cards, decks);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
@@ -243,11 +44,11 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('a user disconnected ' + socket.id);
 
-    var playernum = getPlayerBySocket(socket);
+    var playernum = helpers.getPlayerBySocket(socket);
 
     if(playernum != null)
     {
-      var agame = getGameBySocket(socket);
+      var agame = helpers.getGameBySocket(socket);
 
       if(agame != null)
       {
@@ -268,6 +69,7 @@ io.on('connection', function(socket){
         if(agame.p1socket == null && agame.p2socket == null)
         {
           console.log("Removing game " + agame.name + " because it is out of players");
+          agame.quit();
           games.filter(function (el) {
             return el.name == agame.name;
           });
@@ -281,7 +83,7 @@ io.on('connection', function(socket){
 
   socket.on('command', function(msg){
 
-    agame = getGameBySocket(socket);
+    agame = helpers.getGameBySocket(socket);
     if(agame == null)
       return;
 
@@ -349,7 +151,8 @@ io.on('connection', function(socket){
           console.log("Joining " + socket.id + " to new game (" + roomname + ") as player 1");
           socket.join(roomname);
 
-          var newgame = new Game(roomname);
+          var newgame = new components.Game(roomname);
+          newgame.io = io;
           newgame.p1socket = socket;
           newgame.isNewGame = true;
           newgame.name = roomname;
@@ -364,7 +167,7 @@ io.on('connection', function(socket){
 
 
     // init game
-    agame = getGameBySocket(socket);
+    agame = helpers.getGameBySocket(socket);
     if(agame != null && agame.everyoneConnected())
     {
 
@@ -442,19 +245,19 @@ var pickDecks = function(command, socket)
     return;
 
   // load deck
-  var playerdeck = getDeckBySocket(socket, false);
-  var game = getGameBySocket(socket);
+  var playerdeck = helpers.getDeckBySocket(socket, false);
+  var game = helpers.getGameBySocket(socket);
 
   for(cardid in deck.cards)
   {
     var card = deck.cards[cardid];
   
-    playerdeck.push(getCardByName(card));
+    playerdeck.push(helpers.getCardByName(card));
   }
   console.log("Loaded deck for player " + socket.player);
 
   // check opponent
-  var opponentdeck = getDeckBySocket(socket, true)
+  var opponentdeck = helpers.getDeckBySocket(socket, true)
 
   console.log(opponentdeck.length);
   if(opponentdeck.length > 28)
@@ -499,8 +302,8 @@ var mulligan = function(command, socket)
 {
   console.log("mulligan: " + command + " for " + socket.player);
 
-  var agame = getGameBySocket(socket);
-  var deck = getDeckBySocket(socket);
+  var agame = helpers.getGameBySocket(socket);
+  var deck = helpers.getDeckBySocket(socket);
   // TBI
 
   // check if mulligan was already generated
@@ -545,26 +348,26 @@ var mulligan = function(command, socket)
       // if keeping card, push it to hand
       // otherwise, push it to deck and increase mulligan count
       if(keep)
-        getHandBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
+        helpers.getHandBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
       else
       {
-        getDeckBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
+        helpers.getDeckBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
         mulligancount++;
       }
     }
 
     // now draw more cards directly into hand and tell the player
-    shuffle(getDeckBySocket(socket, false));
+    shuffle(helpers.getDeckBySocket(socket, false));
     for(i = 0; i < mulligancount; i++)
     {
-      var card = getDeckBySocket(socket, false).pop();
+      var card = helpers.getDeckBySocket(socket, false).pop();
       console.log("Mulliganed new card for " + socket.id);
-      socket.emit('terminal', "New card from mulligan: " + printCard(card));
-      getHandBySocket(socket, false).push(card);
+      socket.emit('terminal', "New card from mulligan: " + display.printCard(card));
+      helpers.getHandBySocket(socket, false).push(card);
     }
 
     // wait for opponent
-    if(getHandBySocket(socket, true).length < 3)
+    if(helpers.getHandBySocket(socket, true).length < 3)
     {
       socket.emit('terminal', 'Waiting for opponent to finish mulligan');
       socket.emit('control', {command: 'suspend'});
@@ -572,11 +375,6 @@ var mulligan = function(command, socket)
     else
     {
       // begin game
-
-      // give coin to second player
-      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false)).push(getCardById("GAME_005"));
-      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\nThe Coin mysteriously appears in your hand...\n');
-      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', printDetailedCard(getCardById("GAME_005")));
 
       // clear the callbacks
       agame.p1socket.promptCallback = null;
@@ -586,13 +384,10 @@ var mulligan = function(command, socket)
       agame.p1socket.emit('control', {command: 'resume'});
       agame.p2socket.emit('control', {command: 'resume'});
 
-      // set up the default prompt
-      agame.defaultPrompt(agame.p1socket);
-      agame.defaultPrompt(agame.p2socket);
+      // start game
+      execution.startGame(agame);
 
-      // tell first player to go
-      agame.getSocketByPlayerNumber(agame.playerTurn).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
-    }
+     }
 
     return;
 
@@ -616,7 +411,7 @@ var mulligan = function(command, socket)
     else
       mulligantoprint += "[[b;red;black]&#91;DISCARD&#93;]"
 
-    mulligantoprint += " " + printDetailedCard(card) + "\n";
+    mulligantoprint += " " + display.printDetailedCard(card) + "\n";
     i++;
   }
 
@@ -648,20 +443,6 @@ function printAvailableDecks(socket)
 }
 
 
-function startGame(agame)
-{
-      // give 1 mana to player 1
-      agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).mana = 1;
-      agame.getPlayer(agame.getSocketByPlayerNumber(agame.playerTurn), false).maxmana = 1;
-
-      // set round one
-      agame.round = 1;
-
-
-      // set up prompts
-      agame.updatePromptsWithDefault();
-
-}
 
 // Parse a command sent from a player
 function parseCommand(command, socket)
@@ -669,7 +450,7 @@ function parseCommand(command, socket)
   if(!command)
     return null;
 
-  var game = getGameBySocket(socket);
+  var game = helpers.getGameBySocket(socket);
 
   // check if the prompt callback override is set, and execute that instead
   // the callback function must accept the entire command
@@ -688,110 +469,15 @@ function parseCommand(command, socket)
   else
     console.log("Command " + command + " not recognized by " + socket.game + ":" + socket.player);
 
-  game.updatePromptsWithDefault();
+  //game.updatePromptsWithDefault();
 
 }
 
-// nicely print a card to a player
-function printCard(card, socket)
-{
-  if(card["type"] == "MINION")
-    return card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";
-  if(card["type"] == "SPELL")
-    return card["name"] + " (" + card["cost"] + ")";
-}
 
-function printDetailedCard(card)
-{
-  if(card["type"] == "MINION")
-  {
-    var returnval = "\n[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
-    returnval += card["rarity"] + " " + card["type"] + " " + card["race"] + "\n";
-    returnval += card["text"] + "\n";
-    return returnval;
-  }
-  if(card["type"] == "SPELL")
-  {
-    var returnval = "\n[[b;lightblue;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
-    returnval += card["rarity"] + " " + card["type"] + "\n";
-    returnval += card["text"] + "\n";
-    return returnval;
-  }
-}
 
-// wrapper for emit message to terminal
-function printToSender(message, socket)
-{
-  socket.emit('terminal', message);
-}
 
-function getCardByName(name)
-{
-  var returnVal = null;
 
-  cards.forEach(function(card)
-  {
-    if(card["name"] && card["name"].toUpperCase() === name.toUpperCase() && 
-      ( card["type"] == "WEAPON" || card["type"] == "SPELL" || card["type"] == "MINION" ) )
-    {
-      //console.log("Found card: " + card["name"] + " id: " + card["id"]);
-      returnVal = card;
-      return;
-    }
-  })
 
-  if(returnVal == null)
-    console.log("WARNING: couldn't find card by name " + name);
-
-  return returnVal;
-}
-
-function getCardById(id)
-{
-  var returnVal = null;
-
-  cards.forEach(function(card)
-  {
-    if(card["id"] && card["id"].toUpperCase() === id.toUpperCase())
-    {
-      returnVal = card;
-      return;
-    }
-  })
-
-  if(returnVal == null)
-    console.log("WARNING: couldn't find card by id " + id);
-
-  return returnVal;
-}
-
-function boardIndexToCard(boardindex, socket)
-{
-
-  // opponent's board
-  if(boardindex.toLowerCase().charAt(0) == "o")
-  {
-    var index = Number(boardindex.substring(1)) - 1;
-    return getBoardBySocket(socket, true)[index];
-  }
-
-  // player's board
-  if(boardindex.toLowerCase().charAt(0) == "m")
-  {
-    var index = Number(boardindex.substring(1)) - 1;
-    return getBoardBySocket(socket, false)[index];
-  }
-
-  // player's hand
-  if(boardindex.toLowerCase().charAt(0) == "h")
-  {
-    var index = Number(boardindex.substring(1)) - 1;
-    return getHandBySocket(socket, false)[index];
-  }
-
-  return null;
-
-}
 
 /**
  * Shuffles array in place.
@@ -807,30 +493,6 @@ function shuffle(a) {
     }
 }
 
-function activateTurnTimer(agame)
-{
-  // star turn timer
-  agame.turntimercallback = setTimeout(function() {
-
-    // do rope stuff
-    // trigger character rope speech TBD
-
-    io.to(agame.name).emit('terminal', 'There is only ' + agame.turntimerrope + ' seconds left in the turn!');
-
-    agame.turntimercallback = setTimeout(function() {
-
-      io.to(agame.name).emit('terminal', 'End of turn by timeout');
-
-      var currentplayersocket = agame.getSocketByPlayerNumber(agame.playerTurn);
-
-      currentplayersocket.emit('terminal', '[[b;red;black]You ran out of time on your turn!]');
-      cfunc.end(currentplayersocket, null);
-
-    }, agame.turntimerrope);
-
-  }, agame.turntimer);
-}
-
 // Zero-based random number
 // e.g. max = 2 is 1 in 2 change when checking 0. 
 function Random(max)
@@ -838,136 +500,4 @@ function Random(max)
   return Math.floor(Math.random() * max);
 }
 
-// command functions
-var cfunc = { };
-
-// test
-cfunc.meow = function(socket, parts)
-{
-  console.log("mew mew");
-  socket.emit('control', { command: "prompt", prompt: "mew?> " });
-
-  var agame = getGameBySocket(socket);
-  
-  socket.promptCallback = function(command, socket)
-  {
-    console.log("meow meow " + command);
-    var agame = getGameBySocket(socket);
-
-    if(command == "mew")
-    {
-
-      socket.promptCallback = null;
-
-      socket.emit('terminal', 'meow meow');
-      socket.emit('control', { command: "prompt", prompt: "Ready> " });
-    }
-
-
-  }
-
-}
-
-// end of turn
-cfunc.end = function(socket, parts)
-{
-  var agame = getGameBySocket(socket);
-
-  if(!agame.isPlayerTurn(socket))
-  {
-    socket.emit("terminal", "It is not your turn");
-    return;
-  }
-
-  // clear the turn timer
-  clearTimeout(agame.turntimer);
-  
-  // whos turn it is that is ending
-  var currentplayer = agame.getPlayer(socket, true);
-
-  // whos turn it is that is starting
-  var opponent = agame.getPlayer(socket, true);
-
-
-  console.log("Ending turn of " + agame.name + ". Moving turn from " + agame.playerTurn + " to " + agame.playerTurnOpposite());
-
-  // flip whos turn it is
-  agame.playerTurn = agame.playerTurnOpposite();
-
-  // increase round count
-  agame.round++;
-
-  // increase mana for new player
-  if(opponent.mana < 10)
-    opponent.maxmana++;
-
-  // refresh mana
-  opponent.mana = opponent.maxmana;
-
-  // draw a card for the new player
-  // NYI
-
-  // tell new player it is their turn
-  agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
-
-  agame.updatePromptsWithDefault();
-
-  activateTurnTimer(agame);
-
-}
-
-// look at a card
-cfunc.look = function(socket, parts)
-{
-  // parse what we want to look at. 
-  var lookatindex = parts[0];
-
-  if(!lookatindex)
-    return null;
-
-  var index = boardIndexToCard(lookatindex, socket);
-
-  if(index == null)
-    return;
-
-  printToSender(printDetailedCard(index));
-
-}
-
-// print out board
-cfunc.board = function(socket, parts)
-{
-    var response = "\nYour opponent has " + getHandBySocket(socket, true).length + " cards\n" +
-    "\nOpponent's side:\n\n";
-
-    var i = 1;
-
-    getBoardBySocket(socket, true).forEach(function(card) {
-      response += "o" + i + ": " + printCard(card) + "\n";
-      i++;
-    });
-
-    response += "\n------------\n\nYour side:\n\n";
-
-    i = 1;
-
-    getBoardBySocket(socket, false).forEach(function(card) {
-      response += "m" + i + ": " + printCard(card) + "\n";
-      i++;
-    });  
-
-    response += "\nYour hand:\n\n";
-
-    i = 1;
-
-    getHandBySocket(socket, false).forEach(function(card) {
-      response += "h" + i + ": " + printCard(card) + "\n";
-      i++;
-    });  
-
-    response += "\n";
-
-    printToSender(response, socket);
-
-}
 
