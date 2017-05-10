@@ -13,17 +13,37 @@ module.exports = {
 	{
 	  if(card["type"] == "MINION")
 	  {
-	    var returnval = "\n[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
-	    returnval += card["rarity"] + " " + card["type"] + " " + card["race"] + "\n";
-	    returnval += card["text"] + "\n";
-	    return returnval;
+	    var returnval = "[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
+
+	    if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
+	   		returnval += card["rarity"] + " ";
+
+	    if(typeof card["type"] != 'undefined')
+	    	returnval += card["type"] + " ";
+
+	    if(typeof card["race"] != 'undefined')
+	    	returnval += card["race"] + " ";
+	    
+	    if(typeof card["text"] != 'undefined')
+	    	returnval += "\n" + card["text"];
+
+	    return "\n" + returnval + "\n";
 	  }
+
 	  if(card["type"] == "SPELL")
 	  {
-	    var returnval = "\n[[b;lightblue;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
-	    returnval += card["rarity"] + " " + card["type"] + "\n";
-	    returnval += card["text"] + "\n";
-	    return returnval;
+	    var returnval = "[[b;lightblue;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
+	    
+	    if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
+	   		returnval += card["rarity"] + " ";
+
+	    if(typeof card["type"] != 'undefined')
+	    	returnval += card["type"];
+	    
+	    if(typeof card["text"] != 'undefined')
+	    	returnval += "\n" + card["text"];
+
+	    return "\n" + returnval + "\n";
 	  }
 	}
 

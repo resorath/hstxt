@@ -70,9 +70,11 @@ io.on('connection', function(socket){
         {
           console.log("Removing game " + agame.name + " because it is out of players");
           agame.quit();
-          games = games.filter(function (el) {
+
+          filterInPlace(games, function (el) {
             return el.name != agame.name;
           });
+
         }
 
         // can't resume a game if it hasn't started, so kill the game.
@@ -83,7 +85,7 @@ io.on('connection', function(socket){
           io.to(agame.name).emit("terminal", "The game cannot continue because your opponent left before the game started! Retry making the game...\n");
           io.to(agame.name).emit("control", {command: "endgame"} );
 
-          games = games.filter(function (el) {
+          filterInPlace(games, function (el) {
             return el.name != agame.name;
           });
 
@@ -137,6 +139,7 @@ io.on('connection', function(socket){
 
           found = true;
           existinggame = agame;
+
           break;
         }
         else if(agame.p2socket == null)
@@ -152,7 +155,8 @@ io.on('connection', function(socket){
           console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 2");
 
           found = true;
-          existingame = agame;
+          existinggame = agame;
+
           break;
         }
         else
@@ -189,7 +193,7 @@ io.on('connection', function(socket){
     else
     {
       // a game is already in progress, rejoin
-      if(existingame.round > 0)
+      if(existinggame.round > 0)
       {
         console.log("Resuming existing game " + existingame.round);
         existingame.defaultPrompt(socket);
@@ -198,8 +202,7 @@ io.on('connection', function(socket){
       }
     }
 
-    // init game
-    agame = helpers.getGameBySocket(socket);
+    var agame = helpers.getGameBySocket(socket);
     if(agame != null && agame.everyoneConnected())
     {
 
@@ -379,11 +382,17 @@ var mulligan = function(command, socket)
 
     // now draw more cards directly into hand and tell the player
     shuffle(helpers.getDeckBySocket(socket, false));
+
+    if(mulligancount > 0)
+    {
+      socket.emit('terminal', "\nNew cards from your mulligan:\n");
+    }
+
     for(i = 0; i < mulligancount; i++)
     {
       var card = helpers.getDeckBySocket(socket, false).pop();
       console.log("Mulliganed new card for " + socket.id);
-      socket.emit('terminal', "New card from mulligan: " + display.printCard(card));
+      socket.emit('terminal', display.printDetailedCard(card));
       helpers.getHandBySocket(socket, false).push(card);
     }
 
@@ -416,7 +425,7 @@ var mulligan = function(command, socket)
   }
 
   // present the deck to the player:
-  var mulligantoprint = "Pick cards to mulligan\nType a number to select if a card is kept or discarded. Type \"done\" when ready.\n\n";
+  var mulligantoprint = "Pick cards to mulligan\nType a number and press enter to toggle if a card is kept or discarded. Type \"done\" when ready.\n";
   var i = 1;
 
   for(cardid in agame.mulligan[socket.player])
@@ -425,14 +434,14 @@ var mulligan = function(command, socket)
     var keep = agame.mulligan[socket.player][cardid].keep;
 
     // tmp
-    mulligantoprint += i + ": ";
+    mulligantoprint += "\n" +  i + ": ";
 
     if(keep)
       mulligantoprint += "[[b;limegreen;black]&#91;KEEP&#93;]";
     else
       mulligantoprint += "[[b;red;black]&#91;DISCARD&#93;]"
 
-    mulligantoprint += " " + display.printDetailedCard(card) + "\n";
+    mulligantoprint += " " + display.printDetailedCard(card);
     i++;
   }
 
@@ -521,4 +530,15 @@ function Random(max)
   return Math.floor(Math.random() * max);
 }
 
+function filterInPlace(a, condition) {
+  let i = 0, j = 0;
 
+  while (i < a.length) {
+    const val = a[i];
+    if (condition(val, i, a)) a[j++] = val;
+    i++;
+  }
+
+  a.length = j;
+  return a;
+}

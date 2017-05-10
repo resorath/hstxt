@@ -19,7 +19,7 @@ module.exports = {
 	      agame.round = 1;
 
 	      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false)).push(this.helpers.getCardById("GAME_005"));
-	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\nThe Coin mysteriously appears in your hand...\n');
+	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\n[[;lightblue;black]The Coin mysteriously appears in your hand...]');
 	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', this.display.printDetailedCard(this.helpers.getCardById("GAME_005")));
 
 

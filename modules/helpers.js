@@ -44,7 +44,7 @@ module.exports = {
 	    {
 	      var agame = this.games[game];
 	      if(agame.p1socket != null && agame.p1socket.id == socket.id)
-	        return agame;
+	      	 return agame;
 	      if(agame.p2socket != null && agame.p2socket.id == socket.id)
 	        return agame;
 	    }
