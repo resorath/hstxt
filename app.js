@@ -44,7 +44,7 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('a user disconnected ' + socket.id);
 
-    var playernum = helpers.getPlayerBySocket(socket);
+    var playernum = helpers.getPlayerNumberBySocket(socket);
 
     if(playernum != null)
     {
@@ -114,6 +114,8 @@ io.on('connection', function(socket){
           socket.player = 1;
           socket.game = agame.name;
           socket.join(roomname);
+
+          socket.emit('terminal', 'Game joined! Your opponent is already here...');
           socket.emit('control', { command: "assignplayer", player: 1 });
 
           console.log("Joining " + socket.id + " to existing " + roomname + " as player 1");
@@ -127,6 +129,8 @@ io.on('connection', function(socket){
           socket.player = 2;
           socket.game = agame.name;
           socket.join(roomname);
+
+          socket.emit('terminal', 'Game joined! Your opponent is already here...');
           socket.emit('control', { command: "assignplayer", player: 2 });
 
           console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 2");
@@ -162,9 +166,9 @@ io.on('connection', function(socket){
 
           games.push(newgame);
 
+          socket.emit('terminal', 'Game joined! Waiting for an opponent...\nHint: Tell a friend to join the game using the same game name (' +  roomname + ')!');
           socket.emit('control', { command: "assignplayer", player: 1 });
     }
-
 
     // init game
     agame = helpers.getGameBySocket(socket);
@@ -188,22 +192,8 @@ io.on('connection', function(socket){
 
         io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
 
-        // this doesn't work right
         agame.p1socket.promptCallback = pickDecks;
         agame.p2socket.promptCallback = pickDecks;
-
-        // do mulligan
-        //agame.promptCallback = mulligan(agame);
-
-
-        /*agame.board.p1.push(getCardByName("River Crocolisk"));
-        agame.board.p2.push(getCardByName("Boulderfist Ogre"));
-        agame.board.p2.push(getCardByName("Doomsayer"));
-
-
-        agame.hand.p1.push(getCardByName("Fireball"));
-        agame.hand.p2.push(getCardByName("Drain Life"));
-        agame.hand.p2.push(getCardByName("Voidwalker"));*/
 
         agame.isNewGame = false;
 
@@ -246,7 +236,10 @@ var pickDecks = function(command, socket)
 
   // load deck
   var playerdeck = helpers.getDeckBySocket(socket, false);
+  var player = helpers.getPlayerBySocket(socket);
   var game = helpers.getGameBySocket(socket);
+
+  player.character = deck.heroname;
 
   for(cardid in deck.cards)
   {

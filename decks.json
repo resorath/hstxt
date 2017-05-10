@@ -2,6 +2,7 @@
   {
     "name": "Basic Druid",
     "hero": "DRUID",
+    "heroname": "Malfurion",
     "cards": [
         "Boulderfist Ogre",
         "Chillwind Yeti",
@@ -39,6 +40,7 @@
   {
     "name": "Basic Mage",
     "hero": "MAGE",
+    "heroname": "Jaina",
     "cards": [
         "Sen'jin Shieldmasta",
         "Oasis SNapjaw",

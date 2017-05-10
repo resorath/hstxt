@@ -51,12 +51,21 @@ module.exports = {
 	    return null;
 	},
 
-	getPlayerBySocket: function(socket)
+	getPlayerNumberBySocket: function(socket)
 	{
 	    if(socket != null && socket.player != null)
 	      return socket.player;
 
 	    return null;
+	},
+
+	getPlayerBySocket: function(socket, getOppositeDeck)
+	{
+	  // find game of socket first
+	  var agame = this.getGameBySocket(socket);
+
+	  if(agame != null)
+	    return agame.getPlayer(socket, getOppositeDeck);
 	},
 
 	boardIndexToCard: function(boardindex, socket)

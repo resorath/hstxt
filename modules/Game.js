@@ -142,7 +142,7 @@ module.exports = {
     {
       var player = this.getPlayer(socket, false);
 
-      var prompt = player.character + "  " + player.health + " HP | " + player.mana + " Mana ";
+      var prompt = player.character + " " + player.health + " HP | " + player.mana + " Mana ";
 
       if(player.attack > 0)
         prompt += player.attack + "| Attack ";
