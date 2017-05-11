@@ -1,15 +1,8 @@
+var helpers = require('./helpers');
+var execution = require('./execution');
+var display = require('./display');
+
 module.exports = {
-
-  helpers: null,
-  execution: null,
-  display: null,
-
-  init: function(helpers, execution, display)
-  {
-    this.helpers = helpers;
-    this.execution = execution;
-    this.display = display;
-  },
 
   // test
   meow: function(socket, parts)
@@ -17,13 +10,12 @@ module.exports = {
     console.log("mew mew");
     socket.emit('control', { command: "prompt", prompt: "mew?> " });
 
-    var agame = this.helpers.getGameBySocket(socket);
-    var that = this;
+    var agame = helpers.getGameBySocket(socket);
     
     socket.promptCallback = function(command, socket)
     {
       console.log("meow meow " + command);
-      var agame = that.helpers.getGameBySocket(socket);
+      var agame = helpers.getGameBySocket(socket);
 
       if(command == "mew")
       {
@@ -42,7 +34,7 @@ module.exports = {
   // end of turn
   end: function(socket, parts)
   {
-    this.execution.endTurn(socket);
+    execution.endTurn(socket);
 
   },
 
@@ -55,7 +47,7 @@ module.exports = {
     if(!lookatindex)
       return null;
 
-    var index = this.helpers.boardIndexToCard(lookatindex, socket);
+    var index = helpers.boardIndexToCard(lookatindex, socket);
 
     if(index == null)
       return;
@@ -72,10 +64,8 @@ module.exports = {
 
       var response = "\n";
 
-      var that = this;
-
-      this.helpers.getHandBySocket(socket, false).forEach(function(card) {
-        response += "h" + i + ": " + that.display.printCard(card) + "\n";
+      helpers.getHandBySocket(socket, false).forEach(function(card) {
+        response += "h" + i + ": " + display.printCard(card) + "\n";
         i++;
       });  
 
@@ -88,14 +78,13 @@ module.exports = {
   // print out board
   board: function(socket, parts)
   {
-      var response = "\nYour opponent has " + this.helpers.getHandBySocket(socket, true).length + " cards\n" +
+      var response = "\nYour opponent has " + helpers.getHandBySocket(socket, true).length + " cards\n" +
       "\nOpponent's side:\n\n";
 
       var i = 1;
-      var that = this;
 
-      this.helpers.getBoardBySocket(socket, true).forEach(function(card) {
-        response += "o" + i + ": " + that.display.printCard(card) + "\n";
+      helpers.getBoardBySocket(socket, true).forEach(function(card) {
+        response += "o" + i + ": " + display.printCard(card) + "\n";
         i++;
       });
 
@@ -103,8 +92,8 @@ module.exports = {
 
       i = 1;
 
-      this.helpers.getBoardBySocket(socket, false).forEach(function(card) {
-        response += "m" + i + ": " + that.display.printCard(card) + "\n";
+      helpers.getBoardBySocket(socket, false).forEach(function(card) {
+        response += "m" + i + ": " + display.printCard(card) + "\n";
         i++;
       });  
 
@@ -112,7 +101,7 @@ module.exports = {
 
       socket.emit('terminal', response);
 
-      this.hand(socket, parts);
+      module.exports.hand(socket, parts);
 
   }
 }

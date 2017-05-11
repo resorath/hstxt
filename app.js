@@ -33,7 +33,6 @@ globals.games = [];
 
 // cross inits
 helpers.init(globals.games, globals.cards, globals.decks);
-cfunc.init(helpers, execution, display);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
