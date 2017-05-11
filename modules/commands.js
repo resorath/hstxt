@@ -151,6 +151,16 @@ module.exports = {
         }
       }
 
+      // check mana
+      if(player.mana < cardtoplay.cost)
+      {
+        socket.emit("terminal", "You don't have enough mana!\n");
+        return;
+      }
+
+
+      ///// Play the card
+
       // card index in hand array
       var indexinhand = handtarget.substring(1);
       indexinhand--;
@@ -167,6 +177,9 @@ module.exports = {
       // announce play to player
       socket.emit('terminal', 'Playing...');
       socket.emit('terminal', display.printDetailedCard(cardinhand));
+
+      // deduct mana
+      player.mana -= cardinhand.cost;
 
       // todo: do game logic
 
@@ -188,6 +201,40 @@ module.exports = {
       {
         // equip weapon
       }
+
+      game.defaultPrompt(socket);
+
+  },
+
+  // some debug commands
+  // not much error checking here
+  debug: function(socket, parts)
+  {
+      var game = helpers.getGameBySocket(socket);
+      var player = helpers.getPlayerBySocket(socket, false);
+      var oppositeplayer = helpers.getPlayerBySocket(socket, true);
+
+      var subcommand = parts[0];
+
+      if(subcommand == "mana")
+      {
+        player.mana = parts[1];
+        socket.emit('terminal', 'set mana to ' + parts[1]);
+        game.defaultPrompt(socket);
+      }
+
+      if(subcommand == "give")
+      {
+        var card = helpers.getCardById(parts[1]);
+        if(card != null)
+        {
+          helpers.getHandBySocket(socket).push(card);
+          socket.emit('terminal', display.printDetailedCard(card));
+        }
+        else
+          socket.emit('terminal', 'card id not found');
+      }
+
 
   }
 
