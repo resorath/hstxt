@@ -45,6 +45,21 @@ module.exports = {
 
 	    return "\n" + returnval + "\n";
 	  }
+	},
+
+
+	printAvailableDecks: function(socket, decks)
+	{
+	  var printdeck = "Pick a deck: \n\n";
+
+	  var i = 0;
+	  for(deck in decks)
+	  {
+	    printdeck += i + ": " + decks[deck]["name"] + "\n";
+	    i++;
+	  }
+
+	  socket.emit('terminal', printdeck);
 	}
 
 

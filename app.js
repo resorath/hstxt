@@ -232,8 +232,8 @@ io.on('connection', function(socket){
         io.to(agame.name).emit('control', { command: "startgame" });
 
         // both players pick deck
-        printAvailableDecks(agame.p1socket);
-        printAvailableDecks(agame.p2socket);
+        display.printAvailableDecks(agame.p1socket, globals.decks);
+        display.printAvailableDecks(agame.p2socket, globals.decks);
 
         io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
 
@@ -268,19 +268,6 @@ io.on('connection', function(socket){
 
 });
 
-function printAvailableDecks(socket)
-{
-  var printdeck = "Pick a deck: \n\n";
-
-  var i = 0;
-  for(deck in globals.decks)
-  {
-    printdeck += i + ": " + globals.decks[deck]["name"] + "\n";
-    i++;
-  }
-
-  socket.emit('terminal', printdeck);
-}
 
 
 
