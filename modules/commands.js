@@ -1,6 +1,7 @@
 var helpers = require('./helpers');
 var execution = require('./execution');
 var display = require('./display');
+var util = require('./util');
 
 module.exports = {
 
@@ -52,7 +53,7 @@ module.exports = {
     if(index == null)
       return;
 
-    socket.emit('terminal', this.display.printDetailedCard(index));
+    socket.emit('terminal', display.printDetailedCard(index));
 
   },
 
@@ -103,5 +104,92 @@ module.exports = {
 
       module.exports.hand(socket, parts);
 
+  },
+
+  // play a card from hand
+  // play handId [boardposition]
+  play: function(socket, parts)
+  {
+      var game = helpers.getGameBySocket(socket);
+      var player = helpers.getPlayerBySocket(socket, false);
+      var oppositeplayer = helpers.getPlayerBySocket(socket, true);
+
+      // can only play a card on turn
+      if(!game.isPlayerTurn(socket))
+      {
+        socket.emit("terminal", "It is not your turn\n");
+        return;
+      }
+
+      var handtarget = parts[0];
+      var boardtargetafter = parts[1];
+
+      if(handtarget == null)
+      {
+        socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
+        return;
+      }
+
+      var cardtoplay = helpers.boardIndexToCard(handtarget, socket); 
+      if(cardtoplay == null)
+      {
+        socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
+        return;
+      }  
+
+      // if its a minion, it has to have a board target
+      if(cardtoplay.type == "MINION")
+      {
+        // board target must exist and be between 0 and max friendly board count (inclusive)
+        if(boardtargetafter == null 
+          && !isNaN(boardtargetafter) 
+          && boardtargetafter > -1 
+          && boardtargetafter <= helpers.getBoardBySocket(socket, false).length)
+        {
+          socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
+          return;
+        }
+      }
+
+      // card index in hand array
+      var indexinhand = handtarget.substring(1);
+      indexinhand--;
+
+      console.log(socket.id + " playing index :" + indexinhand);
+
+      // remove card from hand
+      var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
+
+      // announce play to opposite
+      helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
+      helpers.getOppositePlayerSocket(socket).emit('terminal', display.printDetailedCard(cardinhand));
+
+      // announce play to player
+      socket.emit('terminal', 'Playing...');
+      socket.emit('terminal', display.printDetailedCard(cardinhand));
+
+      // todo: do game logic
+
+      // if a minion, place on board
+      if(cardtoplay.type == "MINION")
+      {
+        // put card on board
+        helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardinhand);
+
+        // todo: do battlecry
+      }
+
+      if(cardtoplay.type == "SPELL")
+      {
+        // cast spell
+      }
+
+      if(cardtoplay.type == "WEAPON");
+      {
+        // equip weapon
+      }
+
   }
+
+
 }

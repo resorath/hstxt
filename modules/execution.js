@@ -240,7 +240,7 @@ module.exports = {
 
 	    if(!agame.isPlayerTurn(socket))
 	    {
-	      socket.emit("terminal", "It is not your turn");
+	      socket.emit("terminal", "It is not your turn\n");
 	      return;
 	    }
 

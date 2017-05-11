@@ -1,7 +1,7 @@
 module.exports = {
 
 	// nicely print a card to a player
-	printCard: function(card, socket)
+	printCard: function(card)
 	{
 	  if(card["type"] == "MINION")
 	    return card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";

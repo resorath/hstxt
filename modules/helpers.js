@@ -134,6 +134,22 @@ module.exports = {
 	    console.log("WARNING: couldn't find card by id " + id);
 
 	  return returnVal;
+	},
+
+	getOppositePlayerSocket: function(socket)
+	{
+	  // find game of socket first
+	  var agame = this.getGameBySocket(socket);
+
+	  if(agame != null)
+	  {
+	  	if(agame.p1socket.id == socket.id)
+	  		return agame.p2socket;
+	  	else
+	  		return agame.p1socket;
+
+	  }
+
 	}
 
 }
