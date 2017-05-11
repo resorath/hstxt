@@ -2,6 +2,7 @@ var helpers = require('./helpers');
 var execution = require('./execution');
 var display = require('./display');
 var util = require('./util');
+var ca = require('./cardactions')
 
 module.exports = {
 
@@ -189,7 +190,6 @@ module.exports = {
         // put card on board
         helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardinhand);
 
-        // todo: do battlecry
       }
 
       if(cardtoplay.type == "SPELL")
@@ -201,6 +201,12 @@ module.exports = {
       {
         // equip weapon
       }
+
+      // do card actions
+      if(typeof ca[cardtoplay.id] === 'function')
+        ca[cardtoplay.id](socket, parts);
+      else
+        console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
 
       game.defaultPrompt(socket);
 
