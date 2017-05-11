@@ -21,16 +21,18 @@ app.get('/keyboard-event-polyfill.js', function(req, res) {
 
 var port = process.env.PORT || 8000;
 
-var cards = JSON.parse(fs.readFileSync("cards.json"));
+var globals = {};
 
-var decks = JSON.parse(fs.readFileSync("decks.json"));
+globals.cards = JSON.parse(fs.readFileSync("cards.json"));
+
+globals.decks = JSON.parse(fs.readFileSync("decks.json"));
 
 
 // master games list.
-var games = [];
+globals.games = [];
 
 // cross inits
-helpers.init(games, cards, decks);
+helpers.init(globals.games, globals.cards, globals.decks);
 execution.init(helpers, display, util);
 cfunc.init(helpers, execution, display);
 
@@ -87,7 +89,7 @@ io.on('connection', function(socket){
           console.log("Removing game " + agame.name + " because it is out of players");
           agame.quit();
 
-          util.filterInPlace(games, function (el) {
+          util.filterInPlace(globals.games, function (el) {
             return el.name != agame.name;
           });
 
@@ -101,7 +103,7 @@ io.on('connection', function(socket){
           io.to(agame.name).emit("terminal", "The game cannot continue because your opponent left before the game started! Retry making the game...\n");
           io.to(agame.name).emit("control", {command: "endgame"} );
 
-          util.filterInPlace(games, function (el) {
+          util.filterInPlace(globals.games, function (el) {
             return el.name != agame.name;
           });
 
@@ -135,9 +137,9 @@ io.on('connection', function(socket){
     var found = false;
     var existinggame = null;
 
-    for(game in games)
+    for(game in globals.games)
     {
-      var agame = games[game];
+      var agame = globals.games[game];
       if(agame.name == roomname)
       {
         if(agame.p1socket == null)
@@ -199,7 +201,7 @@ io.on('connection', function(socket){
           socket.player = 1;
           socket.game = newgame.name;
 
-          games.push(newgame);
+          globals.games.push(newgame);
 
           socket.emit('terminal', 'Game joined! Waiting for an opponent...\nHint: Tell a friend to join the game using the same game name (' +  roomname + ')!');
           socket.emit('control', { command: "assignplayer", player: 1 });
@@ -273,9 +275,9 @@ function printAvailableDecks(socket)
   var printdeck = "Pick a deck: \n\n";
 
   var i = 0;
-  for(deck in decks)
+  for(deck in globals.decks)
   {
-    printdeck += i + ": " + decks[deck]["name"] + "\n";
+    printdeck += i + ": " + globals.decks[deck]["name"] + "\n";
     i++;
   }
 
