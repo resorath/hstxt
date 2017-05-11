@@ -1,21 +1,14 @@
+var helpers = require('./helpers');
+var display = require('./display');
+var util = require('./util');
+
 module.exports = {
-
-	helpers: null,
-	display: null,
-	util: null,
-
-	init: function(helpers, display, util)
-	{
-		this.helpers = helpers;
-		this.display = display;
-		this.util = util;
-	},
 
 	pickDecks: function(command, socket)
 	{
 	  var deck = null;
 	  if(!isNaN(command))
-	    var deck = this.helpers.decks[command]
+	    var deck = helpers.decks[command]
 	  else 
 	    return;
 
@@ -23,9 +16,9 @@ module.exports = {
 	    return;
 
 	  // load deck
-	  var playerdeck = this.helpers.getDeckBySocket(socket, false);
-	  var player = this.helpers.getPlayerBySocket(socket);
-	  var game = this.helpers.getGameBySocket(socket);
+	  var playerdeck = helpers.getDeckBySocket(socket, false);
+	  var player = helpers.getPlayerBySocket(socket);
+	  var game = helpers.getGameBySocket(socket);
 
 	  player.character = deck.heroname;
 
@@ -33,19 +26,19 @@ module.exports = {
 	  {
 	    var card = deck.cards[cardid];
 	  
-	    playerdeck.push(this.helpers.getCardByName(card));
+	    playerdeck.push(helpers.getCardByName(card));
 	  }
 	  console.log("Loaded deck for player " + socket.player);
 
 	  // check opponent
-	  var opponentdeck = this.helpers.getDeckBySocket(socket, true)
+	  var opponentdeck = helpers.getDeckBySocket(socket, true)
 
 	  console.log(opponentdeck.length);
 	  if(opponentdeck.length > 28)
 	  {
 	    game.io.to(game.name).emit('control', { command: "resume" });
 
-	    this.startMulligan(game);
+	    module.exports.startMulligan(game);
 	  }
 	  else
 	  {
@@ -61,8 +54,6 @@ module.exports = {
 	{
 	  console.log(game.name + " mulligan phase");
 
-	  var that = this;
-
 	  var firstPlayer = game.getSocketByPlayerNumber(game.playerTurn);
 	  var secondPlayer = game.getSocketByPlayerNumber(game.playerTurnOpposite());
 
@@ -73,26 +64,26 @@ module.exports = {
 
 	  game.io.to(game.name).emit('control', { command: "prompt", prompt: "Mulligan> " });
 
-	  game.p1socket.promptCallback = function(command, socket) { that.mulligan(command, socket) };
-	  game.p2socket.promptCallback = function(command, socket) { that.mulligan(command, socket) };
+	  game.p1socket.promptCallback = module.exports.mulligan;
+	  game.p2socket.promptCallback = module.exports.mulligan;
 
-	  this.mulligan("", game.p1socket);
-	  this.mulligan("", game.p2socket);
+	  module.exports.mulligan("", game.p1socket);
+	  module.exports.mulligan("", game.p2socket);
 	},
 
 	mulligan: function(command, socket)
 	{
 	  console.log("mulligan: " + command + " for " + socket.player);
 
-	  var agame = this.helpers.getGameBySocket(socket);
-	  var deck = this.helpers.getDeckBySocket(socket);
+	  var agame = helpers.getGameBySocket(socket);
+	  var deck = helpers.getDeckBySocket(socket);
 	  // TBI
 
 	  // check if mulligan was already generated
 	  if(agame.mulligan[socket.player].length == 0)
 	  {
 	    // shuffle deck
-	    this.util.shuffle(deck);
+	    util.shuffle(deck);
 
 	    // draw three cards
 	    //var mulligan = deck.splice(0, 3);
@@ -130,16 +121,16 @@ module.exports = {
 	      // if keeping card, push it to hand
 	      // otherwise, push it to deck and increase mulligan count
 	      if(keep)
-	        this.helpers.getHandBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
+	        helpers.getHandBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
 	      else
 	      {
-	        this.helpers.getDeckBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
+	        helpers.getDeckBySocket(socket, false).push(agame.mulligan[socket.player][cardid].card);
 	        mulligancount++;
 	      }
 	    }
 
 	    // now draw more cards directly into hand and tell the player
-	    this.util.shuffle(this.helpers.getDeckBySocket(socket, false));
+	    util.shuffle(helpers.getDeckBySocket(socket, false));
 
 	    if(mulligancount > 0)
 	    {
@@ -148,14 +139,14 @@ module.exports = {
 
 	    for(i = 0; i < mulligancount; i++)
 	    {
-	      var card = this.helpers.getDeckBySocket(socket, false).pop();
+	      var card = helpers.getDeckBySocket(socket, false).pop();
 	      console.log("Mulliganed new card for " + socket.id);
-	      socket.emit('terminal', this.display.printDetailedCard(card));
-	      this.helpers.getHandBySocket(socket, false).push(card);
+	      socket.emit('terminal', display.printDetailedCard(card));
+	      helpers.getHandBySocket(socket, false).push(card);
 	    }
 
 	    // wait for opponent
-	    if(this.helpers.getHandBySocket(socket, true).length < 3)
+	    if(helpers.getHandBySocket(socket, true).length < 3)
 	    {
 	      socket.emit('terminal', 'Waiting for opponent to finish mulligan');
 	      socket.emit('control', {command: 'suspend'});
@@ -173,7 +164,7 @@ module.exports = {
 	      agame.p2socket.emit('control', {command: 'resume'});
 
 	      // start game
-	      this.startGame(agame);
+	      module.exports.startGame(agame);
 
 	     }
 
@@ -199,7 +190,7 @@ module.exports = {
 	    else
 	      mulligantoprint += "[[b;red;black]&#91;DISCARD&#93;]"
 
-	    mulligantoprint += " " + this.display.printDetailedCard(card);
+	    mulligantoprint += " " + display.printDetailedCard(card);
 	    i++;
 	  }
 
@@ -226,9 +217,9 @@ module.exports = {
 	      // set round one
 	      agame.round = 1;
 
-	      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false)).push(this.helpers.getCardById("GAME_005"));
+	      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false)).push(helpers.getCardById("GAME_005"));
 	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\n[[;lightblue;black]The Coin mysteriously appears in your hand...]');
-	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', this.display.printDetailedCard(this.helpers.getCardById("GAME_005")));
+	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', display.printDetailedCard(helpers.getCardById("GAME_005")));
 
 
 	      // set up prompts
@@ -245,7 +236,7 @@ module.exports = {
 
 	endTurn: function(socket)
 	{
-	    var agame = this.helpers.getGameBySocket(socket);
+	    var agame = helpers.getGameBySocket(socket);
 
 	    if(!agame.isPlayerTurn(socket))
 	    {

@@ -33,7 +33,6 @@ globals.games = [];
 
 // cross inits
 helpers.init(globals.games, globals.cards, globals.decks);
-execution.init(helpers, display, util);
 cfunc.init(helpers, execution, display);
 
 http.listen(port, function(){
@@ -239,8 +238,8 @@ io.on('connection', function(socket){
 
         io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
 
-        agame.p1socket.promptCallback = function(command, socket) { execution.pickDecks(command, socket) };
-        agame.p2socket.promptCallback = function(command, socket) { execution.pickDecks(command, socket) };
+        agame.p1socket.promptCallback = execution.pickDecks;
+        agame.p2socket.promptCallback = execution.pickDecks;
 
         agame.isNewGame = false;
 
