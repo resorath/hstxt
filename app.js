@@ -123,8 +123,7 @@ io.on('connection', function(socket){
     console.log(agame.name + "-" + socket.player + ": " + msg);
     
     parseCommand(msg, socket);
-
-    //setTimeout(function() { io.emit('control', "enemyturn")}, 1000);
+    
   });
 
   // join a room
@@ -175,7 +174,6 @@ io.on('connection', function(socket){
         }
         else
         {
-          // needs rejoin feature
           console.log("Game " + roomname + " join failed, is full from " + socket.id);
           socket.emit('control', { command: "roomfull" });
           return;

@@ -64,6 +64,27 @@ module.exports = {
 
   },
 
+  // print out hand
+  hand: function(socket, parts)
+  {
+
+      i = 1;
+
+      var response = "\n";
+
+      var that = this;
+
+      this.helpers.getHandBySocket(socket, false).forEach(function(card) {
+        response += "h" + i + ": " + that.display.printCard(card) + "\n";
+        i++;
+      });  
+
+      response += "\n";
+
+      socket.emit('terminal', response);
+
+  },
+
   // print out board
   board: function(socket, parts)
   {
@@ -87,18 +108,11 @@ module.exports = {
         i++;
       });  
 
-      response += "\nYour hand:\n\n";
-
-      i = 1;
-
-      this.helpers.getHandBySocket(socket, false).forEach(function(card) {
-        response += "h" + i + ": " + that.display.printCard(card) + "\n";
-        i++;
-      });  
-
-      response += "\n";
+      response += "\nYour hand:";
 
       socket.emit('terminal', response);
+
+      this.hand(socket, parts);
 
   }
 }
