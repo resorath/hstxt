@@ -212,6 +212,22 @@ module.exports = {
 
   },
 
+  // attack a minion or hero into another minion or hero
+  // play source destination
+  attack: function(socket, parts)
+  {
+    var synonymself = [ "self", "face", "hero", "champion", "summoner" ];
+    var synonymopponent = [ "enemy", "opponent", "face", "hero", "champion", "summoner" ]
+
+    var icard = parts[0];
+    var isource = parts[1];
+    var idestination = parts[2]
+
+
+
+
+  },
+
   // some debug commands
   // not much error checking here
   debug: function(socket, parts)

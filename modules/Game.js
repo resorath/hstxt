@@ -58,6 +58,11 @@ module.exports = {
       }
     }
 
+    // an array of card callbacks to be run when a card is played, attacks, or dies
+    // header: callbackfunction(socket, card, action)
+    // action is PLAY, DIES, ATTACKS
+    this.cardcallbacks = [];
+
     // bind the sockets used for each player
     this.p1socket = null;
     this.p2socket = null;
