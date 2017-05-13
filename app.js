@@ -294,7 +294,10 @@ function parseCommand(command, socket)
   if(typeof cfunc[root] === 'function')
     cfunc[root](socket, parts)
   else
+  {
+    socket.emit('terminal', 'unknown command: \'' + root + '\' try \'help\'\n');
     console.log("Command " + command + " not recognized by " + socket.game + ":" + socket.player);
+  }
 
   //game.updatePromptsWithDefault();
 

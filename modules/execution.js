@@ -231,6 +231,8 @@ module.exports = {
 	      // tell first player to go
       	  agame.getSocketByPlayerNumber(agame.playerTurn).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
+      	  // give them a card
+      	  module.exports.drawCard(agame.getSocketByPlayerNumber(agame.playerTurn));
 
 	},
 
@@ -269,15 +271,49 @@ module.exports = {
 	    // refresh mana
 	    opponent.mana = opponent.maxmana;
 
-	    // draw a card for the new player
-	    // NYI
-
 	    // tell new player it is their turn
 	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+
+	    // draw new player a card
+	    module.exports.drawCard(helpers.getOppositePlayerSocket(socket));
 
 	    agame.updatePromptsWithDefault();
 
 	    this.activateTurnTimer(agame);
+	},
+
+	drawCard: function(socket)
+	{
+
+		var agame = helpers.getGameBySocket(socket);
+
+	    // draw a card for the new player
+	    var draw = helpers.getDeckBySocket(socket, false).pop();
+
+	    if(draw == null)
+	    {
+	    	// fatigue! do TODO: something
+	    }
+	    else if(helpers.getHandBySocket(socket, false).length == 10)
+	    {
+	    	// too many cards
+	    	helpers.getOppositePlayerSocket(socket).emit('terminal', '[[;red;black]Your opponent has too many cards! They lost...]');
+	    	
+	    	socket.emit("terminal", "[[;red;black]You have too many cards! You lost...]");
+
+	    	agame.io.to(agame.name).emit('terminal', display.printDetailedCard(draw));
+
+	    }
+	    else
+	    {
+	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent draws a card\n');
+	    	socket.emit("terminal", "You draw...");
+	    	socket.emit("terminal", display.printDetailedCard(draw));
+
+	    	helpers.getHandBySocket(socket, false).push(draw);
+	    }
+
+
 	},
 
 	activateTurnTimer: function(agame)
@@ -305,6 +341,11 @@ module.exports = {
 	    }, agame.turntimerrope * 1000);
 
 	  }, agame.turntimer * 1000);
+	},
+
+	deactivateTurnTimer: function(game)
+	{
+		clearTimeout(agame.turntimercallback);
 	}
 
 }
