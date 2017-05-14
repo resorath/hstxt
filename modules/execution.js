@@ -289,17 +289,26 @@ module.exports = {
 
 	    // draw a card for the new player
 	    var draw = helpers.getDeckBySocket(socket, false).pop();
+	    var player = helpers.getPlayerBySocket(socket, false);
 
 	    if(draw == null)
 	    {
-	    	// fatigue! do TODO: something
+	    	// fatigue!
+	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent draws a card\n');
+	    	socket.emit("terminal", "You draw...");
+
+	    	player.fatigue++;
+
+	    	agame.io.to(agame.name).emit('terminal', '[[b;red;black]Fatigue]\nOut of cards! Take '+ player.fatigue +' damage.');
+	    	
+	    	module.exports.damagePlayer(agame, player, player.fatigue);
 	    }
 	    else if(helpers.getHandBySocket(socket, false).length == 10)
 	    {
 	    	// too many cards
-	    	helpers.getOppositePlayerSocket(socket).emit('terminal', '[[;red;black]Your opponent has too many cards! They lost...]');
+	    	helpers.getOppositePlayerSocket(socket).emit('terminal', '[[;red;black]Your opponent has too many cards in their hand! They lost...]');
 	    	
-	    	socket.emit("terminal", "[[;red;black]You have too many cards! You lost...]");
+	    	socket.emit("terminal", "[[;red;black]You have too many cards in your hand! You lost...]");
 
 	    	agame.io.to(agame.name).emit('terminal', display.printDetailedCard(draw));
 
@@ -313,6 +322,24 @@ module.exports = {
 	    	helpers.getHandBySocket(socket, false).push(draw);
 	    }
 
+
+	},
+
+	damagePlayer: function(socket, amount)
+	{
+		var player = helpers.getPlayerBySocket(socket, false);
+		var agame = helpers.getGameBySocket(socket);
+
+		player.health -= amount;
+
+		// check if game is over
+		if(player.health <= 0)
+		{
+			socket.emit('terminal', 'Game over, you lose!\n');
+			helpers.getOppositePlayerSocket(socket).emit('terminal', 'Game over, you win!\n');
+
+			module.exports.quitGame(agame);
+		}
 
 	},
 
@@ -345,7 +372,20 @@ module.exports = {
 
 	deactivateTurnTimer: function(game)
 	{
-		clearTimeout(agame.turntimercallback);
+		if(game.turntimercallback != null)
+			clearTimeout(agame.turntimercallback);
+	},
+
+	quitGame: function(game)
+	{
+      module.exports.deactivateTurnTimer(game);
+
+      game.io.to(game.name).emit("control", {command: "endgame"} );
+
+      util.filterInPlace(helpers.games, function (el) {
+        return el.name != game.name;
+      });
+
 	}
 
 }

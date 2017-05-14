@@ -45,6 +45,7 @@ module.exports = {
         attack: 0,
         mana: 0,
         maxmana: 0,
+        fatigue: 0,
         status: []
       },
       p2: {
@@ -54,6 +55,7 @@ module.exports = {
         attack: 0,
         mana: 0,
         maxmana: 0,
+        fatigue: 0,
         status: []
       }
     }
@@ -81,14 +83,6 @@ module.exports = {
 
     // timeout function holder
     this.turntimercallback = null;
-
-    // do cleanup logic on game
-    this.quit = function()
-    {
-      if(this.turntimercallback != null)
-        clearTimeout(this.turntimercallback);
-
-    }
 
     this.getHand = function (socket, getOppositeHand)
     {

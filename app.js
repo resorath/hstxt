@@ -85,11 +85,11 @@ io.on('connection', function(socket){
         if(agame.p1socket == null && agame.p2socket == null)
         {
           console.log("Removing game " + agame.name + " because it is out of players");
-          agame.quit();
+          execution.quitGame(agame);
 
-          util.filterInPlace(globals.games, function (el) {
+          /*util.filterInPlace(globals.games, function (el) {
             return el.name != agame.name;
-          });
+          });*/
 
         }
 
@@ -97,13 +97,14 @@ io.on('connection', function(socket){
         if(agame.round == 0)
         {
           console.log("Removing game " + agame.name + " because a player left before it started");
-          agame.quit();
           io.to(agame.name).emit("terminal", "The game cannot continue because your opponent left before the game started! Retry making the game...\n");
-          io.to(agame.name).emit("control", {command: "endgame"} );
+
+          execution.quitGame(agame);
+          /*io.to(agame.name).emit("control", {command: "endgame"} );
 
           util.filterInPlace(globals.games, function (el) {
             return el.name != agame.name;
-          });
+          });*/
 
         }
       }
