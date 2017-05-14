@@ -23,6 +23,8 @@
     <script src="/socket.io/socket.io.js"></script>
 	<script>
 
+    var clientVersion = "0.1 dev";
+
 	var socket = io();
 
 	var player = 0;
@@ -40,24 +42,31 @@
     	socket.emit('command', command);
     }, 
     {
-        greetings: 'Welcome to TextStone',
+        greetings: 'Welcome to TextStone\nClient version ' + clientVersion + '\n',
         name: 'hstxt',
         height: 500,
-        prompt: 'Loading...> '
+        prompt: 'Connecting...> '
     });
 
     socket.on('connect', function() {
         player = 0;
 
-    	term.echo("Connected to server\n");
-    	socket.emit('control', 'ready');
+    	term.echo("Connected to server");
 
-        term.echo("To start a new game, enter a unique game name.");
-        term.echo("To join a friend's game, enter their game name.");
-        term.echo("To rejoin a game you disconnected from, enter the game name you left.\n");
+        socket.emit('control', 'ready');
 
-        term.set_prompt("Game name> ");
-        term.resume();
+        var paramGame = getParameterByName("game");
+        if(paramGame != null)
+        {
+            term.pause();
+            socket.emit('join', paramGame);
+        }
+        else
+        {
+            socket.emit('control', 'showsetup');
+            term.resume();
+        }
+
     });
 
     socket.on('disconnect', function() {
@@ -132,6 +141,17 @@
         }
 
 	});
+
+    // http://stackoverflow.com/a/2880929/489405
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
 
 	</script>
   </body>

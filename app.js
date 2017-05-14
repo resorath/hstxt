@@ -9,6 +9,8 @@ var cfunc = require('./modules/commands');
 var display = require('./modules/display');
 var util = require('./modules/util');
 
+var serverVersion = "0.1 dev"
+
 
 
 app.get('/', function(req, res){
@@ -260,8 +262,17 @@ io.on('connection', function(socket){
 
   socket.on('control', function(msg) {
 
-    //if(msg == "ready")
-    //  socket.emit('control', { command: "assignplayer", player: socket.player });
+    if(msg == "ready")
+    {
+      socket.emit('terminal', 'Server version ' + serverVersion + '\n');
+    }
+
+    if(msg == "showsetup")
+    {
+      socket.emit('terminal', 'To start a new game, enter a unique game name.\nTo join a friend\'s game, enter their game name.\nTo rejoin a game you disconnected from, enter the game name you left.\n');
+    
+      socket.emit('control', { command: 'prompt', prompt: 'Game name> '})
+    }
 
 
   });
