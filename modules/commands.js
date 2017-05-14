@@ -176,11 +176,10 @@ module.exports = {
 
       // announce play to opposite
       helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
-      helpers.getOppositePlayerSocket(socket).emit('terminal', display.printDetailedCard(cardinhand));
-
       // announce play to player
       socket.emit('terminal', 'Playing...');
-      socket.emit('terminal', display.printDetailedCard(cardinhand));
+
+      game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
 
       // deduct mana
       player.mana -= cardinhand.cost;
@@ -192,6 +191,10 @@ module.exports = {
       {
         // put card on board
         helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardinhand);
+
+        // do sound effect
+        if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
+          game.io.to(game.name).emit('terminal', "[[;#FFBDC0;black]" + cardtoplay["name"] + ': "' + cardtoplay["quote"]["play"] + '"]\n');
 
       }
 
@@ -281,7 +284,7 @@ module.exports = {
       if(subcommand == "mana")
       {
         player.mana = parts[1];
-        socket.emit('terminal', '[[i;pink;black](debug) set mana to ' + parts[1] + "]");
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) set mana to ' + parts[1] + "]");
         game.defaultPrompt(socket);
       }
 
@@ -290,23 +293,23 @@ module.exports = {
         var card = helpers.getCardById(parts[1]);
         if(card != null)
         {
-          socket.emit('terminal', '[[i;pink;black](debug) card '+ card["name"] +' added to hand]');
+          socket.emit('terminal', '[[i;#D2B4DE;](debug) card '+ card["name"] +' added to hand]');
           helpers.getHandBySocket(socket).push(card);
           socket.emit('terminal', display.printDetailedCard(card));
         }
         else
-          socket.emit('terminal', '[[i;pink;black](debug) card id not found]');
+          socket.emit('terminal', '[[i;#D2B4DE;](debug) card id not found]');
       }
 
       if(subcommand == "stoptimer")
       {
-        socket.emit('terminal', '[[i;pink;black](debug) Game timer stopped]');
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Game timer stopped]');
         execution.deactivateTurnTimer(game);
       }
 
       if(subcommand == "starttimer")
       {
-        socket.emit('terminal', '[[i;pink;black](debug) Game timer started]');
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Game timer started]');
         execution.activateTurnTimer(game);
       }
 
