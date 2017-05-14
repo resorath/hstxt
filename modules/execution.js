@@ -57,10 +57,10 @@ module.exports = {
 	  var firstPlayer = game.getSocketByPlayerNumber(game.playerTurn);
 	  var secondPlayer = game.getSocketByPlayerNumber(game.playerTurnOpposite());
 
-	  game.io.to(game.name).emit('terminal', '\nFlipping the coin...\n');
+	  game.io.to(game.name).emit('terminal', '\n[[b;gold;black]Flipping the coin...]\n');
 
-	  firstPlayer.emit('terminal', 'You go first!');
-	  secondPlayer.emit('terminal', 'You get an extra card!');
+	  firstPlayer.emit('terminal', 'You go first!\n');
+	  secondPlayer.emit('terminal', 'You get an extra card!\n');
 
 	  game.io.to(game.name).emit('control', { command: "prompt", prompt: "Mulligan> " });
 
