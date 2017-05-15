@@ -106,7 +106,9 @@ module.exports = {
 	      ( card["type"] == "WEAPON" || card["type"] == "SPELL" || card["type"] == "MINION" ) )
 	    {
 	      //console.log("Found card: " + card["name"] + " id: " + card["id"]);
-	      returnVal = card;
+
+	      // create a new card from the database
+	      returnVal = JSON.parse(JSON.stringify(card));
 	      return;
 	    }
 	  })
@@ -125,7 +127,8 @@ module.exports = {
 	  {
 	    if(card["id"] && card["id"].toUpperCase() === id.toUpperCase())
 	    {
-	      returnVal = card;
+	      // create a new card from the database
+	      returnVal = JSON.parse(JSON.stringify(card));
 	      return;
 	    }
 	  })
