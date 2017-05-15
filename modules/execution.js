@@ -299,7 +299,7 @@ module.exports = {
 
 	    	player.fatigue++;
 
-	    	agame.io.to(agame.name).emit('terminal', '[[b;red;black]Fatigue]\nOut of cards! Take '+ player.fatigue +' damage.');
+	    	agame.io.to(agame.name).emit('terminal', '\n[[b;red;black]Fatigue]\nOut of cards! Take '+ player.fatigue +' damage.\n');
 	    	
 	    	module.exports.damagePlayer(agame, player, player.fatigue);
 	    }
@@ -325,16 +325,17 @@ module.exports = {
 
 	},
 
-	damagePlayer: function(socket, amount)
+	damagePlayer: function(agame, player, amount)
 	{
-		var player = helpers.getPlayerBySocket(socket, false);
-		var agame = helpers.getGameBySocket(socket);
-
 		player.health -= amount;
 
+		agame.updatePromptsWithDefault();
+
 		// check if game is over
+		// todo: refactor this so we don't need to retrieve the socket
 		if(player.health <= 0)
 		{
+			var socket = agame.getSocketByPlayerNumber(player.number);
 			socket.emit('terminal', 'Game over, you lose!\n');
 			helpers.getOppositePlayerSocket(socket).emit('terminal', 'Game over, you win!\n');
 

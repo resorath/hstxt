@@ -313,6 +313,12 @@ module.exports = {
         execution.activateTurnTimer(game);
       }
 
+      if(subcommand == "draw")
+      {
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Drawing card]');
+        execution.drawCard(socket);
+      }
+
 
   }
 
