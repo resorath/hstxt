@@ -3,8 +3,17 @@ module.exports = {
 	// nicely print a card to a player
 	printCard: function(card)
 	{
+	  var returnval = "";
+
 	  if(card["type"] == "MINION")
-	    return card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";
+	  {	  	
+	    returnval += card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";
+
+	    if(typeof card["canattack"] != 'undefined' && card["canattack"])
+	  		returnval += " [[;lime;](READY)]"; 
+
+	  	return returnval;
+	  }
 	  if(card["type"] == "SPELL")
 	    return card["name"] + " (" + card["cost"] + ")";
 	},
@@ -13,7 +22,9 @@ module.exports = {
 	{
 	  if(card["type"] == "MINION")
 	  {
-	    var returnval = "[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
+	  	var returnval = "";
+
+	    returnval += "[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
 
 	    if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
 	   		returnval += card["rarity"] + " ";

@@ -84,6 +84,7 @@ module.exports = {
   board: function(socket, parts)
   {
       var response = "\nYour opponent has " + helpers.getHandBySocket(socket, true).length + " cards\n" +
+      "Opponent health: " + helpers.getPlayerBySocket(socket, true).health + " hp\n" + 
       "\nOpponent's side:\n\n";
 
       var i = 1;
@@ -189,12 +190,18 @@ module.exports = {
       // if a minion, place on board
       if(cardtoplay.type == "MINION")
       {
+        // is minion charge?
+        if(typeof cardinhand["mechanics"] != 'undefined' && cardinhand["mechanics"].indexOf("CHARGE") > -1)
+          cardinhand["canattack"] = true;
+        else
+          cardinhand["canattack"] = false;
+
         // put card on board
         helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardinhand);
 
         // do sound effect
         if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
-          game.io.to(game.name).emit('terminal', "[[;#FFBDC0;black]" + cardtoplay["name"] + ': "' + cardtoplay["quote"]["play"] + '"]\n');
+          game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
 
       }
 
@@ -223,14 +230,108 @@ module.exports = {
   attack: function(socket, parts)
   {
     var synonymself = [ "self", "face", "hero", "champion", "summoner" ];
+    // todo: logic for player attacking with weapon
+
     var synonymopponent = [ "enemy", "opponent", "face", "hero", "champion", "summoner" ]
 
-    var icard = parts[0];
-    var isource = parts[1];
-    var idestination = parts[2]
+    var isource = parts[0];
+    var idestination = parts[1]
 
-    var targetEnemyHero, targetSelfHero = false;
+    var targetEnemyHero = false;
 
+    var sourceCard = null;
+    var destinationCard = null;
+
+    var agame = helpers.getGameBySocket(socket);
+
+    if(isource == null || idestination == null)
+    {
+      socket.emit('terminal', 'attack <source> <target>\nTry: help attack\n');
+      return;
+    }
+
+    if(synonymopponent.indexOf(idestination.toLowerCase()) > -1)
+      targetEnemyHero = true;
+    else
+      destinationCard = helpers.boardIndexToCard(idestination, socket);
+
+    var sourceCard = helpers.boardIndexToCard(isource, socket);
+
+    // bad inputs
+    if(sourceCard == null || (destinationCard == null && !targetEnemyHero))
+    {
+      socket.emit('terminal', 'attack <source> <target>\nTry: help attack\n');
+      return;
+    }
+
+    // can the card attack?
+    if( (typeof sourceCard["canattack"] != 'undefined' && !sourceCard["canattack"]) || typeof sourceCard["canattack"] == 'undefined')
+    {
+      socket.emit('terminal', 'Give that minion a turn to get ready!\n');
+      return;
+    }
+
+    // does the card have at least 1 attack?
+    if(sourceCard["attack"] <= 0)
+    {
+      socket.emit('terminal', 'Minions without attack damage, can\'t attack!\n');
+      return;
+    }
+
+
+    var opponentBoard = helpers.getBoardBySocket(socket, true);
+
+    // is there a taunt minion in the way?
+    // test if minion is taunt, then it doesn't matter, can always be attacked
+    if( !targetEnemyHero && (typeof destinationCard['mechanics'] != 'undefined' && destinationCard['mechanics'].indexOf('TAUNT') > -1))
+    {
+      // todo target is valid, maybe nothing right now?
+    }
+    else
+    {
+      for(opcardindex in opponentBoard)
+      {
+        var opcard = opponentBoard[opcardindex];
+
+        if(typeof opcard['mechanics'] != 'undefined' && opcard['mechanics'].indexOf('TAUNT') > -1)
+        {
+          socket.emit('terminal', 'There is a taunt minion in the way!\n');
+          return;
+        }
+      }
+
+    }
+
+    // is the target stealth?
+    if(!targetEnemyHero)
+    {
+       if(typeof destinationCard['mechanics'] != 'undefined' && destinationCard['mechanics'].indexOf('STEALTH') > -1)
+       {
+          socket.emit('terminal', 'That minion has stealth and can\'t be directly attacked!\n');
+          return;
+       }
+    }
+
+    // do the actual attack
+    console.log(agame.name + " attacking " + parts[0] + " to " + parts[1]);
+
+    // unready the card
+    sourceCard["canattack"] = false;
+
+    if(targetEnemyHero)
+    {
+      var enemyplayer = helpers.getPlayerBySocket(socket, true);
+
+      agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage");
+      execution.damagePlayer(agame, enemyplayer, sourceCard['attack']);
+    }
+    else
+    {
+      agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks " + destinationCard['name'] + " for " + sourceCard['attack'] + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
+
+      execution.damageCard(agame, destinationCard, sourceCard['attack']);
+      execution.damageCard(agame, sourceCard, destinationCard['attack']);
+    }
 
   },
 
@@ -246,9 +347,6 @@ module.exports = {
       returnval += 'play (card in hand)\n';
       returnval += 'attack (your card on board) (enemy card on board)\n';
 
-
-
-
       socket.emit('terminal', returnval);
 
     }
@@ -263,6 +361,7 @@ module.exports = {
 
         default:
           socket.emit('terminal', parts[0] + ' is not a command, try \'help\'\n');
+          socket.emit('terminal', '(help is not fully implemented)\n');
           break;
       }
 

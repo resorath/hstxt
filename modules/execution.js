@@ -285,6 +285,21 @@ module.exports = {
 	    // draw new player a card
 	    module.exports.drawCard(helpers.getOppositePlayerSocket(socket));
 
+	    // set all minions (that can attack) to ready
+	    var currentBoard = helpers.getBoardBySocket(socket, true);
+	    for(cardonboardindex in currentBoard)
+	    {
+	    	var cardonboard = currentBoard[cardonboardindex];
+
+	    	if(typeof cardonboard['mechanics'] != 'undefined' && cardonboard['mechanics'].indexOf('CANT_ATTACK') > -1)
+	    		continue;
+
+	    	if(cardonboard['attack'] <= 0)
+	    		continue;
+
+	    	cardonboard.canattack = true;
+	    }
+
 	    agame.updatePromptsWithDefault();
 
 	    this.activateTurnTimer(agame);
@@ -350,6 +365,32 @@ module.exports = {
 			module.exports.quitGame(agame);
 		}
 
+	},
+
+	damageCard: function(agame, card, amount)
+	{
+		card.health -= amount;
+
+		if(card.health <= 0)
+		{
+			// todo: trigger deathrattle!
+
+			agame.io.to(agame.name).emit('terminal', card['name'] + " is destroyed!\n");
+
+			// who owned this card?
+			var p1board = agame.board.p1;
+			var p2board = agame.board.p2;
+
+			var index = p1board.indexOf(card);
+
+			if(index > -1)
+				p1board.splice(index, 1);
+			else
+			{
+				index = p2board.indexOf(card);
+				p2board.splice(index, 1);
+			}
+		}
 	},
 
 	activateTurnTimer: function(agame)
