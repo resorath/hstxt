@@ -240,6 +240,14 @@ module.exports = {
 	{
 	    var agame = helpers.getGameBySocket(socket);
 
+	    // game ended?
+	    if(agame == null)
+	    {
+	    	clearTimeout(agame.turntimercallback);
+	    	console.log("Ending unknown game");
+	    	return;
+	    }
+
 	    if(!agame.isPlayerTurn(socket))
 	    {
 	      socket.emit("terminal", "It is not your turn\n");
@@ -294,7 +302,7 @@ module.exports = {
 	    if(draw == null)
 	    {
 	    	// fatigue!
-	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent is out of cards and draws...\n');
+	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent is out of cards and draws...');
 	    	socket.emit("terminal", "You draw...");
 
 	    	player.fatigue++;

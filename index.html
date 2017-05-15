@@ -86,12 +86,26 @@
     function runDebugBot(msg)
     {
         if(msg.includes("Pick a deck:"))
+        {
+            debugBotMessage();
             socket.emit('command', '1');
+        }
 
         if(msg.includes('Pick cards to mulligan'))
+        {
+            debugBotMessage();
             socket.emit('command', 'done');
+        }
 
 
+    }
+
+    function debugBotMessage(msg)
+    {
+        if(msg == null)
+            msg = "debug bot is playing the game for you... one moment please."
+
+        term.echo("\n[[;white;#2067B2]&lt;|º감º|&gt; *beep boop* "+ msg +"]");
     }
 
 	socket.on('control', function(msg) {
