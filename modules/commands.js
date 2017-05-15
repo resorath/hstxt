@@ -319,6 +319,13 @@ module.exports = {
         execution.drawCard(socket);
       }
 
+      if(subcommand == "fatigue")
+      {
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Dumping deck...]');
+        var deck = helpers.getDeckBySocket(socket, false);
+        deck.splice(0, deck.length);
+      }
+
 
   }
 

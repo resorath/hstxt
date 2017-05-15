@@ -294,12 +294,12 @@ module.exports = {
 	    if(draw == null)
 	    {
 	    	// fatigue!
-	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent draws a card\n');
+	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent is out of cards and draws...\n');
 	    	socket.emit("terminal", "You draw...");
 
 	    	player.fatigue++;
 
-	    	agame.io.to(agame.name).emit('terminal', '\n[[b;red;black]Fatigue]\nOut of cards! Take '+ player.fatigue +' damage.\n');
+	    	agame.io.to(agame.name).emit('terminal', '\n[[b;red;]Fatigue]\n\n[[;darkred;]   .-.\n  (0.0)\n\'=.|m|.=\'\n.=\'`"``=.]\n\nOut of cards! Take '+ player.fatigue +' damage.\n');
 	    	
 	    	module.exports.damagePlayer(agame, player, player.fatigue);
 	    }
