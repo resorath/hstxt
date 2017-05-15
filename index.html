@@ -29,6 +29,8 @@
 
 	var player = 0;
 
+    var debug = (getParameterByName("debug") != null);
+
     var term = $('body').terminal(function(command) {
 
         // check if player number assigned, if not, send a game name instead
@@ -76,7 +78,21 @@
 
     socket.on('terminal', function(msg) {
 		term.echo(msg);
+
+        if(debug)
+            runDebugBot(msg);
 	});
+
+    function runDebugBot(msg)
+    {
+        if(msg.includes("Pick a deck:"))
+            socket.emit('command', '1');
+
+        if(msg.includes('Pick cards to mulligan'))
+            socket.emit('command', 'done');
+
+
+    }
 
 	socket.on('control', function(msg) {
 		console.log(msg);

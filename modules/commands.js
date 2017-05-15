@@ -229,7 +229,7 @@ module.exports = {
     var isource = parts[1];
     var idestination = parts[2]
 
-
+    var targetEnemyHero, targetSelfHero = false;
 
 
   },
