@@ -15,10 +15,15 @@ module.exports = {
 	},
 
 	// Zero-based random number
-	// e.g. max = 2 is 1 in 2 change when checking 0. 
+	// e.g. max = 2 is 1 in 2 chance when checking 0. 
 	Random: function(max)
 	{
 	  return Math.floor(Math.random() * max);
+	},
+
+	// min - max inclusive
+	RandomInt: function (min, max) {
+    	return Math.floor(Math.random() * (max - min + 1)) + min;
 	},
 
 	filterInPlace: function(a, condition) {
@@ -33,6 +38,14 @@ module.exports = {
 
 	  a.length = j;
 	  return a;
+	},
+
+	doMultipleThingsSlowly: function(callbackThingToDo, delay, amount) {
+
+		var interval = setInterval(callbackThingToDo, delay);
+
+		setTimeout(function() { clearInterval(interval); }, ((delay + 50) * amount ));
+
 	}
 
 }

@@ -172,18 +172,8 @@ module.exports = {
 
       console.log(socket.id + " playing index :" + indexinhand);
 
-      // remove card from hand
-      var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
-
-      // announce play to opposite
-      helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
-      // announce play to player
-      socket.emit('terminal', 'Playing...');
-
-      game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
-
-      // deduct mana
-      player.mana -= cardinhand.cost;
+      // record if successful play
+      var cardplayed = true;
 
       // todo: do game logic
 
@@ -191,13 +181,13 @@ module.exports = {
       if(cardtoplay.type == "MINION")
       {
         // is minion charge?
-        if(typeof cardinhand["mechanics"] != 'undefined' && cardinhand["mechanics"].indexOf("CHARGE") > -1)
-          cardinhand["canattack"] = true;
+        if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
+          cardtoplay["canattack"] = true;
         else
-          cardinhand["canattack"] = false;
+          cardtoplay["canattack"] = false;
 
         // put card on board
-        helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardinhand);
+        helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardtoplay);
 
         // do sound effect
         if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
@@ -215,11 +205,27 @@ module.exports = {
         // equip weapon
       }
 
-      // do card actions
+      // do card actions (either spell cast or battlecry)
       if(typeof ca[cardtoplay.id] === 'function')
-        ca[cardtoplay.id](socket, parts);
+        cardplayed = ca[cardtoplay.id](socket, parts);
       else
         console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
+      if(cardplayed)
+      {
+        // remove card from hand
+        var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
+
+        // announce play to opposite
+        helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
+        // announce play to player
+        socket.emit('terminal', 'Playing...');
+
+        game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
+
+        // deduct mana
+        player.mana -= cardinhand.cost;
+      }
 
       game.defaultPrompt(socket);
 
@@ -283,7 +289,7 @@ module.exports = {
 
     // is there a taunt minion in the way?
     // test if minion is taunt, then it doesn't matter, can always be attacked
-    if( !targetEnemyHero && (typeof destinationCard['mechanics'] != 'undefined' && destinationCard['mechanics'].indexOf('TAUNT') > -1))
+    if( !targetEnemyHero && helpers.cardHasMechanic(destinationCard, 'TAUNT'))
     {
       // todo target is valid, maybe nothing right now?
     }
@@ -305,7 +311,7 @@ module.exports = {
     // is the target stealth?
     if(!targetEnemyHero)
     {
-       if(typeof destinationCard['mechanics'] != 'undefined' && destinationCard['mechanics'].indexOf('STEALTH') > -1)
+       if(helpers.cardHasMechanic(destinationCard, 'STEALTH'))
        {
           socket.emit('terminal', 'That minion has stealth and can\'t be directly attacked!\n');
           return;

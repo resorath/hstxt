@@ -139,6 +139,17 @@ module.exports = {
 	  return returnVal;
 	},
 
+	cardHasMechanic: function(card, mechanic)
+	{
+		if(card == null || typeof card == 'undefined')
+			return false;
+
+		if(typeof card['mechanics'] == 'undefined')
+			return false;
+
+		return (card['mechanics'].indexOf(mechanic) > -1);
+	},
+
 	getOppositePlayerSocket: function(socket)
 	{
 	  // find game of socket first

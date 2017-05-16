@@ -46,6 +46,8 @@ module.exports = {
         mana: 0,
         maxmana: 0,
         fatigue: 0,
+        spellpower: 0,
+        overload: 0,
         status: []
       },
       p2: {
@@ -56,6 +58,8 @@ module.exports = {
         mana: 0,
         maxmana: 0,
         fatigue: 0,
+        spellpower: 0,
+        overload: 0,
         status: []
       }
     }

@@ -1,4 +1,6 @@
 var helpers = require('./helpers');
+var util = require('./util');
+var execution = require('./execution');
 
 // card actions by internal CardID
 module.exports = {
@@ -11,8 +13,56 @@ module.exports = {
 		if(player.mana < 10)
 			player.mana++;
 
-		socket.emit('terminal', '[[;lightblue;black]You gain one mana (this turn)]\n');
+		socket.emit('terminal', '[[;lightblue;]You gain one mana (this turn)]\n');
 
+		return true;
+
+	},
+
+	// Arcane Missiles
+	EX1_277: function(socket, parts)
+	{
+		console.log("Playing arcane missiles");
+
+		var game = helpers.getGameBySocket(socket);
+		var player = helpers.getPlayerBySocket(socket, false);
+		var opponent = helpers.getPlayerBySocket(socket, true);
+		var enemyboard = helpers.getBoardBySocket(socket, true);
+
+		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+
+		util.doMultipleThingsSlowly(function() {
+
+			if(enemyboard.length == 0)
+			{
+				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
+				opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
+				
+				execution.damagePlayer(game, opponent, 1);
+				return;
+			}
+
+			var targetindex = util.RandomInt(0, enemyboard.length); // all cards + opponent
+
+			if(targetindex == enemyboard.length)
+			{
+				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
+				opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
+				execution.damagePlayer(game, opponent, 1);
+				return;
+			}
+			else
+			{
+				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to '+ enemyboard[targetindex]['name'] +'\n\n');
+				opponentsocket.emit('terminal', 'Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] +'\n\n');
+
+				execution.damageCard(game, enemyboard[targetindex], 1);
+				return;
+			}
+
+		}, 1000, 3 + player.spellpower);
+
+		return true;
 	}
 
 }
