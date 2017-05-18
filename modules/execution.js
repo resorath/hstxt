@@ -99,16 +99,44 @@ module.exports = {
 	  }
 
 	  // user entered a number to change state
-	  if(!isNaN(command))
+	  if(!isNaN(command) || command.indexOf(' ') >= 0 || command.indexOf(',') >= 0)
 	  {
-	    // convert number user entered to array index 
-	    var cardtochange = command-1;
+	  	// did the user mash together numbers?
+	  	if(command > 10 || command.indexOf(' ') >= 0 || command.indexOf(',') >= 0)
+	  	{
+	  		if(command > 10)
+	  			var numbermash = command.split('');
+	  		else if(command.indexOf(" ") >= 0)
+	  			var numbermash = command.split(' ');
+	  		else if(command.indexOf(",") >= 0)
+	  			var numbermash = command.split(',');
 
-	    if(agame.mulligan[socket.player][cardtochange] != null)
-	    {
-	      // invert "keep" state
-	      agame.mulligan[socket.player][cardtochange].keep = !agame.mulligan[socket.player][cardtochange].keep;
-	    }
+	  		for(num in numbermash)
+	  		{
+	  			// convert number user entered to array index 
+	  			var cardtochange = numbermash[num] - 1;
+
+			    if(agame.mulligan[socket.player][cardtochange] != null)
+			    {
+			      // invert "keep" state
+			      agame.mulligan[socket.player][cardtochange].keep = !agame.mulligan[socket.player][cardtochange].keep;
+			    }
+			}
+
+	  	}
+	  	else
+	  	{
+	  		// convert number user entered to array index 
+		    var cardtochange = command-1;
+
+		    if(agame.mulligan[socket.player][cardtochange] != null)
+		    {
+		      // invert "keep" state
+		      agame.mulligan[socket.player][cardtochange].keep = !agame.mulligan[socket.player][cardtochange].keep;
+	    	}
+	  	}
+
+
 	  }
 	  else if(command == "done")
 	  {
@@ -174,7 +202,7 @@ module.exports = {
 	  }
 
 	  // present the deck to the player:
-	  var mulligantoprint = "Pick cards to mulligan\nType a number and press enter to toggle if a card is kept or discarded. Type \"done\" when ready.\n";
+	  var mulligantoprint = "Pick cards to mulligan\nType a number or numbers and press enter to toggle if a card is kept or discarded. Type \"done\" when ready.\n";
 	  var i = 1;
 
 	  for(cardid in agame.mulligan[socket.player])
