@@ -41,7 +41,7 @@ module.exports = {
       p1: {
         number: 1,
         character: null,
-        health: 20,
+        health: 30,
         attack: 0,
         mana: 0,
         maxmana: 0,
@@ -53,7 +53,7 @@ module.exports = {
       p2: {
         number: 2,
         character: null,
-        health: 20,
+        health: 30,
         attack: 0,
         mana: 0,
         maxmana: 0,

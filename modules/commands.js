@@ -229,7 +229,7 @@ module.exports = {
           socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
           return;
         }
-        else
+        else if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false)
         {
           if(helpers.targetIsOpponent(target))
             targetcard = constants.opponenttarget;
