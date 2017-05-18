@@ -7,7 +7,7 @@ var constants = require('./constants');
 module.exports = {
 
 	// The Coin
-	GAME_005: function(socket, parts)
+	GAME_005: function(socket, target, parts)
 	{
 		player = helpers.getPlayerBySocket(socket, false);
 
@@ -21,7 +21,7 @@ module.exports = {
 	},
 
 	// Arcane Missiles
-	EX1_277: function(socket, parts)
+	EX1_277: function(socket, target, parts)
 	{
 		console.log("Playing arcane missiles");
 
@@ -71,8 +71,44 @@ module.exports = {
 	},
 
 	// Fireball
-	CS2_029: function(socket, parts)
+	CS2_029: function(socket, target, parts)
 	{
+		console.log("playing fireball");
+
+		var game = helpers.getGameBySocket(socket);
+
+		var player = helpers.getPlayerBySocket(socket, false);
+		var opponent = helpers.getPlayerBySocket(socket, true);
+
+		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+
+		var damage = 6 + player.spellpower;
+
+		if(target == constants.selftarget)
+		{
+			socket.emit('terminal', '[[;lightblue; Your fireball explodes violently in your hands, dealing '+ damage +' damage!]\n\n');
+			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball explodes in their hands! dealing '+ damage + 'damage]\n\n');
+		
+			execution.damagePlayer(game, player, damage);
+		}
+
+		else if(target == constants.opponenttarget)
+		{
+			socket.emit('terminal', '[[;lightblue;]Your fireball streaks across the board to your opponent, dealing '+ damage +' damage]\n\n');
+			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball hits you for '+ damage + ' damage!]\n\n');
+		
+			execution.damagePlayer(game, opponent, damage);
+		}
+
+		else
+		{
+			socket.emit('terminal', '[[;lightblue;]Your fireball collides with '+ target.name + ', dealing ' + damage +' damage]\n\n');
+			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s collides with ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
+		
+			execution.damageCard(game, target, damage);
+		}
+
+		return true;
 
 	}
 

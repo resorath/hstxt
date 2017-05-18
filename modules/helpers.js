@@ -1,3 +1,5 @@
+var constants = require('./constants');
+
 module.exports = {
 
 	games: null,
@@ -162,6 +164,16 @@ module.exports = {
 
 		if(requirement in card['playRequirements'])
 			return card['playRequirements'][requirement];
+	},
+
+	targetIsOpponent: function(target)
+	{
+		return (constants.synonymopponent.indexOf(target.toLowerCase()) > -1)
+	},
+
+	targetIsSelf: function(target)
+	{
+		return (constants.synonymself.indexOf(target.toLowerCase()) > -1)
 	},
 
 	getOppositePlayerSocket: function(socket)

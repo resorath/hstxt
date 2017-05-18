@@ -177,6 +177,9 @@ module.exports = {
       // record if successful play
       var cardplayed = true;
 
+      var targetcard = null;
+      var targetenemyhero = false;
+
       // todo: do game logic
 
       // if a minion, place on board
@@ -189,6 +192,20 @@ module.exports = {
           return;
         }
 
+        // choose target card if applicable
+        if(secondary != null)
+        {
+          if(helpers.targetIsOpponent(secondary))
+            targetcard = "OPPONENT";
+          else if(helpers.targetIsSelf(secondary))
+            targetcard = constants.selftarget;
+          else
+            targetcard = helpers.boardIndexToCard(secondary, socket);
+
+          if(target == null && !targetenemyhero)
+            socket.emit("terminal", "Invalid target");
+        }
+
 
         // is minion charge?
         if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
@@ -198,6 +215,7 @@ module.exports = {
 
         // put card on board
         helpers.getBoardBySocket(socket, false).splice(target, 0, cardtoplay);
+
 
       }
 
@@ -210,6 +228,18 @@ module.exports = {
         {
           socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
           return;
+        }
+        else
+        {
+          if(helpers.targetIsOpponent(target))
+            targetcard = constants.opponenttarget;
+          else if(helpers.targetIsSelf(target))
+            targetcard = constants.selftarget;
+          else
+            targetcard = helpers.boardIndexToCard(target, socket);
+
+          if(target == null && !targetenemyhero)
+            socket.emit("terminal", "Invalid target");
         }
       }
 
@@ -238,9 +268,10 @@ module.exports = {
         if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
           game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
 
+
         // do card actions (either spell cast or battlecry)
         if(typeof ca[cardtoplay.id] === 'function')
-          cardplayed = ca[cardtoplay.id](socket, parts);
+          cardplayed = ca[cardtoplay.id](socket, targetcard, parts);
         else
           console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
 
@@ -273,7 +304,7 @@ module.exports = {
       return;
     }
 
-    if(constants.synonymopponent.indexOf(idestination.toLowerCase()) > -1)
+    if(helpers.targetIsOpponent(idestination))
       targetEnemyHero = true;
     else
       destinationCard = helpers.boardIndexToCard(idestination, socket);
