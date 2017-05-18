@@ -71,7 +71,10 @@ module.exports = {
       var response = "\n";
 
       helpers.getHandBySocket(socket, false).forEach(function(card) {
-        response += "h" + i + ": " + display.printCard(card) + "\n";
+        if(parts[0] != null && parts[0].indexOf("detail") === 0)
+          response += "h" + i + ": " + display.printDetailedCard(card) + "\n";
+        else
+          response += "h" + i + ": " + display.printCard(card) + "\n";
         i++;
       });  
 
@@ -371,6 +374,11 @@ module.exports = {
 
     // unready the card
     sourceCard["canattack"] = false;
+
+    // do sound effect
+    if(typeof sourceCard["quote"] != 'undefined' && typeof sourceCard["quote"]["attack"] != 'undefined')
+      socket.emit('terminal', "[[;#FFBDC0;]&lt;" + sourceCard["name"] + '&gt; ' + sourceCard["quote"]["attack"] + ']\n');
+
 
     if(targetEnemyHero)
     {

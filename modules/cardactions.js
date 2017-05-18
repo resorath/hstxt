@@ -32,16 +32,16 @@ module.exports = {
 
 		var opponentsocket = helpers.getOppositePlayerSocket(socket);
 
-		socket.emit('terminal', '[[;lightblue;] Your fingers glow a soft blue...\n\n');
-		opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s fingers glow a soft blue...\n\n');
+		socket.emit('terminal', '[[;lightblue;]Your fingers glow a soft blue...\n\n');
+		opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fingers glow a soft blue...\n\n');
 		
 
 		util.doMultipleThingsSlowly(function() {
 
 			if(enemyboard.length == 0)
 			{
-				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to your opponent\'s hero\n');
-				opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s arcane missiles deal 1 damage to your hero\n');
+				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
+				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
 				
 				execution.damagePlayer(game, opponent, 1);
 				return;
@@ -51,15 +51,15 @@ module.exports = {
 
 			if(targetindex == enemyboard.length)
 			{
-				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to your opponent\'s hero\n');
-				opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s arcane missiles deal 1 damage to your hero\n');
+				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
+				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
 				execution.damagePlayer(game, opponent, 1);
 				return;
 			}
 			else
 			{
-				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to '+ enemyboard[targetindex]['name'] +'\n');
-				opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] + ']\n');
+				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to '+ enemyboard[targetindex]['name'] +'\n\n');
+				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] + ']\n\n');
 
 				execution.damageCard(game, enemyboard[targetindex], 1);
 				return;
@@ -181,6 +181,18 @@ module.exports = {
 			execution.damageCard(game, card, damage);
 		}
 
+	},
+
+	// Novice Engineer
+	EX1_015: function(socket, target, parts)
+	{
+		execution.drawCard(socket);
 	}
 
 }
+
+
+
+
+
+

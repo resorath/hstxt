@@ -265,6 +265,10 @@ io.on('connection', function(socket){
     if(msg == "ready")
     {
       socket.emit('terminal', 'Server version ' + serverVersion + '\n');
+
+      // http://us.blizzard.com/en-us/company/about/legal-faq.html
+      // http://us.blizzard.com/en-us/company/about/copyrightnotices.html
+      socket.emit('terminal', 'TextStone uses characters and game concepts from HearthStone: Heroes of Warcraft by Blizzard Entertainment, but is otherwise unaffiliated to Blizzard Entertainment.\n&copy;2014 Blizzard Entertainment, Inc. All rights reserved. Heroes of Warcraft is a trademark, and Hearthstone is a registered trademark of Blizzard Entertainment, Inc. in the U.S. and/or other countries.\n');
     }
 
     if(msg == "showsetup")
