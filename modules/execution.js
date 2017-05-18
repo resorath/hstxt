@@ -354,7 +354,7 @@ module.exports = {
 	    	
 	    	module.exports.damagePlayer(agame, player, player.fatigue);
 	    }
-	    else if(helpers.getHandBySocket(socket, false).length == 10)
+	    else if(helpers.getHandBySocket(socket, false).length >= 10)
 	    {
 	    	// too many cards
 	    	helpers.getOppositePlayerSocket(socket).emit('terminal', '[[;red;black]Your opponent has too many cards in their hand! They lost...]');

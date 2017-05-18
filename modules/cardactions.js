@@ -176,11 +176,22 @@ module.exports = {
 			var card = enemyboard[cardid];
 
 			socket.emit('terminal', '[[;lightblue;]Your arcane explosion deals '+damage+' to '+card.name+']\n');
-			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\' arcane explosion deals '+damage+' to '+card.name+']\n');
+			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane explosion deals '+damage+' to '+card.name+']\n');
 
 			execution.damageCard(game, card, damage);
 		}
 
+	},
+
+	// Arcane intellect
+	CS2_023: function(socket, target, parts)
+	{
+
+		util.doMultipleThingsSlowly(function() {
+
+			execution.drawCard(socket);
+
+		}, 1000, 3);
 	},
 
 	// Novice Engineer

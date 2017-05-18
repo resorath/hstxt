@@ -209,6 +209,15 @@ module.exports = {
             socket.emit("terminal", "Invalid target");
         }
 
+        var board = helpers.getBoardBySocket(socket, false);
+
+        // is there enough room on the board?
+        if(board.length >= 7)
+        {
+          socket.emit("terminal", "There is not enough room on the board!\n");
+          return;
+        }
+
 
         // is minion charge?
         if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
@@ -217,7 +226,7 @@ module.exports = {
           cardtoplay["canattack"] = false;
 
         // put card on board
-        helpers.getBoardBySocket(socket, false).splice(target, 0, cardtoplay);
+        board.splice(target, 0, cardtoplay);
 
 
       }
