@@ -139,6 +139,7 @@ module.exports = {
 	  return returnVal;
 	},
 
+	// true false if card has specified mechanic
 	cardHasMechanic: function(card, mechanic)
 	{
 		if(card == null || typeof card == 'undefined')
@@ -148,6 +149,19 @@ module.exports = {
 			return false;
 
 		return (card['mechanics'].indexOf(mechanic) > -1);
+	},
+
+	// FALSE or number if card has specificed play requirement
+	cardHasPlayRequirement: function(card, requirement)
+	{
+		if(card == null || typeof card == 'undefined')
+			return false;
+
+		if(typeof card['playRequirements'] == 'undefined')
+			return false;
+
+		if(requirement in card['playRequirements'])
+			return card['playRequirements'][requirement];
 	},
 
 	getOppositePlayerSocket: function(socket)

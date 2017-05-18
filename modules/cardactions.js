@@ -1,6 +1,7 @@
 var helpers = require('./helpers');
 var util = require('./util');
 var execution = require('./execution');
+var constants = require('./constants');
 
 // card actions by internal CardID
 module.exports = {
@@ -31,6 +32,10 @@ module.exports = {
 
 		var opponentsocket = helpers.getOppositePlayerSocket(socket);
 
+		socket.emit('terminal', '[[;lightblue;] Your fingers glow a soft blue...\n\n');
+		opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s fingers glow a soft blue...\n\n');
+		
+
 		util.doMultipleThingsSlowly(function() {
 
 			if(enemyboard.length == 0)
@@ -54,15 +59,21 @@ module.exports = {
 			else
 			{
 				socket.emit('terminal', '[[;lightblue;] Your arcane missiles deal 1 damage to '+ enemyboard[targetindex]['name'] +'\n\n');
-				opponentsocket.emit('terminal', 'Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] +'\n\n');
+				opponentsocket.emit('terminal', '[[;lightblue;] Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] + ']\n\n');
 
 				execution.damageCard(game, enemyboard[targetindex], 1);
 				return;
 			}
 
-		}, 1000, 3 + player.spellpower);
+		}, 500, 3 + player.spellpower);
 
 		return true;
+	},
+
+	// Fireball
+	CS2_029: function(socket, parts)
+	{
+
 	}
 
 }

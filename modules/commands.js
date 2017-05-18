@@ -3,6 +3,7 @@ var execution = require('./execution');
 var display = require('./display');
 var util = require('./util');
 var ca = require('./cardactions')
+var constants = require('./constants');
 
 module.exports = {
 
@@ -127,7 +128,8 @@ module.exports = {
       }
 
       var handtarget = parts[0];
-      var boardtargetafter = parts[1];
+      var target = parts[1];
+      var secondary = parts[2];
 
       if(handtarget == null)
       {
@@ -146,10 +148,10 @@ module.exports = {
       if(cardtoplay.type == "MINION")
       {
         // board target must exist and be between 0 and max friendly board count (inclusive)
-        if(boardtargetafter == null 
-          && !isNaN(boardtargetafter) 
-          && boardtargetafter > -1 
-          && boardtargetafter <= helpers.getBoardBySocket(socket, false).length)
+        if(target == null 
+          && !isNaN(target) 
+          && target > -1 
+          && target <= helpers.getBoardBySocket(socket, false).length)
         {
           socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
           return;
@@ -180,6 +182,14 @@ module.exports = {
       // if a minion, place on board
       if(cardtoplay.type == "MINION")
       {
+        // check if minion needs a target
+        if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && target == null && secondary == null)
+        {
+          socket.emit("terminal", "This card needs a position and target to play!\nplay [position] [target]\n");
+          return;
+        }
+
+
         // is minion charge?
         if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
           cardtoplay["canattack"] = true;
@@ -187,17 +197,20 @@ module.exports = {
           cardtoplay["canattack"] = false;
 
         // put card on board
-        helpers.getBoardBySocket(socket, false).splice(boardtargetafter, 0, cardtoplay);
-
-        // do sound effect
-        if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
-          game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+        helpers.getBoardBySocket(socket, false).splice(target, 0, cardtoplay);
 
       }
 
       if(cardtoplay.type == "SPELL")
       {
         // cast spell
+
+        // check if spell needs a target
+        if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && target == null)
+        {
+          socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
+          return;
+        }
       }
 
       if(cardtoplay.type == "WEAPON");
@@ -205,11 +218,6 @@ module.exports = {
         // equip weapon
       }
 
-      // do card actions (either spell cast or battlecry)
-      if(typeof ca[cardtoplay.id] === 'function')
-        cardplayed = ca[cardtoplay.id](socket, parts);
-      else
-        console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
 
       if(cardplayed)
       {
@@ -225,6 +233,18 @@ module.exports = {
 
         // deduct mana
         player.mana -= cardinhand.cost;
+
+        // do sound effect
+        if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
+          game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+
+        // do card actions (either spell cast or battlecry)
+        if(typeof ca[cardtoplay.id] === 'function')
+          cardplayed = ca[cardtoplay.id](socket, parts);
+        else
+          console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
+
       }
 
       game.defaultPrompt(socket);
@@ -235,10 +255,7 @@ module.exports = {
   // play source destination
   attack: function(socket, parts)
   {
-    var synonymself = [ "self", "face", "hero", "champion", "summoner" ];
-    // todo: logic for player attacking with weapon
 
-    var synonymopponent = [ "enemy", "opponent", "face", "hero", "champion", "summoner" ]
 
     var isource = parts[0];
     var idestination = parts[1]
@@ -256,7 +273,7 @@ module.exports = {
       return;
     }
 
-    if(synonymopponent.indexOf(idestination.toLowerCase()) > -1)
+    if(constants.synonymopponent.indexOf(idestination.toLowerCase()) > -1)
       targetEnemyHero = true;
     else
       destinationCard = helpers.boardIndexToCard(idestination, socket);
