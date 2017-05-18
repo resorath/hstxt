@@ -91,7 +91,7 @@ module.exports = {
       var i = 1;
 
       helpers.getBoardBySocket(socket, true).forEach(function(card) {
-        response += "o" + i + ": " + display.printCard(card) + "\n";
+        response += "o" + i + ": " + display.printCard(card, true) + "\n";
         i++;
       });
 
@@ -100,7 +100,7 @@ module.exports = {
       i = 1;
 
       helpers.getBoardBySocket(socket, false).forEach(function(card) {
-        response += "m" + i + ": " + display.printCard(card) + "\n";
+        response += "m" + i + ": " + display.printCard(card, true) + "\n";
         i++;
       });  
 

@@ -1,7 +1,9 @@
+var helpers = require('./helpers');
+
 module.exports = {
 
 	// nicely print a card to a player
-	printCard: function(card)
+	printCard: function(card, showstatus)
 	{
 	  var returnval = "";
 
@@ -9,8 +11,11 @@ module.exports = {
 	  {	  	
 	    returnval += card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";
 
-	    if(typeof card["canattack"] != 'undefined' && card["canattack"])
-	  		returnval += " [[;lime;](READY)]"; 
+	    if(typeof card["canattack"] != 'undefined' && card["canattack"] && showstatus)
+	  		returnval += " [[;lime;] (READY)]"; 
+
+	  	if(helpers.cardHasMechanic(card, "TAUNT") && showstatus)
+	  		returnval += " [[;gold;] (TAUNT)]";
 
 	  	return returnval;
 	  }
