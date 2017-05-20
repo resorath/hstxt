@@ -1,3 +1,5 @@
+// Battlecries and spells (on play effects)
+
 var helpers = require('./helpers');
 var util = require('./util');
 var execution = require('./execution');
