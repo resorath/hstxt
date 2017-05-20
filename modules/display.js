@@ -9,7 +9,28 @@ module.exports = {
 
 	  if(card["type"] == "MINION")
 	  {	  	
-	    returnval += card["name"] + " [" + card["attack"] + "/" + card["health"] + "] (" + card["cost"] + ")";
+	  	// get base card for comparison
+	  	var basecard = helpers.getCardById(card.id);
+
+	    returnval += card["name"] + " [";
+
+	    if(card.attack < basecard.attack)
+	    	returnval += "[[;red;]" + card.attack + "]";
+	    else if(card.attack > basecard.attack)
+	    	returnval += "[[;lime;]" + card.attack + "]";
+	    else
+	    	returnval += "[[;white;]" + card.attack + "]";
+
+	    returnval += "/";
+
+	    if(card.health < basecard.health)
+	    	returnval += "[[;red;]" + card.health + "]";
+	    else if(card.health > basecard.health)
+	    	returnval += "[[;lime;]" + card.health + "]";
+	    else
+	    	returnval += "[[;white;]" + card.health + "]";
+
+	    returnval += "] (" + card["cost"] + ")";
 
 	    if(typeof card["canattack"] != 'undefined' && card["canattack"] && showstatus)
 	  		returnval += " [[;lime;] (READY)]"; 
@@ -27,9 +48,30 @@ module.exports = {
 	{
 	  if(card["type"] == "MINION")
 	  {
+	  	// get base card for comparison
+	  	var basecard = helpers.getCardById(card.id);
+
 	  	var returnval = "";
 
-	    returnval += "[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: " + card["attack"] + " Health: " + card["health"] + "\n";
+	    returnval += "[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: ";
+
+	    if(card.attack < basecard.attack)
+	    	returnval += "[[;red;]" + card.attack + "]";
+	    else if(card.attack > basecard.attack)
+	    	returnval += "[[;lime;]" + card.attack + "]";
+	    else
+	    	returnval += "[[;white;]" + card.attack + "]";
+
+	    returnval += " Health: ";
+
+	    if(card.health < basecard.health)
+	    	returnval += "[[;red;]" + card.health + "]";
+	    else if(card.health > basecard.health)
+	    	returnval += "[[;lime;]" + card.health + "]";
+	    else
+	    	returnval += "[[;white;]" + card.health + "]";
+
+	    returnval += "\n";
 
 	    if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
 	   		returnval += card["rarity"] + " ";

@@ -24,9 +24,13 @@ module.exports = {
 
 	  for(cardid in deck.cards)
 	  {
-	    var card = deck.cards[cardid];
+	    var cardname = deck.cards[cardid];
+
+	    var card = helpers.getCardByName(cardname)
+
+	    card.ownernumber = player.number;
 	  
-	    playerdeck.push(helpers.getCardByName(card));
+	    playerdeck.push(card);
 	  }
 	  console.log("Loaded deck for player " + socket.player);
 
@@ -405,20 +409,36 @@ module.exports = {
 
 			agame.io.to(agame.name).emit('terminal', card['name'] + " is destroyed!\n");
 
-			// who owned this card?
-			var p1board = agame.board.p1;
-			var p2board = agame.board.p2;
-
-			var index = p1board.indexOf(card);
-
-			if(index > -1)
-				p1board.splice(index, 1);
-			else
-			{
-				index = p2board.indexOf(card);
-				p2board.splice(index, 1);
-			}
+			module.exports.removeCard(agame, card, true);
 		}
+	},
+
+	// removes a card from the board, and optionally triggers its deathrattle
+	removeCard: function(agame, card, deathrattle)
+	{
+		// who owned this card?
+		var playerid = card.ownernumber;
+
+		var board = null;
+
+		if(playerid == 1)
+			board = agame.board.p1;
+		else if(playerid == 2)
+			board = agame.board.p2;
+		else
+			console.log("FATAL: Card not owned");
+
+		var index = board.indexOf(card);
+
+		board.splice(index, 1);
+
+		if(deathrattle)
+		{
+			// do deathrattle
+		}
+
+		// do card removal registration (e.g. remove auras)
+
 	},
 
 	activateTurnTimer: function(agame)
