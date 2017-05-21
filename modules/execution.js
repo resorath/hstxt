@@ -275,7 +275,7 @@ module.exports = {
 	    // game ended?
 	    if(agame == null)
 	    {
-	    	clearTimeout(agame.turntimercallback);
+	    	//clearTimeout(agame.turntimercallback);
 	    	console.log("Ending unknown game");
 	    	return;
 	    }

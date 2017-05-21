@@ -293,6 +293,8 @@ function parseCommand(command, socket)
   if(!command)
     return null;
 
+  command = command.toLowerCase();
+
   var game = helpers.getGameBySocket(socket);
 
   // check if the prompt callback override is set, and execute that instead

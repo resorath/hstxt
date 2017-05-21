@@ -20,6 +20,9 @@
   </head>
   <body>
 
+    <div id="mobile-game" style="width: 100%; padding: 0px; margin: 0px; display: none;"></div>
+    <input type="text" id="mobile-input" style="width: 90%; height: 20px; bottom: 0; position: fixed; font-size: 16px; display: none;"></div>
+
     <script src="/socket.io/socket.io.js"></script>
 	<script>
 
@@ -31,7 +34,15 @@
 
     var debug = (getParameterByName("debug") != null);
 
-    var term = $('body').terminal(function(command) {
+    var target = 'body';
+    if(mobileAndTabletCheck())
+    {
+        target = '#mobile-game';
+        $('#mobile-game').show();
+        $('#mobile-input').show().focus();
+    }
+
+    var term = $(target).terminal(function(command) {
 
         // check if player number assigned, if not, send a game name instead
         if(player == 0)
@@ -46,8 +57,18 @@
     {
         greetings: 'Welcome to TextStone\nClient version ' + clientVersion + '\n',
         name: 'hstxt',
-        height: 500,
-        prompt: 'Connecting...> '
+        height: (getViewport()[1] - 20),
+        prompt: 'Connecting...> ',
+        enabled: false
+    });
+
+    $('#mobile-input').keypress(function(e) {
+        if(e.which == 13) {
+            term.resume();
+            term.exec($(this).val());
+            $(this).val('');
+            term.pause();
+        }
     });
 
     socket.on('connect', function() {
@@ -66,14 +87,14 @@
         else
         {
             socket.emit('control', 'showsetup');
-            term.resume();
+            termResume()
         }
 
     });
 
     socket.on('disconnect', function() {
     	term.echo("[[b;red;black]Connection to server interrupted, one moment...]\n");
-        term.pause();
+        termPause();
     })
 
     socket.on('terminal', function(msg) {
@@ -100,6 +121,18 @@
 
     }
 
+    function termResume()
+    {
+        if(!mobileAndTabletCheck())
+            term.resume();
+    }
+
+    function termPause()
+    {
+        if(!mobileAndTabletCheck())
+            term.pause();
+    }
+
     function debugBotMessage(msg)
     {
         if(msg == null)
@@ -120,54 +153,57 @@
         if(msg.command == "roomfull")
         {
             term.echo("Room full");
-            term.resume();
+            termResume();
         }
 
         if(msg.command == "opponentleft")
         {
             term.echo("Your opponent disconnected, waiting for reconnect...");
-            term.pause();
+            termPause();
         }
 
         if(msg.command == "startgame")
         {
             term.echo("Game ready!");
-            term.resume();
+            termResume();
         }
 
         if(msg.command == "resumegame")
         {
             term.echo("Game resumed!");
-            term.resume();
+            termResume();
         }
 
         if(msg.command == "suspend")
         {
-            term.pause();
+            termPause();
         }
 
         if(msg.command == "resume")
         {
-            term.resume();
+            termResume();
         }
 
         if(msg.command == "prompt")
         {
             term.set_prompt(msg.prompt);
+
+            if(mobileAndTabletCheck())
+                term.echo(msg.prompt);
         }
 
         if(msg.command == "endgame")
         {
             player = 0;
             term.set_prompt("Game name> ");
-            term.resume();
+            termResume();
         }
 
         if(msg.command == "serverrestart")
         {
             player = 0;
             term.set_prompt("Game name> ");
-            term.resume();
+            termResume();
         }
 
 	});
@@ -182,6 +218,43 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+
+    //http://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
+    function mobileAndTabletCheck() {
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        return true;
+        }
+
+        return false;
+    };
+
+    //http://stackoverflow.com/questions/1766861/find-the-exact-height-and-width-of-the-viewport-in-a-cross-browser-way-no-proto
+    function getViewport() {
+
+         var viewPortWidth;
+         var viewPortHeight;
+
+         // the more standards compliant browsers (mozilla/netscape/opera/IE7) use window.innerWidth and window.innerHeight
+         if (typeof window.innerWidth != 'undefined') {
+           viewPortWidth = window.innerWidth,
+           viewPortHeight = window.innerHeight
+         }
+
+        // IE6 in standards compliant mode (i.e. with a valid doctype as the first line in the document)
+         else if (typeof document.documentElement != 'undefined'
+         && typeof document.documentElement.clientWidth !=
+         'undefined' && document.documentElement.clientWidth != 0) {
+            viewPortWidth = document.documentElement.clientWidth,
+            viewPortHeight = document.documentElement.clientHeight
+         }
+
+         // older versions of IE
+         else {
+           viewPortWidth = document.getElementsByTagName('body')[0].clientWidth,
+           viewPortHeight = document.getElementsByTagName('body')[0].clientHeight
+         }
+         return [viewPortWidth, viewPortHeight];
+        }
 
 	</script>
   </body>
