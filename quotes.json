@@ -1,0 +1,66 @@
+ [
+   {
+    "id": "DS1_055",
+    "quote": {
+        "play": "For Nazjatar",
+        "attack": "Where shall I strike?",
+        "death": "whoaaa"
+    }
+  },
+  {
+    "id": "CS2_122",
+    "quote": {
+        "play": "Handle it!",
+        "attack": "Hit it very hard",
+        "death": "arrgg"
+    }
+  },
+  {
+    "id": "CS2_162",
+    "quote": {
+        "play": "The gates are open",
+        "attack": "Farewell",
+        "death": "whoaaa"
+    }
+  },
+  {
+    "id": "EX1_015",
+    "quote": {
+        "play": "I hope you like my invention",
+        "attack": "Ooh! If you're sure",
+        "death": "whoaaa"
+    }
+  },
+  {
+    "id": "CS2_179",
+    "quote": {
+        "play": "Taz'dingo! hehe yes",
+        "attack": "Ja ha ha ha mon!",
+        "death": "aaahgh"
+    }
+  },
+  {
+    "id": "CS2_189",
+    "quote": {
+        "play": "One shot, one kill",
+        "attack": "I'll give it a shot",
+        "death": "aaahgh"
+    }
+  },
+  {
+    "id": "CS2_200",
+    "quote": {
+        "play": "What you looking at?",
+        "attack": "Me smash",
+        "death": "whoaaa"
+    }
+  },
+  {
+    "id": "EX1_593",
+    "quote": {
+        "play": "They'll never know what hit em",
+        "attack": "This one's mine",
+        "death": "whoaaa"
+    }
+  }
+]

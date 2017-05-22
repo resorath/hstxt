@@ -46,6 +46,22 @@ module.exports = {
 
 		setTimeout(function() { clearInterval(interval); }, ((delay + 50) * amount ));
 
+	},
+
+	// O(n^2) ... 
+	bindQuotes: function(cards, quotes)
+	{
+		quotes.forEach(function(quote) {
+			cards.forEach(function(card) {
+
+				if(card.id === quote.id)
+				{
+					card['quote'] = quote['quote'];
+				}
+
+			});			
+		});
+
 	}
 
 }

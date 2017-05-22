@@ -20023,12 +20023,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "text": "Your other minions have +1 Attack.",
-    "type": "MINION",
-    "quote": {
-        "play": "Handle it!",
-        "attack": "Hit it very hard",
-        "death": "arrgg"
-    }
+    "type": "MINION"
   },
   {
     "artist": "Tyler Walpole",
@@ -20866,12 +20861,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "text": "[[b;;]Battlecry:] Restore 2 Health to all friendly characters.",
-    "type": "MINION",
-    "quote": {
-        "play": "For Nazjatar",
-        "attack": "Where shall I strike?",
-        "death": "whoaaa"
-    }
+    "type": "MINION"
   },
   {
     "artist": "Efrem Palacios",
@@ -23195,12 +23185,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "text": "[[b;;]Taunt]",
-    "type": "MINION",
-    "quote": {
-        "play": "The gates are open",
-        "attack": "Farewell",
-        "death": "whoaaa"
-    }
+    "type": "MINION"
   },
   {
     "artist": "Jonboy Meyers",
@@ -25218,12 +25203,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "text": "[[b;;]Battlecry:] Draw a card.",
-    "type": "MINION",
-    "quote": {
-        "play": "I hope you like my invention",
-        "attack": "Ooh! If you're sure",
-        "death": "whoaaa"
-    }
+    "type": "MINION"
   },
   {
     "artist": "Warren Mahy",
@@ -27036,12 +27016,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "text": "[[b;;]Taunt]",
-    "type": "MINION",
-    "quote": {
-        "play": "Taz'dingo! hehe yes",
-        "attack": "Ja ha ha ha mon!",
-        "death": "aaahgh"
-    }
+    "type": "MINION"
   },
   {
     "cardClass": "WARRIOR",
@@ -31850,12 +31825,7 @@
     "set": "CORE",
     "targetingArrowText": "Deal 1 damage.",
     "text": "[[b;;]Battlecry:] Deal 1 damage.",
-    "type": "MINION",
-    "quote": {
-        "play": "One shot, one kill",
-        "attack": "I'll give it a shot",
-        "death": "aaahgh"
-    }
+    "type": "MINION"
   },
   {
     "attack": 1,
@@ -33454,12 +33424,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "FREE",
     "set": "CORE",
-    "type": "MINION",
-    "quote": {
-        "play": "What you looking at?",
-        "attack": "Me smash",
-        "death": "whoaaa"
-    }
+    "type": "MINION"
   },
   {
     "artist": "Alex Horley Orlandelli",
@@ -37025,12 +36990,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "text": "[[b;;]Battlecry: ]Deal 3 damage to the enemy hero.",
-    "type": "MINION",
-    "quote": {
-        "play": "They'll never know what hit em",
-        "attack": "This one's mine",
-        "death": "whoaaa"
-    }
+    "type": "MINION"
   },
   {
     "attack": 1,

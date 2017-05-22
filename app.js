@@ -29,6 +29,7 @@ globals.cards = JSON.parse(fs.readFileSync("cards.json"));
 
 globals.decks = JSON.parse(fs.readFileSync("decks.json"));
 
+util.bindQuotes(globals.cards, JSON.parse(fs.readFileSync("quotes.json")));
 
 // master games list.
 globals.games = [];
