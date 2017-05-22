@@ -68,13 +68,23 @@ module.exports = {
 
       i = 1;
 
+      var player = helpers.getPlayerBySocket(socket, false);
+      var board = helpers.getBoardBySocket(socket, false);
+
       var response = "\n";
 
       helpers.getHandBySocket(socket, false).forEach(function(card) {
         if(parts[0] != null && parts[0].indexOf("detail") === 0)
           response += "h" + i + ": " + display.printDetailedCard(card) + "\n";
         else
-          response += "h" + i + ": " + display.printCard(card) + "\n";
+        {
+          // get play status
+          var playstatus = 0;
+          if(player.mana >= card.cost && !(card.type == "MINION" && board.size >= 7) )
+            playstatus = 1;
+
+          response += "h" + i + ": " + display.printCard(card, false, playstatus) + "\n";
+        }
         i++;
       });  
 

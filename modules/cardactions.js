@@ -11,6 +11,8 @@ module.exports = {
 	// The Coin
 	GAME_005: function(socket, target, parts)
 	{
+		console.log("playing the coin");
+
 		player = helpers.getPlayerBySocket(socket, false);
 
 		if(player.mana < 10)
@@ -188,7 +190,6 @@ module.exports = {
 	// Arcane intellect
 	CS2_023: function(socket, target, parts)
 	{
-
 		util.doMultipleThingsSlowly(function() {
 
 			execution.drawCard(socket);

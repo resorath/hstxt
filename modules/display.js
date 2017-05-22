@@ -3,16 +3,26 @@ var helpers = require('./helpers');
 module.exports = {
 
 	// nicely print a card to a player
-	printCard: function(card, showstatus)
+	// playstatus is optional, and is either 0 = can't play, 1 = can play, 2 = should play (e.g. combo)
+	printCard: function(card, showstatus, playstatus)
 	{
+
 	  var returnval = "";
+
+	  if(playstatus == null || typeof playstatus === 'undefined')
+	  	playstatus = 0;
 
 	  if(card["type"] == "MINION")
 	  {	  	
 	  	// get base card for comparison
 	  	var basecard = helpers.getCardById(card.id);
 
-	    returnval += card["name"] + " [";
+	  	if(playstatus === 1)
+			returnval += "[[;lime;]" + card["name"] + "] [";
+	  	else if(playstatus === 2)
+			returnval += "[[;yellow;]" + card["name"] + "] [";
+	  	else
+	    	returnval += card["name"] + " [";
 
 	    if(card.attack < basecard.attack)
 	    	returnval += "[[;red;]" + card.attack + "]";
@@ -38,10 +48,22 @@ module.exports = {
 	  	if(helpers.cardHasMechanic(card, "TAUNT") && showstatus)
 	  		returnval += " [[;gold;] (TAUNT)]";
 
-	  	return returnval;
 	  }
-	  if(card["type"] == "SPELL")
-	    return card["name"] + " (" + card["cost"] + ")";
+	  else if(card["type"] == "SPELL")
+	  {
+	    
+	  	if(playstatus === 1)
+			returnval += "[[;lime;]" + card["name"] + "]";
+	  	else if(playstatus === 2)
+			returnval += "[[;yellow;]" + card["name"] + "]";
+	  	else
+	    	returnval += card["name"];
+
+		returnval += " (" + card["cost"] + ")";
+	  }
+
+	  return returnval;
+
 	},
 
 	printDetailedCard: function(card)
