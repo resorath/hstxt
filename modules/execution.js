@@ -1,6 +1,8 @@
 var helpers = require('./helpers');
 var display = require('./display');
 var util = require('./util');
+var interrupts = require('./interrupts');
+var constants = require('./constants');
 
 module.exports = {
 
@@ -428,14 +430,14 @@ module.exports = {
 		else
 			console.log("FATAL: Card not owned");
 
+		if(deathrattle)
+		{
+			module.exports.doTrigger(agame, card, constants.triggers.ondeath);
+		}
+
 		var index = board.indexOf(card);
 
 		board.splice(index, 1);
-
-		if(deathrattle)
-		{
-			// do deathrattle
-		}
 
 		// do card removal registration (e.g. remove auras)
 
@@ -484,6 +486,43 @@ module.exports = {
         return el.name != game.name;
       });
 
+	},
+
+	// trigger must be:
+	// onplay, onattack, onstartturn, onendturn, onherodamaged, onminiondamaged, onheal, ondeath (deathrattle)
+	doTrigger: function(game, sourcecard, trigger)
+	{
+		trigger = trigger.toLowerCase();
+
+		// first do the card's action for onattack
+		if(trigger == constants.triggers.onattack)
+			if(sourcecard != null && typeof interrupts[sourcecard.id] !== 'undefined' && typeof interrupts[sourcecard.id][trigger] === 'function')
+				interrupts[sourcecard.id][trigger](game, sourcecard);
+
+		// now the rest
+		if(trigger != constants.triggers.onattack)
+		{
+
+			// do secrets (only for the opposite player)
+			var secretplayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
+
+			secretplayer.secrets.forEach(function(secret) {
+				if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
+					interrupts[secret.id][trigger](game, secret);
+			});
+
+			// get boards
+			var board = game.getBoard(game.p1socket, false);
+			board = board.concat(game.getBoard(game.p2socket, false));
+
+			board.forEach(function(card) {
+				if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
+					interrupts[card.id][trigger](game, card);
+			});
+
+		}
+
 	}
+
 
 }

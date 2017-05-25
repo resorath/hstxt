@@ -473,6 +473,7 @@ module.exports = {
         var card = helpers.getCardById(parts[1]);
         if(card != null)
         {
+          card.ownernumber = helpers.getPlayerBySocket(socket, false).number;
           socket.emit('terminal', '[[i;#D2B4DE;](debug) card '+ card["name"] +' added to hand]');
           helpers.getHandBySocket(socket).push(card);
           socket.emit('terminal', display.printDetailedCard(card));

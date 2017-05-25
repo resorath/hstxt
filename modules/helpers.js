@@ -190,6 +190,14 @@ module.exports = {
 
 	  }
 
+	},
+
+	getSocketFromCard: function(game, card)
+	{
+		// determine owner
+		var playernum = card.ownernumber;
+
+		return game.getSocketByPlayerNumber(playernum);
 	}
 
 }

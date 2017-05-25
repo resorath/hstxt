@@ -48,7 +48,8 @@ module.exports = {
         fatigue: 0,
         spellpower: 0,
         overload: 0,
-        status: []
+        status: [],
+        secrets: []
       },
       p2: {
         number: 2,
@@ -60,7 +61,8 @@ module.exports = {
         fatigue: 0,
         spellpower: 0,
         overload: 0,
-        status: []
+        status: [],
+        secrets: []
       }
     }
 

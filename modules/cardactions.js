@@ -6,6 +6,7 @@ var execution = require('./execution');
 var constants = require('./constants');
 
 // card actions by internal CardID
+// spells, battlecries, and buff loading for actions/deathrattles
 module.exports = {
 
 	// The Coin
@@ -201,6 +202,12 @@ module.exports = {
 	EX1_015: function(socket, target, parts)
 	{
 		execution.drawCard(socket);
+	},
+
+	// Raid Leader (aura)
+	CS2_122: function(socket, target, parts)
+	{
+
 	}
 
 }

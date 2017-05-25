@@ -11,8 +11,6 @@ var util = require('./modules/util');
 
 var serverVersion = "0.1 dev"
 
-
-
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -40,6 +38,7 @@ helpers.init(globals.games, globals.cards, globals.decks);
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
 
 /*process.stdin.resume();
 
