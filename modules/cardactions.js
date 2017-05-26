@@ -4,13 +4,14 @@ var helpers = require('./helpers');
 var util = require('./util');
 var execution = require('./execution');
 var constants = require('./constants');
+var buffs = require('./Buff');
 
 // card actions by internal CardID
 // spells, battlecries, and buff loading for actions/deathrattles
 module.exports = {
 
 	// The Coin
-	GAME_005: function(socket, target, parts)
+	GAME_005: function(socket, sourcecard, target, parts)
 	{
 		console.log("playing the coin");
 
@@ -26,7 +27,7 @@ module.exports = {
 	},
 
 	// Arcane Missiles
-	EX1_277: function(socket, target, parts)
+	EX1_277: function(socket, sourcecard, target, parts)
 	{
 		console.log("Playing arcane missiles");
 
@@ -76,7 +77,7 @@ module.exports = {
 	},
 
 	// Fireball
-	CS2_029: function(socket, target, parts)
+	CS2_029: function(socket, sourcecard, target, parts)
 	{
 		console.log("playing fireball");
 
@@ -118,7 +119,7 @@ module.exports = {
 	},
 
 	// Pyroblast
-	EX1_279: function(socket, target, parts)
+	EX1_279: function(socket, sourcecard, target, parts)
 	{
 		console.log("playing pyroblast");
 
@@ -159,7 +160,7 @@ module.exports = {
 	},
 
 	// Arcane explosion
-	CS2_025: function(socket, target, parts)
+	CS2_025: function(socket, sourcecard, target, parts)
 	{
 		console.log("playing pyroblast");
 
@@ -189,7 +190,7 @@ module.exports = {
 	},
 
 	// Arcane intellect
-	CS2_023: function(socket, target, parts)
+	CS2_023: function(socket, sourcecard, target, parts)
 	{
 		util.doMultipleThingsSlowly(function() {
 
@@ -199,14 +200,26 @@ module.exports = {
 	},
 
 	// Novice Engineer
-	EX1_015: function(socket, target, parts)
+	EX1_015: function(socket, sourcecard, target, parts)
 	{
 		execution.drawCard(socket);
 	},
 
 	// Raid Leader (aura)
-	CS2_122: function(socket, target, parts)
+	CS2_122: function(socket, sourcecard, target, parts)
 	{
+		var buff = new buffs.Buff("Raid leader aura");
+
+		buff.changeattack = 1;
+		buff.sourcecard = sourcecard;
+
+		var friendlyboard = helpers.getBoardBySocket(socket, false);
+
+		friendlyboard.forEach(function(card)
+		{
+			if(card != sourcecard)
+				helpers.addBuff(card, buff);
+		});
 
 	}
 

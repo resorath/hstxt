@@ -1,11 +1,15 @@
 module.exports = {
 
-	Buff: function(id)
+	Buff: function(name)
 	{
+		this.name = name;
+
 		this.changehealth = 0;
 		this.changeattack = 0;
 		this.changemana = 0;
 		this.text = "";
+
+		this.sourcecard = null;
 
 		this.callbacks = {
 

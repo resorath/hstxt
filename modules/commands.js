@@ -293,9 +293,12 @@ module.exports = {
 
         // do card actions (either spell cast or battlecry)
         if(typeof ca[cardtoplay.id] === 'function')
-          cardplayed = ca[cardtoplay.id](socket, targetcard, parts);
+          cardplayed = ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
         else
           console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
+        // do other card actions
+        execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
 
 
       }
