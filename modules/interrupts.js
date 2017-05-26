@@ -34,7 +34,7 @@ module.exports = {
 			{
 				card.buffs.forEach(function(buff)
 				{
-					if(buff.sourcecard == card)
+					if(buff.sourcecard == sourcecard)
 						helpers.removeBuff(card, buff)
 				});
 			});
@@ -47,7 +47,8 @@ module.exports = {
 		// give aura to new cards
 		onplay: function(game, selectedcard, sourcecard, targetcard) {
 
-			if(selectedcard != sourcecard)
+			// don't buff self on play
+			if(selectedcard == sourcecard)
 				return;
 
 			console.log("Adding buff to " + sourcecard.name);
