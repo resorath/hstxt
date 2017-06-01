@@ -56,6 +56,45 @@ module.exports = {
 
 	},
 
-	
+	damageCard: function(agame, card, amount)
+	{
+		card.health -= amount;
+
+		if(card.health <= 0)
+		{
+			agame.io.to(agame.name).emit('terminal', card['name'] + " is destroyed!\n");
+
+			module.exports.removeCard(agame, card, true);
+		}
+	},
+
+	// removes a card from the board, and optionally triggers its deathrattle
+	removeCard: function(agame, card, deathrattle)
+	{
+		// who owned this card?
+		var playerid = card.ownernumber;
+
+		var board = null;
+
+		if(playerid == 1)
+			board = agame.board.p1;
+		else if(playerid == 2)
+			board = agame.board.p2;
+		else
+			console.log("FATAL: Card not owned");
+
+		if(deathrattle)
+		{
+			//module.exports.doTrigger(constants.triggers.ondeath, agame, card, null);
+	  		helpers.triggers.emit('doTrigger', constants.triggers.ondeath, agame, card, null);
+		}
+
+		var index = board.indexOf(card);
+
+		board.splice(index, 1);
+
+	},
+
+
 
 }

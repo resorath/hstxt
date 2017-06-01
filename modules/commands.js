@@ -6,6 +6,7 @@ var display = require('./display');
 var util = require('./util');
 var ca = require('./cardactions')
 var constants = require('./constants');
+var engineering = require('./engineering');
 
 module.exports = {
 
@@ -300,7 +301,8 @@ module.exports = {
           console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
 
         // do other card actions
-        execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
+        //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
+        helpers.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
 
 
       }
@@ -415,8 +417,8 @@ module.exports = {
     {
       agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks " + destinationCard['name'] + " for " + sourceCard['attack'] + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
 
-      execution.damageCard(agame, destinationCard, sourceCard['attack']);
-      execution.damageCard(agame, sourceCard, destinationCard['attack']);
+      engineering.damageCard(agame, destinationCard, sourceCard['attack']);
+      engineering.damageCard(agame, sourceCard, destinationCard['attack']);
     }
 
   },

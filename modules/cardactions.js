@@ -68,7 +68,7 @@ module.exports = {
 				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to '+ enemyboard[targetindex]['name'] +'\n\n');
 				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] + ']\n\n');
 
-				execution.damageCard(game, enemyboard[targetindex], 1);
+				engineering.damageCard(game, enemyboard[targetindex], 1);
 				return;
 			}
 
@@ -112,7 +112,7 @@ module.exports = {
 			socket.emit('terminal', '[[;lightblue;]Your fireball collides with '+ target.name + ', dealing ' + damage +' damage]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball collides with ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
 		
-			execution.damageCard(game, target, damage);
+			engineering.damageCard(game, target, damage);
 		}
 
 		return true;
@@ -153,7 +153,7 @@ module.exports = {
 			socket.emit('terminal', '[[;lightblue;]You hurl an immense fiery boulder at '+ target.name + ', dealing ' + damage +' damage]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent hurls an immense fiery boulder at ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
 		
-			execution.damageCard(game, target, damage);
+			engineering.damageCard(game, target, damage);
 		}
 
 		return true;
@@ -185,7 +185,7 @@ module.exports = {
 			socket.emit('terminal', '[[;lightblue;]Your arcane explosion deals '+damage+' to '+card.name+']\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane explosion deals '+damage+' to '+card.name+']\n');
 
-			execution.damageCard(game, card, damage);
+			engineering.damageCard(game, card, damage);
 		}
 
 	},
