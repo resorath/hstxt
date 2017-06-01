@@ -8,6 +8,8 @@ var execution = require('./modules/execution');
 var cfunc = require('./modules/commands');
 var display = require('./modules/display');
 var util = require('./modules/util');
+var interrupts = require('./modules/interrupts');
+var EventEmitter = require('events');
 
 var serverVersion = "0.1 dev"
 
@@ -32,8 +34,13 @@ util.bindQuotes(globals.cards, JSON.parse(fs.readFileSync("quotes.json")));
 // master games list.
 globals.games = [];
 
+// setu triggers class
+class Trigger extends EventEmitter {}
+
+global.triggers = new Trigger();
+
 // cross inits
-helpers.init(globals.games, globals.cards, globals.decks);
+helpers.init(globals.games, globals.cards, globals.decks, globals.triggers);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
@@ -321,8 +328,33 @@ function parseCommand(command, socket)
 
 }
 
+// trigger must be:
+// onplay, onattack, onstartturn, onendturn, onherodamaged, onminiondamaged, onheal, ondeath (deathrattle)
+// sourcecard - card initiating trigger
+// targetcard - card that may be impacted by trigger (optional)
+global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) {
+
+    trigger = trigger.toLowerCase();
+
+    // do secrets (only for the opposite player)
+    var secretplayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
+
+    secretplayer.secrets.forEach(function(secret) {
+      if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
+        interrupts[secret.id][trigger](game, secret);
+    });
+
+    // get boards
+    var board = game.getBoard(game.p1socket, false);
+    board = board.concat(game.getBoard(game.p2socket, false));
+
+    // go to each card and see if it needs a trigger (including the sourcecard and targetcards. )
+    board.forEach(function(card) {
+      if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
+        interrupts[card.id][trigger](game, card, sourcecard, targetcard);
+    });
 
 
-
+});
 
 

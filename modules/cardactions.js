@@ -5,6 +5,7 @@ var util = require('./util');
 var execution = require('./execution');
 var constants = require('./constants');
 var buffs = require('./Buff');
+var engineering = require('./engineering');
 
 // card actions by internal CardID
 // spells, battlecries, and buff loading for actions/deathrattles
@@ -218,7 +219,7 @@ module.exports = {
 		friendlyboard.forEach(function(card)
 		{
 			if(card != sourcecard)
-				helpers.addBuff(card, buff);
+				engineering.addBuff(card, buff);
 		});
 
 	}

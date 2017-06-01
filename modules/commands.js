@@ -1,3 +1,5 @@
+/* Commands for players to execute */
+
 var helpers = require('./helpers');
 var execution = require('./execution');
 var display = require('./display');

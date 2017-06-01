@@ -4,6 +4,7 @@ var helpers = require('./helpers');
 var util = require('./util');
 var constants = require('./constants');
 var buffs = require('./Buff');
+var engineering = require('./engineering');
 
 /**
 * onplay
@@ -35,7 +36,7 @@ module.exports = {
 				card.buffs.forEach(function(buff)
 				{
 					if(buff.sourcecard == sourcecard)
-						helpers.removeBuff(card, buff)
+						engineering.removeBuff(card, buff)
 				});
 			});
 
@@ -58,7 +59,7 @@ module.exports = {
 			buff.changeattack = 1;
 			buff.sourcecard = selectedcard;
 
-			helpers.addBuff(sourcecard, buff);
+			engineering.addBuff(sourcecard, buff);
 		}
 
 	},
