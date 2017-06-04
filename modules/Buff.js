@@ -11,6 +11,8 @@ module.exports = {
 
 		this.sourcecard = null;
 
+		this.isaura = false;
+
 		this.callbacks = {
 
 			onplay: null, // a card is played

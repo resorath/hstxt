@@ -163,7 +163,7 @@ module.exports = {
 	// Arcane explosion
 	CS2_025: function(socket, sourcecard, target, parts)
 	{
-		console.log("playing pyroblast");
+		console.log("playing arcane explosion");
 
 		var game = helpers.getGameBySocket(socket);
 
@@ -213,6 +213,7 @@ module.exports = {
 
 		buff.changeattack = 1;
 		buff.sourcecard = sourcecard;
+		buff.isaura = true;
 
 		var friendlyboard = helpers.getBoardBySocket(socket, false);
 

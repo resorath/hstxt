@@ -301,6 +301,10 @@ module.exports = {
 
 	    console.log("Ending turn of " + agame.name + ". Moving turn from " + agame.playerTurn + " to " + agame.playerTurnOpposite());
 
+	    // do end of turn things
+	    helpers.triggers.emit('doTrigger', constants.triggers.onendturn, agame, null, null);
+
+
 	    // flip whos turn it is
 	    agame.playerTurn = agame.playerTurnOpposite();
 
@@ -316,6 +320,10 @@ module.exports = {
 
 	    // tell new player it is their turn
 	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+
+	    // do start of turn things
+	    helpers.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
+
 
 	    // draw new player a card
 	    module.exports.drawCard(helpers.getOppositePlayerSocket(socket));
@@ -386,6 +394,8 @@ module.exports = {
 	damagePlayer: function(agame, player, amount)
 	{
 		player.health -= amount;
+
+		helpers.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);
 
 		agame.updatePromptsWithDefault();
 

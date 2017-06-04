@@ -57,6 +57,7 @@ module.exports = {
 			var buff = new buffs.Buff("Raid leader aura");
 
 			buff.changeattack = 1;
+			buff.isaura = true;
 			buff.sourcecard = selectedcard;
 
 			engineering.addBuff(sourcecard, buff);

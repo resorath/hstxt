@@ -60,6 +60,9 @@ module.exports = {
 	{
 		card.health -= amount;
 
+		// do on damage trigger
+		helpers.triggers.emit('doTrigger', constants.triggers.onminiondamaged, agame, card, null);
+
 		if(card.health <= 0)
 		{
 			agame.io.to(agame.name).emit('terminal', card['name'] + " is destroyed!\n");

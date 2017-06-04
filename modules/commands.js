@@ -405,6 +405,8 @@ module.exports = {
     if(typeof sourceCard["quote"] != 'undefined' && typeof sourceCard["quote"]["attack"] != 'undefined')
       socket.emit('terminal', "[[;#FFBDC0;]&lt;" + sourceCard["name"] + '&gt; ' + sourceCard["quote"]["attack"] + ']\n');
 
+    // do trigger
+    helpers.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
 
     if(targetEnemyHero)
     {
