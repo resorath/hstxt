@@ -62,16 +62,49 @@ module.exports = {
 		returnval += " (" + card["cost"] + ")";
 	  }
 
+	  if(card["type"] == "WEAPON")
+	  {	  	
+	  	// get base card for comparison
+	  	var basecard = helpers.getCardById(card.id);
+
+	  	if(playstatus === 1)
+			returnval += "[[;lime;]" + card["name"] + "] [";
+	  	else if(playstatus === 2)
+			returnval += "[[;yellow;]" + card["name"] + "] [";
+	  	else
+	    	returnval += card["name"] + " [";
+
+	    if(card.attack < basecard.attack)
+	    	returnval += "[[;red;]" + card.attack + "]";
+	    else if(card.attack > basecard.attack)
+	    	returnval += "[[;lime;]" + card.attack + "]";
+	    else
+	    	returnval += "[[;white;]" + card.attack + "]";
+
+	    returnval += "/";
+
+	    if(card.durability < basecard.durability)
+	    	returnval += "[[;red;]" + card.durability + "]";
+	    else if(card.durability > basecard.durability)
+	    	returnval += "[[;lime;]" + card.durability + "]";
+	    else
+	    	returnval += "[[;white;]" + card.durability + "]";
+
+	    returnval += "] (" + card["cost"] + ")";
+
+	  }
+
 	  return returnval;
 
 	},
 
 	printDetailedCard: function(card)
 	{
+	  var basecard = helpers.getCardById(card.id);
+
 	  if(card["type"] == "MINION")
 	  {
 	  	// get base card for comparison
-	  	var basecard = helpers.getCardById(card.id);
 
 	  	var returnval = "";
 
@@ -106,8 +139,6 @@ module.exports = {
 	    
 	    if(typeof card["text"] != 'undefined')
 	    	returnval += "\n" + card["text"];
-
-	    return "\n" + returnval + "\n";
 	  }
 
 	  if(card["type"] == "SPELL")
@@ -123,8 +154,44 @@ module.exports = {
 	    if(typeof card["text"] != 'undefined')
 	    	returnval += "\n" + card["text"];
 
-	    return "\n" + returnval + "\n";
 	  }
+
+	  if(card["type"] == "WEAPON")
+	  {
+	  	var returnval = "[[b;#FFFFD5;]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
+
+	  	returnval += "Damage: ";
+
+	    if(card.attack < basecard.attack)
+	    	returnval += "[[;red;]" + card.attack + "]";
+	    else if(card.attack > basecard.attack)
+	    	returnval += "[[;lime;]" + card.attack + "]";
+	    else
+	    	returnval += "[[;white;]" + card.attack + "]";
+
+	    returnval += " Durability: ";
+
+	    if(card.durability < basecard.durability)
+	    	returnval += "[[;red;]" + card.durability + "]";
+	    else if(card.durability > basecard.health)
+	    	returnval += "[[;lime;]" + card.durability + "]";
+	    else
+	    	returnval += "[[;white;]" + card.durability + "]";
+
+	    returnval += "\n";
+
+	  	if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
+	   		returnval += card["rarity"] + " ";
+
+	    if(typeof card["type"] != 'undefined')
+	    	returnval += card["type"];
+
+	   	if(typeof card["text"] != 'undefined')
+	    	returnval += "\n" + card["text"];
+	  }
+
+
+	    return "\n" + returnval + "\n";
 	},
 
 
