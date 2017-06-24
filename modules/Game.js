@@ -49,7 +49,9 @@ module.exports = {
         spellpower: 0,
         overload: 0,
         status: [],
-        secrets: []
+        secrets: [],
+        weapon: null,
+        canattack: true,
       },
       p2: {
         number: 2,
@@ -62,7 +64,9 @@ module.exports = {
         spellpower: 0,
         overload: 0,
         status: [],
-        secrets: []
+        secrets: [],
+        weapon: null,
+        canattack: true,
       }
     }
 
@@ -150,7 +154,7 @@ module.exports = {
       var prompt = player.character + " " + player.health + " HP | " + player.mana + " Mana ";
 
       if(player.attack > 0)
-        prompt += player.attack + "| Attack ";
+        prompt += "| " + player.attack + " Attack ";
 
       if(player.status.length > 0)
       {

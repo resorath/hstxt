@@ -101,8 +101,12 @@ module.exports = {
   board: function(socket, parts)
   {
       var response = "\nYour opponent has " + helpers.getHandBySocket(socket, true).length + " cards\n" +
-      "Opponent health: " + helpers.getPlayerBySocket(socket, true).health + " hp\n" + 
-      "\nOpponent's side:\n\n";
+      "Opponent health: " + helpers.getPlayerBySocket(socket, true).health + " hp\n";
+
+      if(helpers.getPlayerBySocket(socket, true).weapon != null)
+        response += "Equipped: " + display.printCard(helpers.getPlayerBySocket(socket, true).weapon, true, helpers.getPlayerBySocket(socket, true).canattack) +"\n";
+
+      response += "\nOpponent's side:\n\n";
 
       var i = 1;
 
@@ -119,6 +123,9 @@ module.exports = {
         response += "m" + i + ": " + display.printCard(card, true) + "\n";
         i++;
       });  
+
+      if(helpers.getPlayerBySocket(socket, false).weapon != null)
+        response += "Equipped: " + display.printCard(helpers.getPlayerBySocket(socket, false).weapon, true, helpers.getPlayerBySocket(socket, false).canattack) +"\n";
 
       response += "\nYour hand:";
 
@@ -271,11 +278,56 @@ module.exports = {
       if(cardtoplay.type == "WEAPON");
       {
         // equip weapon
+
+        // check if spell needs a target
+        if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && target == null)
+        {
+          socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
+          return;
+        }
+        else if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false)
+        {
+          if(helpers.targetIsOpponent(target))
+            targetcard = constants.opponenttarget;
+          else if(helpers.targetIsSelf(target))
+            targetcard = constants.selftarget;
+          else
+            targetcard = helpers.boardIndexToCard(target, socket);
+
+          if(target == null && !targetenemyhero)
+            socket.emit("terminal", "Invalid target");
+        }
+
+        // delete old weapon if one exists
+        if(player.weapon != null)
+        {
+          socket.emit("terminal", player.weapon.name + " was destroyed!");
+          player.weapon = null;
+        }
+
+        // equip weapon
+        player.weapon = cardtoplay;
+
+        // add damage to player
+        player.attack = cardtoplay.attack;
+
+
       }
 
 
       if(cardplayed)
       {
+
+        // do card actions (either spell cast or battlecry)
+        if(typeof ca[cardtoplay.id] === 'function')
+          cardplayed = ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
+        else
+          console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
+        // play condition failed
+        if(cardplayed === false)
+          return;
+
         // remove card from hand
         var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
 
@@ -294,11 +346,7 @@ module.exports = {
           game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
 
 
-        // do card actions (either spell cast or battlecry)
-        if(typeof ca[cardtoplay.id] === 'function')
-          cardplayed = ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
-        else
-          console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
 
         // do other card actions
         //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
@@ -320,12 +368,15 @@ module.exports = {
     var isource = parts[0];
     var idestination = parts[1]
 
+    var isSelfAttacking = false;
     var targetEnemyHero = false;
 
     var sourceCard = null;
     var destinationCard = null;
 
     var agame = helpers.getGameBySocket(socket);
+
+    var self = helpers.getPlayerBySocket(socket, false);
 
     if(isource == null || idestination == null)
     {
@@ -338,24 +389,38 @@ module.exports = {
     else
       destinationCard = helpers.boardIndexToCard(idestination, socket);
 
-    var sourceCard = helpers.boardIndexToCard(isource, socket);
+    if(helpers.targetIsSelf(isource))
+      isSelfAttacking = true;
+    else
+      sourceCard = helpers.boardIndexToCard(isource, socket);
 
     // bad inputs
-    if(sourceCard == null || (destinationCard == null && !targetEnemyHero))
+    if((sourceCard == null && !isSelfAttacking) || (destinationCard == null && !targetEnemyHero))
     {
       socket.emit('terminal', 'attack <source> <target>\nTry: help attack\n');
       return;
     }
 
     // can the card attack?
-    if( (typeof sourceCard["canattack"] != 'undefined' && !sourceCard["canattack"]) || typeof sourceCard["canattack"] == 'undefined')
+    if( !isSelfAttacking && ((typeof sourceCard["canattack"] != 'undefined' && !sourceCard["canattack"]) || typeof sourceCard["canattack"] == 'undefined'))
     {
       socket.emit('terminal', 'Give that minion a turn to get ready!\n');
       return;
     }
+    else if(isSelfAttacking && self.attack <= 0)
+    {
+      // this message sucks
+      socket.emit('terminal', 'Characters without attack cannot attack\n');
+      return;
+    }
+    else if(isSelfAttacking && !self.canattack)
+    {
+      socket.emit('terminal', 'You can\'t attack right now!\n');
+      return;  
+    }
 
     // does the card have at least 1 attack?
-    if(sourceCard["attack"] <= 0)
+    if(!isSelfAttacking && sourceCard["attack"] <= 0)
     {
       socket.emit('terminal', 'Minions without attack damage, can\'t attack!\n');
       return;
@@ -399,29 +464,85 @@ module.exports = {
     console.log(agame.name + " attacking " + parts[0] + " to " + parts[1]);
 
     // unready the card
-    sourceCard["canattack"] = false;
+    if(!isSelfAttacking)
+      sourceCard["canattack"] = false;
+    else
+      self.canattack = false;
 
     // do sound effect
-    if(typeof sourceCard["quote"] != 'undefined' && typeof sourceCard["quote"]["attack"] != 'undefined')
-      socket.emit('terminal', "[[;#FFBDC0;]&lt;" + sourceCard["name"] + '&gt; ' + sourceCard["quote"]["attack"] + ']\n');
+    if(!isSelfAttacking)
+      if(typeof sourceCard["quote"] != 'undefined' && typeof sourceCard["quote"]["attack"] != 'undefined')
+        socket.emit('terminal', "[[;#FFBDC0;]&lt;" + sourceCard["name"] + '&gt; ' + sourceCard["quote"]["attack"] + ']\n');
+
+    else
+    {
+      //@todo: do per-character attack sound
+    }
 
     // do trigger
-    helpers.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
+    // @todo: @critical: this is going to bug on effects when attacking hero
+    if(!isSelfAttacking)
+      helpers.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
+    else
+    {
+      if(self.weapon != null)
+          helpers.triggers.emit('doTrigger', constants.triggers.onattack, agame, self.weapon, destinationCard);
+
+    }
+
 
     if(targetEnemyHero)
     {
       var enemyplayer = helpers.getPlayerBySocket(socket, true);
 
-      agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage");
-      execution.damagePlayer(agame, enemyplayer, sourceCard['attack']);
+      if(!isSelfAttacking)
+      {
+        agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage");
+        execution.damagePlayer(agame, enemyplayer, sourceCard['attack']);
+      }
+      else
+      {
+        agame.io.to(agame.name).emit('terminal', self.character + " attacks hero for " + self.attack + " damage");
+        execution.damagePlayer(agame, enemyplayer, self.attack);        
+      }
     }
     else
     {
-      agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks " + destinationCard['name'] + " for " + sourceCard['attack'] + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
 
-      engineering.damageCard(agame, destinationCard, sourceCard['attack']);
-      engineering.damageCard(agame, sourceCard, destinationCard['attack']);
+      if(!isSelfAttacking)
+      {
+        agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks " + destinationCard['name'] + " for " + sourceCard['attack'] + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
+
+        engineering.damageCard(agame, destinationCard, sourceCard['attack']);
+        engineering.damageCard(agame, sourceCard, destinationCard['attack']);
+      }
+      else
+      {
+        agame.io.to(agame.name).emit('terminal', self.character + " attacks " + destinationCard['name'] + " for " + self.attack + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
+
+        engineering.damageCard(agame, destinationCard, self.attack);
+        execution.damagePlayer(agame, self, destinationCard['attack']);
+      }
+
+
     }
+
+    // do weapon durability
+    if(isSelfAttacking && self.weapon != null)
+    {
+      self.weapon.durability--;
+
+      if(self.weapon.durability <= 0)
+      {
+        agame.io.to(agame.name).emit('terminal', self.weapon.name + ' has run out of durability and is destroyed!');
+
+        self.attack -= self.weapon.attack;
+        self.weapon = null;
+      }
+    }
+
+    // update prompts
+    agame.updatePromptsWithDefault();
 
   },
 

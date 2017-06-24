@@ -1,6 +1,6 @@
 module.exports = {
 
-	synonymself: [ "self", "face", "hero", "champion", "summoner" ],
+	synonymself: [ "self", "hero", "champion", "summoner", "me" ],
 
     synonymopponent: [ "enemy", "opponent", "face", "hero", "champion", "summoner" ],
 

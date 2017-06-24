@@ -318,6 +318,9 @@ module.exports = {
 	    // refresh mana
 	    opponent.mana = opponent.maxmana;
 
+	    // set can attack (for weapons, etc)
+	    opponent.canattack = true;
+
 	    // tell new player it is their turn
 	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
