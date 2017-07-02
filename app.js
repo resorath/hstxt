@@ -11,10 +11,16 @@ var util = require('./modules/util');
 var interrupts = require('./modules/interrupts');
 var EventEmitter = require('events');
 
-var githead = require('child_process').execSync('git rev-parse HEAD');
-var serverVersion = "azure-dev";
-if(githead !== 'undefined')
+var githead = null;
+var serverVersion = null;
+try {
+  require('child_process').execSync('git rev-parse HEAD');
   serverVersion = "dev-" + githead.slice(-8);
+}
+catch(err)
+{ 
+  serverVersion = "azure-dev"
+}  
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
