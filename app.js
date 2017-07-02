@@ -34,6 +34,9 @@ util.bindQuotes(globals.cards, JSON.parse(fs.readFileSync("quotes.json")));
 // master games list.
 globals.games = [];
 
+// matchmaking sockets
+globals.matchmakingqueue = [];
+
 // setu triggers class
 class Trigger extends EventEmitter {}
 
@@ -140,131 +143,7 @@ io.on('connection', function(socket){
 
   // join a room
   socket.on('join', function(roomname) {
-
-    // check if room already exists:
-    var found = false;
-    var existinggame = null;
-
-    for(game in globals.games)
-    {
-      var agame = globals.games[game];
-      if(agame.name == roomname)
-      {
-        if(agame.p1socket == null)
-        {
-          agame.p1socket = socket;
-          socket.player = 1;
-          socket.game = agame.name;
-          socket.join(roomname);
-
-          socket.emit('terminal', 'Game joined! Your opponent is already here...');
-          socket.emit('control', { command: "assignplayer", player: 1 });
-
-          console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 1");
-
-          found = true;
-          existinggame = agame;
-
-          break;
-        }
-        else if(agame.p2socket == null)
-        {
-          agame.p2socket = socket;
-          socket.player = 2;
-          socket.game = agame.name;
-          socket.join(roomname);
-
-          socket.emit('terminal', 'Game joined! Your opponent is already here...');
-          socket.emit('control', { command: "assignplayer", player: 2 });
-
-          console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 2");
-
-          found = true;
-          existinggame = agame;
-
-          break;
-        }
-        else
-        {
-          console.log("Game " + roomname + " join failed, is full from " + socket.id);
-          socket.emit('control', { command: "roomfull" });
-          return;
-        }
-      }
-
-    }
-
-    // no existing room
-    if(!found)
-    {
-          console.log("Joining " + socket.id + " to new game (" + roomname + ") as player 1");
-          socket.join(roomname);
-
-          var newgame = new components.Game(roomname);
-          newgame.io = io;
-          newgame.p1socket = socket;
-          newgame.isNewGame = true;
-          newgame.name = roomname;
-
-          socket.player = 1;
-          socket.game = newgame.name;
-
-          globals.games.push(newgame);
-
-          socket.emit('terminal', 'Game joined! Waiting for an opponent...\nHint: Tell a friend to join the game using the same game name (' +  roomname + ')!');
-          socket.emit('control', { command: "assignplayer", player: 1 });
-    }
-    else
-    {
-      // a game is already in progress, rejoin
-      if(existinggame.round > 0)
-      {
-        console.log("Resuming existing game " + existinggame.round);
-        existinggame.defaultPrompt(socket);
-        io.to(roomname).emit('control', { command: "resumegame" });
-
-      }
-    }
-
-    var agame = helpers.getGameBySocket(socket);
-    if(agame != null && agame.everyoneConnected())
-    {
-
-      if(agame.isNewGame)
-      {
-
-        // random first player
-        agame.playerTurn = (util.Random(2) + 1);
-        console.log(agame.name + " player " + agame.playerTurn + " goes first!");
-
-        // signal start.
-        console.log("Game " + roomname + " ready to start");
-        io.to(agame.name).emit('control', { command: "startgame" });
-
-        // both players pick deck
-        display.printAvailableDecks(agame.p1socket, globals.decks);
-        display.printAvailableDecks(agame.p2socket, globals.decks);
-
-        io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
-
-        agame.p1socket.promptCallback = execution.pickDecks;
-        agame.p2socket.promptCallback = execution.pickDecks;
-
-        agame.isNewGame = false;
-
-      
-      }
-      else if(agame != null && !agame.everyoneConnected())
-      {
-        console.log("Game " + roomname + " resumed due to reconnect");
-        io.to(agame.name).emit('control', { command: "resumegame" });
-      }
-
-
-    }
-
-
-
+    joinRoom(socket, roomname, false);
   });
 
   socket.on('control', function(msg) {
@@ -280,7 +159,7 @@ io.on('connection', function(socket){
 
     if(msg == "showsetup")
     {
-      socket.emit('terminal', 'To start a new game, enter a unique game name.\nTo join a friend\'s game, enter their game name.\nTo rejoin a game you disconnected from, enter the game name you left.\n');
+      socket.emit('terminal', 'To start a new game, enter a unique game name or press enter for matchmaking.\nTo join a friend\'s game, enter their game name.\nTo rejoin a game you disconnected from, enter the game name you left.\n');
     
       socket.emit('control', { command: 'prompt', prompt: 'Game name> '})
     }
@@ -291,7 +170,165 @@ io.on('connection', function(socket){
 
 });
 
+function joinRoom(socket, roomname, ismatchmaking)
+{
+      // check if room already exists:
+  var found = false;
+  var existinggame = null;
+  var matchmakinggame = false;
 
+  // check if the game name is empty, indicating matchmaking
+  if(roomname == "")
+  {
+    // tell the user matchmaking is starting
+    socket.emit('terminal', 'Joined matchmaking queue... waiting for an opponent...');
+
+    // send the socket to the matchmaking queue and wait ...
+    global.triggers.emit('matchmaking', socket);
+    
+    return;
+    
+  }
+
+  for(game in globals.games)
+  {
+    var agame = globals.games[game];
+    if(agame.name == roomname)
+    {
+      if(agame.p1socket == null)
+      {
+        agame.p1socket = socket;
+        socket.player = 1;
+        socket.game = agame.name;
+        socket.join(roomname);
+
+        if(ismatchmaking)
+        {
+          socket.emit('terminal', 'Opponent found! Joining game');
+          socket.emit('terminal', 'You can resume your game by using game name: ' + roomname);
+        }
+        else
+          socket.emit('terminal', 'Game joined! Your opponent is already here...');
+
+        socket.emit('control', { command: "assignplayer", player: 1 });
+
+        console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 1");
+
+        found = true;
+        existinggame = agame;
+
+        break;
+      }
+      else if(agame.p2socket == null)
+      {
+        agame.p2socket = socket;
+        socket.player = 2;
+        socket.game = agame.name;
+        socket.join(roomname);
+
+        if(ismatchmaking)
+        {
+          socket.emit('terminal', 'Opponent found! Joining game');
+          socket.emit('terminal', 'You can resume your game by using game name: ' + roomname);
+        }
+        else
+          socket.emit('terminal', 'Game joined! Your opponent is already here...');
+
+        socket.emit('control', { command: "assignplayer", player: 2 });
+
+        console.log("Joining " + socket.id + " to existing game (" + roomname + ") as player 2");
+
+        found = true;
+        existinggame = agame;
+
+        break;
+      }
+      else
+      {
+        console.log("Game " + roomname + " join failed, is full from " + socket.id);
+        socket.emit('control', { command: "roomfull" });
+        return;
+      }
+    }
+
+  }
+
+  // no existing room
+  if(!found)
+  {
+    console.log("Joining " + socket.id + " to new game (" + roomname + ") as player 1");
+    socket.join(roomname);
+
+    var newgame = new components.Game(roomname);
+    newgame.io = io;
+    newgame.p1socket = socket;
+    newgame.isNewGame = true;
+    newgame.name = roomname;
+
+    socket.player = 1;
+    socket.game = newgame.name;
+
+    globals.games.push(newgame);
+
+    if(ismatchmaking)
+    {
+      socket.emit('terminal', 'Opponent found! Joining game');
+      socket.emit('terminal', 'You can resume your game by using game name: ' + roomname);
+    }
+    else
+      socket.emit('terminal', 'Game joined! Waiting for an opponent...\nHint: Tell a friend to join the game using the same game name (' +  roomname + ')!');
+    
+    socket.emit('control', { command: "assignplayer", player: 1 });
+  }
+  else
+  {
+    // a game is already in progress, rejoin
+    if(existinggame.round > 0)
+    {
+      console.log("Resuming existing game " + existinggame.round);
+      existinggame.defaultPrompt(socket);
+      io.to(roomname).emit('control', { command: "resumegame" });
+
+    }
+  }
+
+  var agame = helpers.getGameBySocket(socket);
+  if(agame != null && agame.everyoneConnected())
+  {
+
+    if(agame.isNewGame)
+    {
+
+      // random first player
+      agame.playerTurn = (util.Random(2) + 1);
+      console.log(agame.name + " player " + agame.playerTurn + " goes first!");
+
+      // signal start.
+      console.log("Game " + roomname + " ready to start");
+      io.to(agame.name).emit('control', { command: "startgame" });
+
+      // both players pick deck
+      display.printAvailableDecks(agame.p1socket, globals.decks);
+      display.printAvailableDecks(agame.p2socket, globals.decks);
+
+      io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
+
+      agame.p1socket.promptCallback = execution.pickDecks;
+      agame.p2socket.promptCallback = execution.pickDecks;
+
+      agame.isNewGame = false;
+
+    
+    }
+    else if(agame != null && !agame.everyoneConnected())
+    {
+      console.log("Game " + roomname + " resumed due to reconnect");
+      io.to(agame.name).emit('control', { command: "resumegame" });
+    }
+
+
+  }
+}
 
 
 // Parse a command sent from a player
@@ -328,6 +365,16 @@ function parseCommand(command, socket)
 
 }
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 // trigger must be:
 // onplay, onattack, onstartturn, onendturn, onherodamaged, onminiondamaged, onheal, ondeath (deathrattle)
 // sourcecard - card initiating trigger
@@ -355,6 +402,35 @@ global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) 
     });
 
 
+});
+
+global.triggers.on('matchmaking', function(socket) {
+
+  if(globals.matchmakingqueue.length <= 0)
+  {
+    globals.matchmakingqueue.push(socket);
+
+    console.log("Joining socket " + socket.id + " to matchmaking queue because it is empty");
+
+    return;
+  }
+  else
+  {
+    // pop the first in queue and join them together ("matchmaking")
+    var p1 = globals.matchmakingqueue.pop();
+
+    var p2 = socket;
+
+    // invent a game name
+    var gamename = "mm-" + guid();
+
+    console.log("Matchmaking is putting " + p1.id + " and " + socket.id + " into game " + gamename);
+
+    // join both sockets to game
+    joinRoom(p1, gamename, true);
+    joinRoom(p2, gamename, true);
+
+  }
 });
 
 
