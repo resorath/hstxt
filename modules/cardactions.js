@@ -23,7 +23,20 @@ module.exports = {
 
 		socket.emit('terminal', '[[;lightblue;]You gain one mana (this turn)]\n');
 
-		return true;
+	},
+
+	// shield block
+	EX1_606: function(socket, sourcecard, target, parts)
+	{
+		var player = helpers.getPlayerBySocket(socket, false);
+		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+
+		socket.emit('terminal', '[[;lightblue;]You gain 5 armor\n\n');
+		opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s gains 5 armor\n\n');
+		
+		player.armor += 5;
+
+		execution.drawCard(socket);
 
 	},
 
@@ -74,7 +87,6 @@ module.exports = {
 
 		}, 500, 3 + player.spellpower);
 
-		return true;
 	},
 
 	// Fireball
@@ -115,8 +127,6 @@ module.exports = {
 			engineering.damageCard(game, target, damage);
 		}
 
-		return true;
-
 	},
 
 	// Pyroblast
@@ -155,8 +165,6 @@ module.exports = {
 		
 			engineering.damageCard(game, target, damage);
 		}
-
-		return true;
 
 	},
 

@@ -45,6 +45,7 @@ module.exports = {
         attack: 0,
         mana: 0,
         maxmana: 0,
+        armor: 0,
         fatigue: 0,
         spellpower: 0,
         overload: 0,
@@ -60,6 +61,7 @@ module.exports = {
         attack: 0,
         mana: 0,
         maxmana: 0,
+        armor: 0,
         fatigue: 0,
         spellpower: 0,
         overload: 0,
@@ -151,7 +153,12 @@ module.exports = {
     {
       var player = this.getPlayer(socket, false);
 
-      var prompt = player.character + " " + player.health + " HP | " + player.mana + " Mana ";
+      var prompt = player.character + " " + player.health + " HP ";
+
+      if(player.armor > 0)
+        prompt += "[" + player.armor + " armor]"
+
+      prompt += " | " + player.mana + " Mana ";
 
       if(player.attack > 0)
         prompt += "| " + player.attack + " Attack ";

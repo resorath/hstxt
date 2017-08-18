@@ -396,6 +396,19 @@ module.exports = {
 
 	damagePlayer: function(agame, player, amount)
 	{
+		if(player.armor < amount)
+		{
+			amount -= player.armor;
+
+			player.armor = 0;
+		}
+		else
+		{
+			player.armor -= amount;
+
+			amount = 0;
+		}
+
 		player.health -= amount;
 
 		helpers.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);

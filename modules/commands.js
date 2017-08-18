@@ -5,6 +5,7 @@ var execution = require('./execution');
 var display = require('./display');
 var util = require('./util');
 var ca = require('./cardactions')
+var preconditions = require('./preconditions');
 var constants = require('./constants');
 var engineering = require('./engineering');
 
@@ -101,7 +102,12 @@ module.exports = {
   board: function(socket, parts)
   {
       var response = "\nYour opponent has " + helpers.getHandBySocket(socket, true).length + " cards\n" +
-      "Opponent health: " + helpers.getPlayerBySocket(socket, true).health + " hp\n";
+      "Opponent health: " + helpers.getPlayerBySocket(socket, true).health + " hp"
+
+      if(helpers.getPlayerBySocket(socket, true).armor > 0)
+        response += " + " + helpers.getPlayerBySocket(socket, true).armor + " armor";
+
+      response += "\n";
 
       if(helpers.getPlayerBySocket(socket, true).weapon != null)
         response += "Equipped: " + display.printCard(helpers.getPlayerBySocket(socket, true).weapon, true, helpers.getPlayerBySocket(socket, true).canattack) +"\n";
@@ -219,7 +225,7 @@ module.exports = {
         if(secondary != null)
         {
           if(helpers.targetIsOpponent(secondary))
-            targetcard = "OPPONENT";
+            targetcard = constants.opponenttarget;
           else if(helpers.targetIsSelf(secondary))
             targetcard = constants.selftarget;
           else
@@ -237,6 +243,15 @@ module.exports = {
           socket.emit("terminal", "There is not enough room on the board!\n");
           return;
         }
+
+        // check any final preconditions from the special preconditions var
+        var pre = true;
+        if(typeof preconditions[cardtoplay.id] === 'function')
+          pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
+
+        // preconditions failed
+        if(!pre)
+          return;
 
 
         // is minion charge?
@@ -273,6 +288,15 @@ module.exports = {
           if(target == null && !targetenemyhero)
             socket.emit("terminal", "Invalid target");
         }
+
+        // check any final preconditions from the special preconditions var
+        var pre = true;
+        if(typeof preconditions[cardtoplay.id] === 'function')
+          pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
+
+        // preconditions failed
+        if(!pre)
+          return;
       }
 
       if(cardtoplay.type == "WEAPON");
@@ -298,6 +322,15 @@ module.exports = {
             socket.emit("terminal", "Invalid target");
         }
 
+        // check any final preconditions from the special preconditions var
+        var pre = true;
+        if(typeof preconditions[cardtoplay.id] === 'function')
+          pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
+
+        // preconditions failed
+        if(!pre)
+          return;
+
         // delete old weapon if one exists
         if(player.weapon != null)
         {
@@ -318,18 +351,6 @@ module.exports = {
       if(cardplayed)
       {
 
-        // do card actions (either spell cast or battlecry)
-        if(typeof ca[cardtoplay.id] === 'function')
-          cardplayed = ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
-        else
-          console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
-
-        // play condition failed
-        if(cardplayed === false)
-          return;
-
-        // remove card from hand
-        var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
 
         // announce play to opposite
         helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
@@ -337,6 +358,15 @@ module.exports = {
         socket.emit('terminal', 'Playing...');
 
         game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
+
+        // do card actions (either spell cast or battlecry)
+        if(typeof ca[cardtoplay.id] === 'function')
+          ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
+        else
+          console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
+        // remove card from hand
+        var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
 
         // deduct mana
         player.mana -= cardinhand.cost;
