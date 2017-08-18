@@ -296,7 +296,10 @@ module.exports = {
 
         // preconditions failed
         if(!pre)
+        {
+          console.log("precondition failed");
           return;
+        }
       }
 
       if(cardtoplay.type == "WEAPON");
@@ -351,6 +354,9 @@ module.exports = {
       if(cardplayed)
       {
 
+        // remove card from hand
+        var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
+
 
         // announce play to opposite
         helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
@@ -364,9 +370,6 @@ module.exports = {
           ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
         else
           console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
-
-        // remove card from hand
-        var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
 
         // deduct mana
         player.mana -= cardinhand.cost;
