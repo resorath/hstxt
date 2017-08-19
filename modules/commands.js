@@ -160,29 +160,49 @@ module.exports = {
       var target = parts[1];
       var secondary = parts[2];
 
+      var position = null;
+
       if(handtarget == null)
       {
         socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
         return;
       }
 
+      if(handtarget.toLowerCase().charAt(0) != 'h')
+      {
+        socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
+        return;
+      }
+
       var cardtoplay = helpers.boardIndexToCard(handtarget, socket); 
+
       if(cardtoplay == null)
       {
         socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
         return;
       }  
 
+
       // if its a minion, it has to have a board target
       if(cardtoplay.type == "MINION")
       {
+
+        // swap position and target inputs as they are backwards coming in
+        position = target;
+        target = secondary;
+        secondary = null;
+
+        // if no target or position, default position is 0
+        if(target == null && position == null)
+          position = 0;
+
         // board target must exist and be between 0 and max friendly board count (inclusive)
-        if(target == null 
-          && !isNaN(target) 
-          && target > -1 
-          && target <= helpers.getBoardBySocket(socket, false).length)
+        if(position == null 
+          || isNaN(position) 
+          || position < 0 
+          || position > helpers.getBoardBySocket(socket, false).length)
         {
-          socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
+          socket.emit("terminal", "Select a valid place to put that minion\n");
           return;
         }
       }
@@ -207,195 +227,146 @@ module.exports = {
       var cardplayed = true;
 
       var targetcard = null;
-      var targetenemyhero = false;
 
-      // todo: do game logic
+      // Do preconditions first
 
-      // if a minion, place on board
-      if(cardtoplay.type == "MINION")
+      // choose target card if applicable
+      if(target != null)
       {
-        // check if minion needs a target
-        if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && target == null && secondary == null)
-        {
-          socket.emit("terminal", "This card needs a position and target to play!\nplay [position] [target]\n");
-          return;
-        }
-
-        // choose target card if applicable
-        if(secondary != null)
-        {
-          if(helpers.targetIsOpponent(secondary))
-            targetcard = constants.opponenttarget;
-          else if(helpers.targetIsSelf(secondary))
-            targetcard = constants.selftarget;
-          else
-            targetcard = helpers.boardIndexToCard(secondary, socket);
-
-          if(target == null && !targetenemyhero)
-          {
-            socket.emit("terminal", "Invalid target");
-            return;
-          }
-        }
-
-        var board = helpers.getBoardBySocket(socket, false);
-
-        // is there enough room on the board?
-        if(board.length >= 7)
-        {
-          socket.emit("terminal", "There is not enough room on the board!\n");
-          return;
-        }
-
-        // check any final preconditions from the special preconditions var
-        var pre = true;
-        if(typeof preconditions[cardtoplay.id] === 'function')
-          pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
-
-        // preconditions failed
-        if(!pre)
-          return;
-
-
-        // is minion charge?
-        if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
-          cardtoplay["canattack"] = true;
+        if(helpers.targetIsOpponent(target))
+          targetcard = constants.opponenttarget;
+        else if(helpers.targetIsSelf(target))
+          targetcard = constants.selftarget;
         else
-          cardtoplay["canattack"] = false;
-
-        // put card on board
-        board.splice(target, 0, cardtoplay);
-
-
-      }
-
-      if(cardtoplay.type == "SPELL")
-      {
-        // cast spell
-
-        // check if spell needs a target
-        if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && target == null)
         {
-          socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
+          var targettype = target.toLowerCase().charAt(0);
+          if(targettype == 'o' || targettype == 'm')
+            targetcard = helpers.boardIndexToCard(target, socket);
+        }
+
+        if(targetcard == null)
+        {
+          socket.emit("terminal", "Invalid target");
           return;
         }
-        else if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false)
-        {
-          if(helpers.targetIsOpponent(target))
-            targetcard = constants.opponenttarget;
-          else if(helpers.targetIsSelf(target))
-            targetcard = constants.selftarget;
-          else
-            targetcard = helpers.boardIndexToCard(target, socket);
+      } 
 
-          if(target == null && !targetenemyhero)
+      // check preconditions specific to each type of card
+      switch(cardtoplay.type)
+      {
+
+        case "MINION":
+
+          // check if minion needs a target
+          if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && position == null && targetcard == null)
           {
-            socket.emit("terminal", "Invalid target");
+            socket.emit("terminal", "This card needs a position and target to play!\nplay [position] [target]\n");
             return;
           }
-        }
 
-        // check any final preconditions from the special preconditions var
-        var pre = true;
-        if(typeof preconditions[cardtoplay.id] === 'function')
-          pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
+          var board = helpers.getBoardBySocket(socket, false);
 
-        // preconditions failed
-        if(!pre)
-        {
-          console.log("precondition failed");
-          return;
-        }
-      }
-
-      if(cardtoplay.type == "WEAPON");
-      {
-        // equip weapon
-
-        // check if spell needs a target
-        if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && target == null)
-        {
-          socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
-          return;
-        }
-        else if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false)
-        {
-          if(helpers.targetIsOpponent(target))
-            targetcard = constants.opponenttarget;
-          else if(helpers.targetIsSelf(target))
-            targetcard = constants.selftarget;
-          else
-            targetcard = helpers.boardIndexToCard(target, socket);
-
-          if(target == null && !targetenemyhero)
+          // is there enough room on the board?
+          if(board.length >= 7)
           {
-            socket.emit("terminal", "Invalid target");
+            socket.emit("terminal", "There is not enough room on the board!\n");
             return;
           }
-        }
 
-        // check any final preconditions from the special preconditions var
-        var pre = true;
-        if(typeof preconditions[cardtoplay.id] === 'function')
-          pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
+          break;
 
-        // preconditions failed
-        if(!pre)
-          return;
+        case "SPELL":
+        case "WEAPON":
 
-        // delete old weapon if one exists
-        if(player.weapon != null)
-        {
-          socket.emit("terminal", player.weapon.name + " was destroyed!");
-          player.weapon = null;
-        }
-
-        // equip weapon
-        player.weapon = cardtoplay;
-
-        // add damage to player
-        player.attack = cardtoplay.attack;
+          // check if spell needs a target
+          if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && targetcard == null)
+          {
+            socket.emit("terminal", "This card needs a target to play!\nplay [target]\n");
+            return;
+          }
+          break;
 
 
       }
 
+      // check any final preconditions from the special preconditions var
+      var pre = true;
+      if(typeof preconditions[cardtoplay.id] === 'function')
+        pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
 
-      if(cardplayed)
+      // preconditions failed
+      if(!pre)
+        return;
+
+
+      // now to the execution
+
+
+      // remove card from hand
+      var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
+
+      // announce play to opposite
+      helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
+      // announce play to player
+      socket.emit('terminal', 'Playing...');
+
+      game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
+
+      // Do specific things to put the card on the board
+      switch(cardtoplay.type)
       {
+        case "MINION":
+          // put minion on board
+          board.splice(target, position, cardtoplay);
 
-        // remove card from hand
-        var cardinhand = helpers.getHandBySocket(socket, false).splice(indexinhand, 1)[0];
+          // is minion charge?
+          if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
+            cardtoplay["canattack"] = true;
+          else
+            cardtoplay["canattack"] = false;
 
+          break;
 
-        // announce play to opposite
-        helpers.getOppositePlayerSocket(socket).emit('terminal', "Your opponent played...");
-        // announce play to player
-        socket.emit('terminal', 'Playing...');
-
-        game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
-
-        // do card actions (either spell cast or battlecry)
-        if(typeof ca[cardtoplay.id] === 'function')
-          ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
-        else
-          console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
-
-        // deduct mana
-        player.mana -= cardinhand.cost;
-
-        // do sound effect
-        if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
-          game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+        case "SPELL":
+          break;
 
 
+        case "WEAPON":
+          // equip weapon
+          // delete old weapon if one exists
+          if(player.weapon != null)
+          {
+            socket.emit("terminal", player.weapon.name + " was destroyed!");
+            player.weapon = null;
+          }
 
+          // equip weapon
+          player.weapon = cardtoplay;
 
-        // do other card actions
-        //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
-        helpers.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
-
-
+          // add damage to player
+          player.attack = cardtoplay.attack;
+          break;
       }
+
+      // do card actions (either spell cast or battlecry)
+      if(typeof ca[cardtoplay.id] === 'function')
+        ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
+      else
+        console.log("Card " + cardtoplay.id + " didn't have lookup action to play");
+
+      // deduct mana
+      player.mana -= cardinhand.cost;
+
+      // do sound effect
+      if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
+        game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+
+
+      // do other card actions
+      //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
+      helpers.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+
+
 
       game.defaultPrompt(socket);
 
