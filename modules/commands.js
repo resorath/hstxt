@@ -162,28 +162,32 @@ module.exports = {
 
       var position = null;
 
+      // what card to play is required
       if(handtarget == null)
       {
         socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
         return;
       }
 
+      // target in hand must be from the hand
       if(handtarget.toLowerCase().charAt(0) != 'h')
       {
         socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
         return;
       }
 
+      // fetch the card data from the hand (but don't pull it yet)
       var cardtoplay = helpers.boardIndexToCard(handtarget, socket); 
-
       if(cardtoplay == null)
       {
         socket.emit("terminal", "Select a card from your hand to play, e.g. play h1\n");
         return;
       }  
 
-
-      // if its a minion, it has to have a board target
+      // if its a minion, we have to set the variables differently
+      // minion format is: play [position] [target]
+      // everything else: play [target]
+      // so we need to make target consistent
       if(cardtoplay.type == "MINION")
       {
 
@@ -192,8 +196,20 @@ module.exports = {
         target = secondary;
         secondary = null;
 
-        // if no target or position, default position is 0
-        if(target == null && position == null)
+        // if a position was given, but no target, check to see if the "position" is actually a target
+        // and make the position default 0
+        if(position != null && target == null)
+        {
+          var targettype = position.toLowerCase().charAt(0);
+          if(targettype == 'o' || targettype == 'm')
+          {
+            target = position;
+            position = 0;
+          }
+        }
+
+        // default position is 0
+        if(position == null)
           position = 0;
 
         // board target must exist and be between 0 and max friendly board count (inclusive)
@@ -214,9 +230,6 @@ module.exports = {
         return;
       }
 
-
-      ///// Play the card
-
       // card index in hand array
       var indexinhand = handtarget.substring(1);
       indexinhand--;
@@ -224,8 +237,6 @@ module.exports = {
       console.log(socket.id + " playing index :" + indexinhand);
 
       // record if successful play
-      var cardplayed = true;
-
       var targetcard = null;
 
       // Do preconditions first
@@ -317,7 +328,7 @@ module.exports = {
       {
         case "MINION":
           // put minion on board
-          board.splice(target, position, cardtoplay);
+          board.splice(position, 0, cardtoplay);
 
           // is minion charge?
           if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
