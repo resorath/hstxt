@@ -232,7 +232,10 @@ module.exports = {
             targetcard = helpers.boardIndexToCard(secondary, socket);
 
           if(target == null && !targetenemyhero)
+          {
             socket.emit("terminal", "Invalid target");
+            return;
+          }
         }
 
         var board = helpers.getBoardBySocket(socket, false);
@@ -286,7 +289,10 @@ module.exports = {
             targetcard = helpers.boardIndexToCard(target, socket);
 
           if(target == null && !targetenemyhero)
+          {
             socket.emit("terminal", "Invalid target");
+            return;
+          }
         }
 
         // check any final preconditions from the special preconditions var
@@ -322,7 +328,10 @@ module.exports = {
             targetcard = helpers.boardIndexToCard(target, socket);
 
           if(target == null && !targetenemyhero)
+          {
             socket.emit("terminal", "Invalid target");
+            return;
+          }
         }
 
         // check any final preconditions from the special preconditions var
