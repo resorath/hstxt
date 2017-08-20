@@ -300,15 +300,10 @@ module.exports = {
 
       }
 
-      // check any final preconditions from the special preconditions var
-      var pre = true;
+      // run any preconditions that might exist, if they return false, fail
       if(typeof preconditions[cardtoplay.id] === 'function')
-        pre = preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts);
-
-      // preconditions failed
-      if(!pre)
-        return;
-
+        if(!preconditions[cardtoplay.id](socket, cardinhand, targetcard, parts))
+          return;
 
       // now to the execution
 
