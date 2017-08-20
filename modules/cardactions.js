@@ -28,13 +28,12 @@ module.exports = {
 	// shield block
 	EX1_606: function(socket, sourcecard, target, parts)
 	{
-		var player = helpers.getPlayerBySocket(socket, false);
-		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+		var o = helpers.getGameObjectsBySocket(socket);
 
 		socket.emit('terminal', '[[;lightblue;]You gain 5 armor\n\n');
-		opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s gains 5 armor\n\n');
+		o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s gains 5 armor\n\n');
 		
-		player.armor += 5;
+		o.players.self.armor += 5;
 
 		execution.drawCard(socket);
 
@@ -45,47 +44,42 @@ module.exports = {
 	{
 		console.log("Playing arcane missiles");
 
-		var game = helpers.getGameBySocket(socket);
-		var player = helpers.getPlayerBySocket(socket, false);
-		var opponent = helpers.getPlayerBySocket(socket, true);
-		var enemyboard = helpers.getBoardBySocket(socket, true);
-
-		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+		var o = helpers.getGameObjectsBySocket(socket);
 
 		socket.emit('terminal', '[[;lightblue;]Your fingers glow a soft blue...\n\n');
-		opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fingers glow a soft blue...\n\n');
+		o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fingers glow a soft blue...\n\n');
 		
 
 		util.doMultipleThingsSlowly(function() {
 
-			if(enemyboard.length == 0)
+			if(o.boards.opponent.length == 0)
 			{
-				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
-				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
+				o.sockets.self.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
 				
-				execution.damagePlayer(game, opponent, 1);
+				execution.damagePlayer(o.game, o.players.opponent, 1);
 				return;
 			}
 
-			var targetindex = util.RandomInt(0, enemyboard.length); // all cards + opponent
+			var targetindex = util.RandomInt(0, o.boards.opponent.length); // all cards + opponent
 
-			if(targetindex == enemyboard.length)
+			if(targetindex == o.boards.opponent.length)
 			{
-				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
-				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
-				execution.damagePlayer(game, opponent, 1);
+				o.sockets.self.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
+				execution.damagePlayer(o.game, o.players.opponent, 1);
 				return;
 			}
 			else
 			{
-				socket.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to '+ enemyboard[targetindex]['name'] +'\n\n');
-				opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your '+ enemyboard[targetindex]['name'] + ']\n\n');
+				o.sockets.self.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to '+ o.boards.opponent[targetindex]['name'] +'\n\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your '+ o.boards.opponent[targetindex]['name'] + ']\n\n');
 
-				engineering.damageCard(game, enemyboard[targetindex], 1);
+				engineering.damageCard(o.game, o.boards.opponent[targetindex], 1);
 				return;
 			}
 
-		}, 500, 3 + player.spellpower);
+		}, 500, 3 + o.players.self.spellpower);
 
 	},
 
@@ -184,17 +178,14 @@ module.exports = {
 
 		socket.emit('terminal', '[[;lightblue;]You emit a powerful arcane shockwave]\n\n');
 		opponentsocket.emit('terminal', '[[;lightblue;]Your opponent emits a powerful arcane shockwave]\n\n');
-		
 
-		for(cardid in enemyboard)
+		enemyboard.forEach(function(card)
 		{
-			var card = enemyboard[cardid];
-
 			socket.emit('terminal', '[[;lightblue;]Your arcane explosion deals '+damage+' to '+card.name+']\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane explosion deals '+damage+' to '+card.name+']\n');
 
 			engineering.damageCard(game, card, damage);
-		}
+		})
 
 	},
 
@@ -231,7 +222,22 @@ module.exports = {
 				engineering.addBuff(card, buff);
 		});
 
-	}
+	},
+
+	// Nightblade
+	EX1_593: function(socket, sourcecard, target, parts)
+	{		
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		var damage = 3 + o.players.self.spellpower;
+
+		o.sockets.self.emit('terminal', '[[;lightblue;]You deal ' + damage + ' to your opponent]\n\n');
+		o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent deals ' + damage + ' to you!]\n\n');
+
+		execution.damagePlayer(o.game, o.players.opponent, damage);
+		
+
+	},
 
 }
 

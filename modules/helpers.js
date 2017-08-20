@@ -14,6 +14,32 @@ module.exports = {
 		this.triggers = triggers;
 	},
 
+	// meta helper function to assemble common game objects
+	getGameObjectsBySocket: function(socket) {
+
+		var o = {
+
+			game: this.getGameBySocket(socket),
+
+			players: { 
+				self: this.getPlayerBySocket(socket, false),
+				opponent: this.getPlayerBySocket(socket, true)
+			},
+
+			boards: {
+				self: this.getBoardBySocket(socket, false),
+				opponent: this.getBoardBySocket(socket, true)
+			},
+
+			sockets: {
+				self: socket,
+				opponent: this.getOppositePlayerSocket(socket)
+			}
+		};
+
+		return o;
+	},
+
 	getHandBySocket: function(socket, getOppositeHand)
 	{
 	  // find game of socket first

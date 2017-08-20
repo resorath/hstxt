@@ -3,6 +3,7 @@ var display = require('./display');
 var util = require('./util');
 var interrupts = require('./interrupts');
 var constants = require('./constants');
+var heroes = require('./Heroes');
 
 module.exports = {
 
@@ -23,6 +24,9 @@ module.exports = {
 	  var game = helpers.getGameBySocket(socket);
 
 	  player.character = deck.heroname;
+
+	  // load hero power
+	  player.heropower = heroes[deck.hero];
 
 	  for(cardid in deck.cards)
 	  {

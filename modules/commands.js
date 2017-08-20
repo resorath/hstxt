@@ -354,6 +354,11 @@ module.exports = {
           break;
       }
 
+      // do sound effect
+      if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
+        game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+
+
       // do card actions (either spell cast or battlecry)
       if(typeof ca[cardtoplay.id] === 'function')
         ca[cardtoplay.id](socket, cardinhand, targetcard, parts);
@@ -362,11 +367,6 @@ module.exports = {
 
       // deduct mana
       player.mana -= cardinhand.cost;
-
-      // do sound effect
-      if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
-        game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
-
 
       // do other card actions
       //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);

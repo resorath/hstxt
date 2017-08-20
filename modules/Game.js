@@ -53,6 +53,7 @@ module.exports = {
         secrets: [],
         weapon: null,
         canattack: true,
+        heropower: null,
       },
       p2: {
         number: 2,
@@ -69,6 +70,7 @@ module.exports = {
         secrets: [],
         weapon: null,
         canattack: true,
+        heropower: null,
       }
     }
 
