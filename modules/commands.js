@@ -378,6 +378,10 @@ module.exports = {
 
   },
 
+  // hero power
+  // similar to play a spell
+  
+
   // attack a minion or hero into another minion or hero
   // play source destination
   attack: function(socket, parts)

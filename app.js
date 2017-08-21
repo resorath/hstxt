@@ -394,9 +394,9 @@ global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) 
     // do secrets (only for the opposite player)
     var secretplayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
 
-    secretplayer.secrets.forEach(function(secret) {
-      if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
-        interrupts[secret.id][trigger](game, secret);
+    secretplayer.secrets.forEach(function (secret) {
+      if(typeof interrupts[secret.id] !== 'undefined' && typeof interrupts[secret.id][trigger] === 'function')
+        interrupts[secret.id][trigger](game, secret, sourcecard, targetcard);
     });
 
     // get boards
@@ -404,10 +404,26 @@ global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) 
     board = board.concat(game.getBoard(game.p2socket, false));
 
     // go to each card and see if it needs a trigger (including the sourcecard and targetcards. )
-    board.forEach(function(card) {
+    board.forEach(function (card) {
       if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
         interrupts[card.id][trigger](game, card, sourcecard, targetcard);
     });
+
+    // go through each player status and see if it needs a trigger
+    // load statuses with buff effects like freeze
+    // example, remove freeze, remove temporary buffs (druids)
+    var currentPlayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
+    var oppositePlayer = secretplayer;
+
+    currentPlayer.status.forEach(function (status) {
+      if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
+        interrupts[status.id][trigger](game, secret);
+    });
+
+    oppositePlayer.status.forEach(function (status) {
+      if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
+        interrupts[status.id][trigger](game, secret);
+    })
 
 
 });
