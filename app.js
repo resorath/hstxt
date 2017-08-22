@@ -10,6 +10,7 @@ var display = require('./modules/display');
 var util = require('./modules/util');
 var interrupts = require('./modules/interrupts');
 var heroes = require('./modules/Heroes');
+var gamevars = require('./modules/gamevars');
 var EventEmitter = require('events');
 
 var githead = null;
@@ -34,19 +35,19 @@ app.get('/keyboard-event-polyfill.js', function(req, res) {
 var port = process.env.PORT || 8000;
 
 // load cards and decks
-global.cards = JSON.parse(fs.readFileSync("cards.json"));
-global.decks = JSON.parse(fs.readFileSync("decks.json"));
-util.bindQuotes(global.cards, JSON.parse(fs.readFileSync("quotes.json")));
+gamevars.cards = JSON.parse(fs.readFileSync("cards.json"));
+gamevars.decks = JSON.parse(fs.readFileSync("decks.json"));
+util.bindQuotes(gamevars.cards, JSON.parse(fs.readFileSync("quotes.json")));
 
 // master games list.
-global.games = [];
+gamevars.games = [];
 
 // setu triggers class
 class Trigger extends EventEmitter {}
 
-global.triggers = new Trigger();
+gamevars.triggers = new Trigger();
 
-global.heroes = heroes;
+gamevars.heroes = heroes;
 
 
 // matchmaking sockets
@@ -106,7 +107,7 @@ io.on('connection', function(socket){
           console.log("Removing game " + agame.name + " because it is out of players");
           execution.quitGame(agame);
 
-          /*util.filterInPlace(global.games, function (el) {
+          /*util.filterInPlace(gamevars.games, function (el) {
             return el.name != agame.name;
           });*/
 
@@ -121,7 +122,7 @@ io.on('connection', function(socket){
           execution.quitGame(agame);
           /*io.to(agame.name).emit("control", {command: "endgame"} );
 
-          util.filterInPlace(global.games, function (el) {
+          util.filterInPlace(gamevars.games, function (el) {
             return el.name != agame.name;
           });*/
 
@@ -191,15 +192,15 @@ function joinRoom(socket, roomname, ismatchmaking)
     socket.emit('terminal', 'Joined matchmaking queue... waiting for an opponent...');
 
     // send the socket to the matchmaking queue and wait ...
-    global.triggers.emit('matchmaking', socket);
+    gamevars.triggers.emit('matchmaking', socket);
     
     return;
     
   }
 
-  for(game in global.games)
+  for(game in gamevars.games)
   {
-    var agame = global.games[game];
+    var agame = gamevars.games[game];
     if(agame.name == roomname)
     {
       if(agame.p1socket == null)
@@ -275,7 +276,7 @@ function joinRoom(socket, roomname, ismatchmaking)
     socket.player = 1;
     socket.game = newgame.name;
 
-    global.games.push(newgame);
+    gamevars.games.push(newgame);
 
     if(ismatchmaking)
     {
@@ -315,8 +316,8 @@ function joinRoom(socket, roomname, ismatchmaking)
       io.to(agame.name).emit('control', { command: "startgame" });
 
       // both players pick deck
-      display.printAvailableDecks(agame.p1socket, global.decks);
-      display.printAvailableDecks(agame.p2socket, global.decks);
+      display.printAvailableDecks(agame.p1socket, gamevars.decks);
+      display.printAvailableDecks(agame.p2socket, gamevars.decks);
 
       io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
 
@@ -386,7 +387,7 @@ function guid() {
 // onplay, onattack, onstartturn, onendturn, onherodamaged, onminiondamaged, onheal, ondeath (deathrattle)
 // sourcecard - card initiating trigger
 // targetcard - card that may be impacted by trigger (optional)
-global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) {
+gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) {
 
     trigger = trigger.toLowerCase();
 
@@ -427,7 +428,7 @@ global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) 
 
 });
 
-global.triggers.on('matchmaking', function(socket) {
+gamevars.triggers.on('matchmaking', function(socket) {
 
   if(matchmakingqueue.length <= 0)
   {

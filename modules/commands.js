@@ -8,6 +8,7 @@ var ca = require('./cardactions')
 var preconditions = require('./preconditions');
 var constants = require('./constants');
 var engineering = require('./engineering');
+var gamevars = require('./gamevars');
 
 module.exports = {
 
@@ -370,7 +371,7 @@ module.exports = {
 
       // do other card actions
       //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
-      global.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+      gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
 
 
 
@@ -573,11 +574,11 @@ module.exports = {
     // do trigger
     // @todo: @critical: this is going to bug on effects when attacking hero
     if(!isSelfAttacking)
-      global.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
+      gamevars.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
     else
     {
       if(self.weapon != null)
-          global.triggers.emit('doTrigger', constants.triggers.onattack, agame, self.weapon, destinationCard);
+          gamevars.triggers.emit('doTrigger', constants.triggers.onattack, agame, self.weapon, destinationCard);
 
     }
 

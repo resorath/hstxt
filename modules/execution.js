@@ -2,6 +2,7 @@ var helpers = require('./helpers');
 var display = require('./display');
 var util = require('./util');
 var constants = require('./constants');
+var gamevars = require('./gamevars');
 
 module.exports = {
 
@@ -9,7 +10,7 @@ module.exports = {
 	{
 	  var deck = null;
 	  if(!isNaN(command))
-	    var deck = global.decks[command]
+	    var deck = gamevars.decks[command]
 	  else 
 	    return;
 
@@ -24,7 +25,7 @@ module.exports = {
 	  player.character = deck.heroname;
 
 	  // load hero power
-	  player.heropower = global.heroes[deck.hero].heropower;
+	  player.heropower = gamevars.heroes[deck.hero].heropower;
 
 	  for(cardid in deck.cards)
 	  {
@@ -304,7 +305,7 @@ module.exports = {
 	    console.log("Ending turn of " + agame.name + ". Moving turn from " + agame.playerTurn + " to " + agame.playerTurnOpposite());
 
 	    // do end of turn things
-	    global.triggers.emit('doTrigger', constants.triggers.onendturn, agame, null, null);
+	    gamevars.triggers.emit('doTrigger', constants.triggers.onendturn, agame, null, null);
 
 
 	    // flip whos turn it is
@@ -327,7 +328,7 @@ module.exports = {
 	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
 	    // do start of turn things
-	    global.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
+	    gamevars.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
 
 
 	    // draw new player a card
@@ -413,7 +414,7 @@ module.exports = {
 
 		player.health -= amount;
 
-		global.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);
+		gamevars.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);
 
 		agame.updatePromptsWithDefault();
 
@@ -471,7 +472,7 @@ module.exports = {
 
       game.io.to(game.name).emit("control", {command: "endgame"} );
 
-      util.filterInPlace(global.games, function (el) {
+      util.filterInPlace(gamevars.games, function (el) {
         return el.name != game.name;
       });
 

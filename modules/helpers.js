@@ -1,4 +1,5 @@
 var constants = require('./constants');
+var gamevars = require('./gamevars');
 
 module.exports = {
 
@@ -58,9 +59,9 @@ module.exports = {
 
 	getGameBySocket: function(socket)
 	{
-	    for(game in global.games)
+	    for(game in gamevars.games)
 	    {
-	      var agame = global.games[game];
+	      var agame = gamevars.games[game];
 	      if(agame.p1socket != null && agame.p1socket.id == socket.id)
 	      	 return agame;
 	      if(agame.p2socket != null && agame.p2socket.id == socket.id)
@@ -118,7 +119,7 @@ module.exports = {
 	{
 	  var returnVal = null;
 
-	  global.cards.forEach(function(card)
+	  gamevars.cards.forEach(function(card)
 	  {
 	    if(card["name"] && card["name"].toUpperCase() === name.toUpperCase() && 
 	      ( card["type"] == "WEAPON" || card["type"] == "SPELL" || card["type"] == "MINION" ) )
@@ -142,7 +143,7 @@ module.exports = {
 	{
 	  var returnVal = null;
 
-	  global.cards.forEach(function(card)
+	  gamevars.cards.forEach(function(card)
 	  {
 	    if(card["id"] && card["id"].toUpperCase() === id.toUpperCase())
 	    {
