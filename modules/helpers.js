@@ -8,7 +8,7 @@ module.exports = {
 	triggers: null,
 	heros: null,
 
-	init: function(games, cards, decks, heroes) {
+	init: function(games, cards, decks, triggers, heroes) {
 		this.games = games;
 		this.cards = cards;
 		this.decks = decks;

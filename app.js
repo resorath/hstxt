@@ -54,7 +54,7 @@ global.triggers = new Trigger();
 global.heroes = heroes;
 
 // cross inits
-helpers.init(globals.games, globals.cards, globals.decks, global.heroes);
+helpers.init(globals.games, globals.cards, globals.decks, global.triggers, global.heroes);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
