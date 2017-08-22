@@ -72,6 +72,22 @@ module.exports = {
 		}
 	},
 
+	healCard: function(agame, card, amount)
+	{
+		// need original values of card
+		var basecard = helpers.getCardById(card.id);
+
+		// heal card
+		card.health += amount;
+
+		// enforce maximum health
+		if(card.health > basecard.health)
+			card.health = basecard.health;
+
+		gamevars.triggers.emit('doTrigger', constants.triggers.onheal, agame, card, null);
+
+	},
+
 	// removes a card from the board, and optionally triggers its deathrattle
 	removeCard: function(agame, card, deathrattle)
 	{

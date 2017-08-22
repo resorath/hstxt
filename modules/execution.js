@@ -434,6 +434,18 @@ module.exports = {
 
 	},
 
+	healPlayer: function(agame, player, amount)
+	{
+		player.health += amount;
+
+		if(player.health > player.maxhealth)
+			player.health = player.maxhealth
+
+		gamevars.triggers.emit('doTrigger', constants.triggers.onheal, agame, null, null);
+
+		agame.updatePromptsWithDefault();
+	},
+
 
 
 	activateTurnTimer: function(agame)

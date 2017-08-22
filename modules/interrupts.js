@@ -15,6 +15,12 @@ var engineering = require('./engineering');
 * onminiondamaged
 * onheal
 * ondeath
+*
+* signature
+* game: game to act on
+* selectedcard: the card picked up on the loop
+* sourcecard: the card that triggered the effect
+* targetcard: card that may be impacted by the trigger
 */
 
 module.exports = {

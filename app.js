@@ -417,12 +417,12 @@ gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard
 
     currentPlayer.status.forEach(function (status) {
       if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
-        interrupts[status.id][trigger](game, secret);
+        interrupts[status.id][trigger](game, status, sourcecard, targetcard);
     });
 
     oppositePlayer.status.forEach(function (status) {
       if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
-        interrupts[status.id][trigger](game, secret);
+        interrupts[status.id][trigger](game, status, sourcecard, targetcard);
     })
 
 
