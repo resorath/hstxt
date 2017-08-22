@@ -2,6 +2,7 @@ var constants = require('./constants');
 var helpers = require('./helpers');
 var engineering = require('./engineering');
 var execution = require('./execution');
+var display = require('./display');
 
 module.exports = {
 
@@ -12,7 +13,7 @@ module.exports = {
 
 		heropower: {
 
-			name: "Firebolt",
+			name: "Fireblast",
 			cost: 2,
 			ready: true,
 			targetrequired: true,
@@ -22,26 +23,31 @@ module.exports = {
 
 				var damage = 1;
 
+				var heropowercard = helpers.getCardById("CS2_034");
+				console.log(heropowercard);
+				
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
 				if(target == constants.selftarget)
 				{
-					o.sockets.self.emit('terminal', '[[;lightblue;]Your firebolt explodes violently in your hands, dealing '+ damage +' damage!]\n');
-					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s firebolt explodes in their hands! dealing '+ damage + 'damage]\n');
+					o.sockets.self.emit('terminal', '[[;lightblue;]Your fireblast explodes violently in your hands, dealing '+ damage +' damage!]\n');
+					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fireblast explodes in their hands! dealing '+ damage + ' damage]\n');
 				
 					execution.damagePlayer(o.game, o.players.self, damage);
 				}
 
 				else if(target == constants.opponenttarget)
 				{
-					o.sockets.self.emit('terminal', '[[;lightblue;]Your firebolt streaks across the board to your opponent, dealing '+ damage +' damage]\n');
-					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s firebolt hits you for '+ damage + ' damage!]\n');
+					o.sockets.self.emit('terminal', '[[;lightblue;]Your fireblast streaks across the board to your opponent, dealing '+ damage +' damage]\n');
+					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fireblast hits you for '+ damage + ' damage!]\n');
 				
 					execution.damagePlayer(o.game, o.players.opponent, damage);
 				}
 
 				else
 				{
-					o.sockets.self.emit('terminal', '[[;lightblue;]Your firebolt collides with '+ target.name + ', dealing ' + damage +' damage]\n');
-					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s firebolt collides with ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
+					o.sockets.self.emit('terminal', '[[;lightblue;]Your fireblast collides with '+ target.name + ', dealing ' + damage +' damage]\n');
+					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fireblast collides with ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
 				
 					engineering.damageCard(o.game, target, damage);
 				}
@@ -66,6 +72,10 @@ module.exports = {
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var heal = 2;
+
+				var heropowercard = helpers.getCardById("CS1h_001_H1");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
 				if(target == constants.selftarget)
 				{
@@ -96,7 +106,38 @@ module.exports = {
 		}
 	},
 
-	WARLOCK: function() {},
+	WARLOCK: {
+
+		name: "Gul'dan",
+
+		heropower: {
+
+			name: "Life Tap",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				var damage = 2;
+
+				var heropowercard = helpers.getCardById("CS2_056");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				o.sockets.self.emit('terminal', '[[;lightblue;]You suffer '+ damage+ ' damage]\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent suffers ' + damage + ' damage]\n\n');
+			
+
+				execution.damagePlayer(o.game, o.players.self, damage);
+
+				execution.drawCard(socket);
+
+			}
+
+		}
+	},
 
 	DRUID: function() {},
 

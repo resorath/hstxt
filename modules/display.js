@@ -141,14 +141,14 @@ module.exports = {
 	    	returnval += "\n" + card["text"];
 	  }
 
-	  if(card["type"] == "SPELL")
+	  if(card["type"] == "SPELL" || card["type"] == "HERO_POWER")
 	  {
 	    var returnval = "[[b;lightblue;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
 	    
 	    if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
 	   		returnval += card["rarity"] + " ";
 
-	    if(typeof card["type"] != 'undefined')
+	    if(typeof card["type"] != 'undefined' && card["type"] != "HERO_POWER")
 	    	returnval += card["type"];
 	    
 	    if(typeof card["text"] != 'undefined')
