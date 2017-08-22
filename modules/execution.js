@@ -324,6 +324,9 @@ module.exports = {
 	    // set can attack (for weapons, etc)
 	    opponent.canattack = true;
 
+	    // turn on hero power
+	    opponent.heropower.ready = true;
+
 	    // tell new player it is their turn
 	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 

@@ -134,6 +134,10 @@ module.exports = {
       if(helpers.getPlayerBySocket(socket, false).weapon != null)
         response += "Equipped: " + display.printCard(helpers.getPlayerBySocket(socket, false).weapon, true, helpers.getPlayerBySocket(socket, false).canattack) +"\n";
 
+      var heropower = helpers.getPlayerBySocket(socket, false).heropower
+      if(heropower.ready)
+        response += "Hero power: " + heropower.name + " (" + heropower.cost + ")\n";
+
       response += "\nYour hand:";
 
       socket.emit('terminal', response);
@@ -437,6 +441,9 @@ module.exports = {
 
     // deduct mana
     o.players.self.mana -= power.cost;
+
+    // turn off hero power
+    power.ready = false;
 
     // cast hero power
     power.cast(socket, targetcard);
