@@ -41,15 +41,16 @@ util.bindQuotes(global.cards, JSON.parse(fs.readFileSync("quotes.json")));
 // master games list.
 global.games = [];
 
-// matchmaking sockets
-global.matchmakingqueue = [];
-
 // setu triggers class
 class Trigger extends EventEmitter {}
 
 global.triggers = new Trigger();
 
 global.heroes = heroes;
+
+
+// matchmaking sockets
+var matchmakingqueue = [];
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
@@ -428,9 +429,9 @@ global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) 
 
 global.triggers.on('matchmaking', function(socket) {
 
-  if(global.matchmakingqueue.length <= 0)
+  if(matchmakingqueue.length <= 0)
   {
-    global.matchmakingqueue.push(socket);
+    matchmakingqueue.push(socket);
 
     console.log("Joining socket " + socket.id + " to matchmaking queue because it is empty");
 
@@ -439,7 +440,7 @@ global.triggers.on('matchmaking', function(socket) {
   else
   {
     // pop the first in queue and join them together ("matchmaking")
-    var p1 = global.matchmakingqueue.pop();
+    var p1 = matchmakingqueue.pop();
 
     var p2 = socket;
 
