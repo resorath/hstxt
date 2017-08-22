@@ -61,7 +61,7 @@ module.exports = {
 		card.health -= amount;
 
 		// do on damage trigger
-		helpers.triggers.emit('doTrigger', constants.triggers.onminiondamaged, agame, card, null);
+		global.triggers.emit('doTrigger', constants.triggers.onminiondamaged, agame, card, null);
 
 		if(card.health <= 0)
 		{
@@ -89,7 +89,7 @@ module.exports = {
 		if(deathrattle)
 		{
 			//module.exports.doTrigger(constants.triggers.ondeath, agame, card, null);
-	  		helpers.triggers.emit('doTrigger', constants.triggers.ondeath, agame, card, null);
+	  		global.triggers.emit('doTrigger', constants.triggers.ondeath, agame, card, null);
 		}
 
 		var index = board.indexOf(card);

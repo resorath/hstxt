@@ -370,7 +370,7 @@ module.exports = {
 
       // do other card actions
       //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
-      helpers.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+      global.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
 
 
 
@@ -573,11 +573,11 @@ module.exports = {
     // do trigger
     // @todo: @critical: this is going to bug on effects when attacking hero
     if(!isSelfAttacking)
-      helpers.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
+      global.triggers.emit('doTrigger', constants.triggers.onattack, agame, sourceCard, destinationCard);
     else
     {
       if(self.weapon != null)
-          helpers.triggers.emit('doTrigger', constants.triggers.onattack, agame, self.weapon, destinationCard);
+          global.triggers.emit('doTrigger', constants.triggers.onattack, agame, self.weapon, destinationCard);
 
     }
 

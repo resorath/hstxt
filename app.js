@@ -33,18 +33,16 @@ app.get('/keyboard-event-polyfill.js', function(req, res) {
 
 var port = process.env.PORT || 8000;
 
-var globals = {};
-
 // load cards and decks
-globals.cards = JSON.parse(fs.readFileSync("cards.json"));
-globals.decks = JSON.parse(fs.readFileSync("decks.json"));
-util.bindQuotes(globals.cards, JSON.parse(fs.readFileSync("quotes.json")));
+global.cards = JSON.parse(fs.readFileSync("cards.json"));
+global.decks = JSON.parse(fs.readFileSync("decks.json"));
+util.bindQuotes(global.cards, JSON.parse(fs.readFileSync("quotes.json")));
 
 // master games list.
-globals.games = [];
+global.games = [];
 
 // matchmaking sockets
-globals.matchmakingqueue = [];
+global.matchmakingqueue = [];
 
 // setu triggers class
 class Trigger extends EventEmitter {}
@@ -52,9 +50,6 @@ class Trigger extends EventEmitter {}
 global.triggers = new Trigger();
 
 global.heroes = heroes;
-
-// cross inits
-helpers.init(globals.games, globals.cards, globals.decks, global.triggers, global.heroes);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
@@ -110,7 +105,7 @@ io.on('connection', function(socket){
           console.log("Removing game " + agame.name + " because it is out of players");
           execution.quitGame(agame);
 
-          /*util.filterInPlace(globals.games, function (el) {
+          /*util.filterInPlace(global.games, function (el) {
             return el.name != agame.name;
           });*/
 
@@ -125,7 +120,7 @@ io.on('connection', function(socket){
           execution.quitGame(agame);
           /*io.to(agame.name).emit("control", {command: "endgame"} );
 
-          util.filterInPlace(globals.games, function (el) {
+          util.filterInPlace(global.games, function (el) {
             return el.name != agame.name;
           });*/
 
@@ -201,9 +196,9 @@ function joinRoom(socket, roomname, ismatchmaking)
     
   }
 
-  for(game in globals.games)
+  for(game in global.games)
   {
-    var agame = globals.games[game];
+    var agame = global.games[game];
     if(agame.name == roomname)
     {
       if(agame.p1socket == null)
@@ -279,7 +274,7 @@ function joinRoom(socket, roomname, ismatchmaking)
     socket.player = 1;
     socket.game = newgame.name;
 
-    globals.games.push(newgame);
+    global.games.push(newgame);
 
     if(ismatchmaking)
     {
@@ -319,8 +314,8 @@ function joinRoom(socket, roomname, ismatchmaking)
       io.to(agame.name).emit('control', { command: "startgame" });
 
       // both players pick deck
-      display.printAvailableDecks(agame.p1socket, globals.decks);
-      display.printAvailableDecks(agame.p2socket, globals.decks);
+      display.printAvailableDecks(agame.p1socket, global.decks);
+      display.printAvailableDecks(agame.p2socket, global.decks);
 
       io.to(agame.name).emit('control', { command: "prompt", prompt: "Pick a deck> " });
 
@@ -433,9 +428,9 @@ global.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard) 
 
 global.triggers.on('matchmaking', function(socket) {
 
-  if(globals.matchmakingqueue.length <= 0)
+  if(global.matchmakingqueue.length <= 0)
   {
-    globals.matchmakingqueue.push(socket);
+    global.matchmakingqueue.push(socket);
 
     console.log("Joining socket " + socket.id + " to matchmaking queue because it is empty");
 
@@ -444,7 +439,7 @@ global.triggers.on('matchmaking', function(socket) {
   else
   {
     // pop the first in queue and join them together ("matchmaking")
-    var p1 = globals.matchmakingqueue.pop();
+    var p1 = global.matchmakingqueue.pop();
 
     var p2 = socket;
 

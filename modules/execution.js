@@ -1,7 +1,6 @@
 var helpers = require('./helpers');
 var display = require('./display');
 var util = require('./util');
-var interrupts = require('./interrupts');
 var constants = require('./constants');
 
 module.exports = {
@@ -10,7 +9,7 @@ module.exports = {
 	{
 	  var deck = null;
 	  if(!isNaN(command))
-	    var deck = helpers.decks[command]
+	    var deck = global.decks[command]
 	  else 
 	    return;
 
@@ -25,7 +24,7 @@ module.exports = {
 	  player.character = deck.heroname;
 
 	  // load hero power
-	  player.heropower = helpers.heroes[deck.hero].heropower;
+	  player.heropower = global.heroes[deck.hero].heropower;
 
 	  for(cardid in deck.cards)
 	  {
@@ -305,7 +304,7 @@ module.exports = {
 	    console.log("Ending turn of " + agame.name + ". Moving turn from " + agame.playerTurn + " to " + agame.playerTurnOpposite());
 
 	    // do end of turn things
-	    helpers.triggers.emit('doTrigger', constants.triggers.onendturn, agame, null, null);
+	    global.triggers.emit('doTrigger', constants.triggers.onendturn, agame, null, null);
 
 
 	    // flip whos turn it is
@@ -328,7 +327,7 @@ module.exports = {
 	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
 	    // do start of turn things
-	    helpers.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
+	    global.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
 
 
 	    // draw new player a card
@@ -414,7 +413,7 @@ module.exports = {
 
 		player.health -= amount;
 
-		helpers.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);
+		global.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);
 
 		agame.updatePromptsWithDefault();
 
@@ -472,7 +471,7 @@ module.exports = {
 
       game.io.to(game.name).emit("control", {command: "endgame"} );
 
-      util.filterInPlace(helpers.games, function (el) {
+      util.filterInPlace(global.games, function (el) {
         return el.name != game.name;
       });
 

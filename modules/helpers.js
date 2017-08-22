@@ -2,20 +2,6 @@ var constants = require('./constants');
 
 module.exports = {
 
-	games: null,
-	cards: null,
-	decks: null,
-	triggers: null,
-	heros: null,
-
-	init: function(games, cards, decks, triggers, heroes) {
-		this.games = games;
-		this.cards = cards;
-		this.decks = decks;
-		this.triggers = triggers;
-		this.heroes = heroes;
-	},
-
 	// meta helper function to assemble common game objects
 	getGameObjectsBySocket: function(socket) {
 
@@ -72,9 +58,9 @@ module.exports = {
 
 	getGameBySocket: function(socket)
 	{
-	    for(game in this.games)
+	    for(game in global.games)
 	    {
-	      var agame = this.games[game];
+	      var agame = global.games[game];
 	      if(agame.p1socket != null && agame.p1socket.id == socket.id)
 	      	 return agame;
 	      if(agame.p2socket != null && agame.p2socket.id == socket.id)
@@ -132,7 +118,7 @@ module.exports = {
 	{
 	  var returnVal = null;
 
-	  this.cards.forEach(function(card)
+	  global.cards.forEach(function(card)
 	  {
 	    if(card["name"] && card["name"].toUpperCase() === name.toUpperCase() && 
 	      ( card["type"] == "WEAPON" || card["type"] == "SPELL" || card["type"] == "MINION" ) )
@@ -156,7 +142,7 @@ module.exports = {
 	{
 	  var returnVal = null;
 
-	  this.cards.forEach(function(card)
+	  global.cards.forEach(function(card)
 	  {
 	    if(card["id"] && card["id"].toUpperCase() === id.toUpperCase())
 	    {
