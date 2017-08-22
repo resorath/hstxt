@@ -6,12 +6,14 @@ module.exports = {
 	cards: null,
 	decks: null,
 	triggers: null,
+	heros: null,
 
-	init: function(games, cards, decks) {
+	init: function(games, cards, decks, heroes) {
 		this.games = games;
 		this.cards = cards;
 		this.decks = decks;
 		this.triggers = triggers;
+		this.heroes = heroes;
 	},
 
 	// meta helper function to assemble common game objects
@@ -228,6 +230,6 @@ module.exports = {
 		var playernum = card.ownernumber;
 
 		return game.getSocketByPlayerNumber(playernum);
-	},
+	}
 
 }

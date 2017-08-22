@@ -9,6 +9,7 @@ var cfunc = require('./modules/commands');
 var display = require('./modules/display');
 var util = require('./modules/util');
 var interrupts = require('./modules/interrupts');
+var heroes = require('./modules/Heroes');
 var EventEmitter = require('events');
 
 var githead = null;
@@ -50,8 +51,10 @@ class Trigger extends EventEmitter {}
 
 global.triggers = new Trigger();
 
+global.heroes = heroes;
+
 // cross inits
-helpers.init(globals.games, globals.cards, globals.decks, globals.triggers);
+helpers.init(globals.games, globals.cards, globals.decks, global.heroes);
 
 http.listen(port, function(){
   console.log('listening on *:' + port);

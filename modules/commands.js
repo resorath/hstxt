@@ -380,7 +380,68 @@ module.exports = {
 
   // hero power
   // similar to play a spell
-  
+  hero: function(socket, parts)
+  {
+       
+    var o = helpers.getGameObjectsBySocket(socket);
+
+    // can only play a card on turn
+    if(!o.game.isPlayerTurn(socket))
+    {
+      socket.emit("terminal", "It is not your turn\n");
+      return;
+    }
+
+    // load power
+    var power = o.players.self.heropower;
+
+    // optional target
+    var target = parts[0];
+
+    // is a target needed though?
+    if(power.targetrequired && target == null)
+    {
+      socket.emit('terminal', power.name + " needs a target! Try: help hero\n");
+      return;
+    }
+
+    // Mana check
+    if(o.players.self.mana < power.cost)
+    {
+      socket.emit('terminal', "You don't have enough mana!\n");
+      return;
+    }
+
+    // check target validity and assign targetcard
+    var targetcard = null;
+    if(target != null)
+      {
+        if(helpers.targetIsOpponent(target))
+          targetcard = constants.opponenttarget;
+        else if(helpers.targetIsSelf(target))
+          targetcard = constants.selftarget;
+        else
+        {
+          var targettype = target.toLowerCase().charAt(0);
+          if(targettype == 'o' || targettype == 'm')
+            targetcard = helpers.boardIndexToCard(target, socket);
+        }
+
+        if(targetcard == null)
+        {
+          socket.emit("terminal", "Invalid target");
+          return;
+        }
+      } 
+
+    // deduct mana
+    o.players.self.mana -= power.cost;
+
+    // cast hero power
+    power.cast(socket, targetcard);
+
+  },
+
 
   // attack a minion or hero into another minion or hero
   // play source destination
@@ -400,6 +461,13 @@ module.exports = {
     var agame = helpers.getGameBySocket(socket);
 
     var self = helpers.getPlayerBySocket(socket, false);
+
+    // can only play a card on turn
+    if(!agame.isPlayerTurn(socket))
+    {
+      socket.emit("terminal", "It is not your turn\n");
+      return;
+    }
 
     if(isource == null || idestination == null)
     {
