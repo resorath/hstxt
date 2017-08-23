@@ -43,7 +43,7 @@ module.exports = {
 	  // check opponent
 	  var opponentdeck = helpers.getDeckBySocket(socket, true)
 
-	  console.log(opponentdeck.length);
+	  console.log("Opponent deck length: " + opponentdeck.length);
 	  if(opponentdeck.length > 28)
 	  {
 	    game.io.to(game.name).emit('control', { command: "resume" });

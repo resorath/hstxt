@@ -139,7 +139,6 @@ module.exports = {
 		}
 	},
 
-	DRUID: function() {},
 
 	ROGUE: function() {},
 
@@ -147,8 +146,72 @@ module.exports = {
 
 	HUNTER: function() {},
 
-	PALADIN: function() {},
+	PALADIN: {
 
-	WARRIOR: function() {}
+		name: "Uther",
+
+		heropower: {
+
+			name: "Reinforce",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				if(o.boards.self.length >= 7)
+				{
+					o.sockets.self.emit('terminal', 'There is no room on the board!\n');
+					return;
+				}
+
+				var heropowercard = helpers.getCardById("CS2_101");
+				var recruit = helpers.getCardById("CS2_101t");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				o.game.io.to(o.game.name).emit('terminal', "[[;#FFBDC0;]&lt;Silver Hand Recruit&gt; Ready for action!]\n");
+
+				// put recruit on board (last position)
+				o.boards.self.splice(o.boards.self.length, 0, recruit);
+
+			}
+
+		}
+	},
+
+	WARRIOR: {
+
+		name: "Garrosh",
+
+		heropower: {
+
+			name: "Armor up!",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				var armor = 2;
+
+				var heropowercard = helpers.getCardById("CS2_102");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				o.sockets.self.emit('terminal', '[[;lightblue;]You gain '+ armor+ ' armor]\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent gains ' + armor + ' armor]\n\n');
+
+				o.players.self.armor+2;
+
+			}
+
+		}
+	},
+
+
+	DRUID: function() {}
 
 }

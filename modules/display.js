@@ -149,10 +149,10 @@ module.exports = {
 	   		returnval += card["rarity"] + " ";
 
 	    if(typeof card["type"] != 'undefined' && card["type"] != "HERO_POWER")
-	    	returnval += card["type"];
+	    	returnval += card["type"] + "\n";
 	    
 	    if(typeof card["text"] != 'undefined')
-	    	returnval += "\n" + card["text"];
+	    	returnval += card["text"];
 
 	  }
 
