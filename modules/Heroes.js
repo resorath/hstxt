@@ -127,7 +127,7 @@ module.exports = {
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
 				o.sockets.self.emit('terminal', '[[;lightblue;]You suffer '+ damage+ ' damage]\n');
-				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent suffers ' + damage + ' damage]\n\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent suffers ' + damage + ' damage]\n');
 			
 
 				execution.damagePlayer(o.game, o.players.self, damage);
@@ -140,11 +140,81 @@ module.exports = {
 	},
 
 
-	ROGUE: function() {},
+	ROGUE: {
+
+		name: "Valeera",
+
+		heropower: {
+
+			name: "Dagger Mastery",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				var damage = 2;
+
+				var heropowercard = helpers.getCardById("CS2_083b");
+				var knife = helpers.getCardById("CS2_082");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				if(o.players.self.weapon != null)
+				{
+					o.game.io.to(o.game.name)("terminal", o.players.self.weapon.name + " was destroyed!");
+					o.players.self.weapon = null;
+				}
+
+
+				o.sockets.self.emit('terminal', '[[;lightblue;]You equip...]\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent equips...]\n');
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(knife));
+
+		        // equip weapon
+		        o.players.self.weapon = knife;
+
+		        // add damage to player
+		        o.players.self.attack = knife.attack;
+
+			}
+
+		}
+	},
 
 	SHAMAN: function() {},
 
-	HUNTER: function() {},
+	HUNTER: {
+
+		name: "Rexxar",
+
+		heropower: {
+
+			name: "Steady Shot",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				var damage = 2;
+
+				var heropowercard = helpers.getCardById("DS1h_292");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				o.sockets.self.emit('terminal', '[[;lightblue;]You deal '+ damage+ ' damage to your opponent]\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent deals ' + damage + ' to you]\n\n');
+
+				execution.damagePlayer(o.game, o.players.opponent, damage);
+
+			}
+
+		}
+	},
 
 	PALADIN: {
 
