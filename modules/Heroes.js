@@ -3,6 +3,7 @@ var helpers = require('./helpers');
 var engineering = require('./engineering');
 var execution = require('./execution');
 var display = require('./display');
+var util = require('./util');
 
 module.exports = {
 
@@ -202,18 +203,49 @@ module.exports = {
 
 				var heropowercard = helpers.getCardById("CS2_049_H1");
 
+				// make sure there is enough space on the board
+				if(o.boards.self.length >= 7)
+				{
+					o.sockets.self.emit('terminal', 'There is no room on the board!\n');
+					return false;
+				}
+
+				// get all the totems
+				// healing, searing, stoneclaw, wrathofair
+				var totemIds = ["AT_132_SHAMANa", "AT_132_SHAMANb", "CS2_051", "CS2_052"];
+
+				// see whats already on the board and remove it from the possibilities
+				o.boards.self.forEach(function(card) {
+
+					var index = totemIds.indexOf(card.id)
+
+					if(index > -1)
+						totemIds.splice(index, 1);
+				});
+
+				if(totemIds.length == 0)
+				{
+					o.sockets.self.emit('terminal', 'You have summoned all your totems!');
+					return false;
+				}
+
+				// pull a random totem
+				var totemindex = util.Random(totemIds.length);
+
+				// pull the proper card
+				var totem = helpers.getCardById(totemIds[totemindex]);
+
+				// summon it
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
 				o.sockets.self.emit('terminal', '[[;lightblue;]You summon...]\n');
 				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent summons]\n\n');
 
-				// get all the totems
-				var healingTotem = helpers.getCardById("AT_132_SHAMANa");
-				var searingTotem = helpers.getCardById("AT_132_SHAMANb");
-				var stoneclawTotem = helpers.getCardById("CS2_051");
-				var wrathofairTotem = helpers.getCardById("CS2_052");
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(totem));
 
-				
+				// .. at last position
+				o.boards.self.splice(o.boards.self.length, 0, totem);
+
 
 			}
 
@@ -267,7 +299,7 @@ module.exports = {
 				if(o.boards.self.length >= 7)
 				{
 					o.sockets.self.emit('terminal', 'There is no room on the board!\n');
-					return;
+					return false;
 				}
 
 				var heropowercard = helpers.getCardById("CS2_101");
