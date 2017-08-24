@@ -343,7 +343,7 @@ module.exports = {
 				o.sockets.self.emit('terminal', '[[;lightblue;]You gain '+ armor+ ' armor]\n');
 				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent gains ' + armor + ' armor]\n\n');
 
-				o.players.self.armor+2;
+				o.players.self.armor += armor;
 
 			}
 
@@ -351,6 +351,37 @@ module.exports = {
 	},
 
 
-	DRUID: function() {}
+	DRUID: {
+
+		name: "Malfurion",
+
+		heropower: {
+
+			name: "Shapeshift",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				var armor = 1;
+				var attack = 1;
+
+				var heropowercard = helpers.getCardById("CS2_017");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				o.sockets.self.emit('terminal', '[[;lightblue;]You gain '+ armor+ ' armor and '+ attack +' attack]\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent gains ' + armor + ' armor and '+ attack +' attack]\n\n');
+
+				// add armor
+				o.players.self.armor += armor;
+
+				// add the +1 attack buff that expires at end of turn
+
+			}
+		}
+	},
 
 }
