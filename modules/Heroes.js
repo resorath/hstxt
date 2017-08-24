@@ -184,7 +184,41 @@ module.exports = {
 		}
 	},
 
-	SHAMAN: function() {},
+	SHAMAN: {
+
+		name: "Thrall",
+
+		heropower: {
+
+			name: "Totemic Call",
+			cost: 2,
+			ready: true,
+			targetrequired: false,
+			cast: function(socket, target) {
+				
+				var o = helpers.getGameObjectsBySocket(socket);
+
+				var damage = 2;
+
+				var heropowercard = helpers.getCardById("CS2_049_H1");
+
+				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
+
+				o.sockets.self.emit('terminal', '[[;lightblue;]You summon...]\n');
+				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent summons]\n\n');
+
+				// get all the totems
+				var healingTotem = helpers.getCardById("AT_132_SHAMANa");
+				var searingTotem = helpers.getCardById("AT_132_SHAMANb");
+				var stoneclawTotem = helpers.getCardById("CS2_051");
+				var wrathofairTotem = helpers.getCardById("CS2_052");
+
+				
+
+			}
+
+		}
+	},
 
 	HUNTER: {
 
