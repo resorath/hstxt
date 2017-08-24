@@ -246,6 +246,9 @@ module.exports = {
 				// .. at last position
 				o.boards.self.splice(o.boards.self.length, 0, totem);
 
+				// @todo: register healing totem as needed (or move the summoning code somewhere else
+				// Also we need to register spellpower globally, this might also need to sit somewhere else in the summoning code)
+
 
 			}
 
