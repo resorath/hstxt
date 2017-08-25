@@ -394,6 +394,12 @@ module.exports = {
     // load power
     var power = o.players.self.heropower;
 
+    if(!power.ready)
+    {
+      socket.emit("terminal", "You can't do that now!\n"); // this could be better
+      return;
+    }
+
     // optional target
     var target = parts[0];
 
@@ -441,6 +447,8 @@ module.exports = {
 
     // cast hero power
     power.cast(socket, targetcard);
+
+    o.game.updatePromptsWithDefault();
 
   },
 

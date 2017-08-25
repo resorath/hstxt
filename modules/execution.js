@@ -456,7 +456,7 @@ module.exports = {
 			position = o.decks.self.length;
 
 		// put minion on board
-		board.splice(position, 0, card);
+		o.boards.self.splice(position, 0, card);
 
 		// is minion charge?
 		if(typeof card["mechanics"] != 'undefined' && card["mechanics"].indexOf("CHARGE") > -1)
@@ -466,13 +466,13 @@ module.exports = {
 
 
 	    // do sound effect
-	    if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
-	      game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+	    if(typeof card["quote"] != 'undefined' && typeof card["quote"]["play"] != 'undefined')
+	      o.game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + card["name"] + '&gt; ' + card["quote"]["play"] + ']\n');
 
 	  	// do other events in response
-	  	gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+	  	gamevars.triggers.emit('doTrigger', constants.triggers.onplay, o.game, card, null);
 
-	}
+	},
 
 	activateTurnTimer: function(agame)
 	{

@@ -313,7 +313,8 @@ module.exports = {
 				o.game.io.to(o.game.name).emit('terminal', "[[;#FFBDC0;]&lt;Silver Hand Recruit&gt; Ready for action!]\n");
 
 				// put recruit on board (last position)
-				o.boards.self.splice(o.boards.self.length, 0, recruit);
+				//o.boards.self.splice(o.boards.self.length, 0, recruit);
+				execution.summonMinion(socket, recruit);
 
 			}
 

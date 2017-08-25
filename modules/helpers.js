@@ -23,6 +23,11 @@ module.exports = {
 			sockets: {
 				self: socket,
 				opponent: this.getOppositePlayerSocket(socket)
+			},
+
+			decks: {
+				self: this.getDeckBySocket(socket, false),
+				opponent: this.getDeckBySocket(socket, true)
 			}
 		};
 
