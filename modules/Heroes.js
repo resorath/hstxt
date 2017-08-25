@@ -244,7 +244,8 @@ module.exports = {
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(totem));
 
 				// .. at last position
-				o.boards.self.splice(o.boards.self.length, 0, totem);
+				//o.boards.self.splice(o.boards.self.length, 0, totem);
+				execution.summonMinion(socket, totem);
 
 				// @todo: register healing totem as needed (or move the summoning code somewhere else
 				// Also we need to register spellpower globally, this might also need to sit somewhere else in the summoning code)
