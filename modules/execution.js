@@ -446,7 +446,33 @@ module.exports = {
 		agame.updatePromptsWithDefault();
 	},
 
+	// position is optional
+	// will _NOT_ execute the battlecry
+	summonMinion: function(socket, card, position)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
 
+		if(position == null || position === 'undefined')
+			position = o.decks.self.length;
+
+		// put minion on board
+		board.splice(position, 0, card);
+
+		// is minion charge?
+		if(typeof card["mechanics"] != 'undefined' && card["mechanics"].indexOf("CHARGE") > -1)
+			card["canattack"] = true;
+		else
+			card["canattack"] = false;
+
+
+	    // do sound effect
+	    if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
+	      game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
+
+	  	// do other events in response
+	  	gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+
+	}
 
 	activateTurnTimer: function(agame)
 	{

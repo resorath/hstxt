@@ -327,18 +327,13 @@ module.exports = {
       switch(cardtoplay.type)
       {
         case "MINION":
-          // put minion on board
-          board.splice(position, 0, cardtoplay);
-
-          // is minion charge?
-          if(typeof cardtoplay["mechanics"] != 'undefined' && cardtoplay["mechanics"].indexOf("CHARGE") > -1)
-            cardtoplay["canattack"] = true;
-          else
-            cardtoplay["canattack"] = false;
+          execution.summonMinion(socket, cardtoplay, position);
 
           break;
 
         case "SPELL":
+
+          gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
           break;
 
 
@@ -356,12 +351,11 @@ module.exports = {
 
           // add damage to player
           player.attack = cardtoplay.attack;
+
+          gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+
           break;
       }
-
-      // do sound effect
-      if(typeof cardtoplay["quote"] != 'undefined' && typeof cardtoplay["quote"]["play"] != 'undefined')
-        game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + cardtoplay["name"] + '&gt; ' + cardtoplay["quote"]["play"] + ']\n');
 
 
       // do card actions (either spell cast or battlecry)
@@ -374,8 +368,8 @@ module.exports = {
       player.mana -= cardinhand.cost;
 
       // do other card actions
-      //execution.doTrigger(constants.triggers.onplay, game, cardtoplay, null);
-      gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
+      // this has been moved above
+      //gamevars.triggers.emit('doTrigger', constants.triggers.onplay, game, cardtoplay, null);
 
 
 
