@@ -28,10 +28,23 @@ module.exports = {
 			decks: {
 				self: this.getDeckBySocket(socket, false),
 				opponent: this.getDeckBySocket(socket, true)
+			},
+
+			hands: {
+				self: this.getHandBySocket(socket, false),
+				opponent: this.getHandBySocket(socket, true)
 			}
 		};
 
 		return o;
+	},
+
+	getGameObjectsByPlayerNumber: function(game, number) {
+
+		var socket = game.getSocketByPlayerNumber(number);
+
+		return this.getGameObjectsBySocket(socket);
+
 	},
 
 	getHandBySocket: function(socket, getOppositeHand)
@@ -216,6 +229,22 @@ module.exports = {
 
 	},
 
+	cardOwnedByPlayer: function(game, playernum, card)
+	{
+		var o = this.getGameObjectsByPlayerNumber(game, playernum);
+
+		if(o.hands.self.includes(card))
+			return true;
+
+		if(o.boards.self.includes(card))
+			return true;
+
+		if(o.decks.self.includes(card))
+			return true;
+
+		return false;
+	},
+
 	getSocketFromCard: function(game, card)
 	{
 		// determine owner
@@ -229,8 +258,6 @@ module.exports = {
 		var t = 0;
 
 		board.forEach(function(card) {
-
-			console.log(card.spellDamage);
 
 			if(typeof card.spellDamage != 'undefined')
 				t+=card.spellDamage;

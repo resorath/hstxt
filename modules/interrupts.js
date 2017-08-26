@@ -55,10 +55,10 @@ module.exports = {
 		onplay: function(game, selectedcard, sourcecard, targetcard) {
 
 			// don't buff self on play
-			if(selectedcard == sourcecard)
+			if(selectedcard != sourcecard)
 				return;
 
-			console.log("Adding buff to " + sourcecard.name);
+			var friendlyboard = helpers.getBoardBySocket(game.getSocketByPlayerNumber(selectedcard.ownernumber));
 
 			var buff = new buffs.Buff("Raid leader aura");
 
@@ -66,10 +66,40 @@ module.exports = {
 			buff.isaura = true;
 			buff.sourcecard = selectedcard;
 
-			engineering.addBuff(sourcecard, buff);
+			friendlyboard.forEach(function(card)
+			{
+				engineering.addBuff(card, buff);
+			});
+
+			
 		}
 
 	},
+
+	// healing totem
+	AT_132_SHAMANa: {
+
+		onendturn: function(game, card, a, b) {
+
+			// only heal at end of owners turn
+			if(!helpers.cardOwnedByPlayer(game, game.playerTurn, card))
+				return;
+
+			// go through each card in hand and heal it for spellpower amount
+			var o = helpers.getGameObjectsByPlayerNumber(game, game.playerTurn);
+
+			o.boards.self.forEach(function(c) {
+
+				var amount = engineering.healCard(game, c, 1 + o.players.self.spellpower);
+
+				if(amount > 0)
+					o.game.io.to(o.game.name).emit('terminal', 'Healing totem heals ' + c.name + ' for ' + amount + '\n');
+
+			});
+
+		}
+
+	}
 
 
 	

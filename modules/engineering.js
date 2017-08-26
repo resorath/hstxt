@@ -77,6 +77,11 @@ module.exports = {
 		// need original values of card
 		var basecard = helpers.getCardById(card.id);
 
+		// determine how much can be healed
+		var healamount = basecard.health - card.health;
+		if(healamount > amount)
+			healamount = amount;
+
 		// heal card
 		card.health += amount;
 
@@ -85,6 +90,9 @@ module.exports = {
 			card.health = basecard.health;
 
 		gamevars.triggers.emit('doTrigger', constants.triggers.onheal, agame, card, null);
+
+		// return how much was healed
+		return healamount;
 
 	},
 
