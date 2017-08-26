@@ -18,7 +18,7 @@ var engineering = require('./engineering');
 *
 * signature
 * game: game to act on
-* selectedcard: the card picked up on the loop
+* selectedcard: the card picked up on the loop which has the effect
 * sourcecard: the card that triggered the effect
 * targetcard: card that may be impacted by the trigger
 */
@@ -46,19 +46,16 @@ module.exports = {
 				});
 			});
 
-			
-			console.log(selectedcard.name + " died! (deathrattle~~~~spooky)");
-
 		},
 
 		// give aura to new cards
 		onplay: function(game, selectedcard, sourcecard, targetcard) {
 
-			// don't buff self on play
-			if(selectedcard != sourcecard)
+			// don't buff raid leader self on play
+			if(selectedcard == sourcecard)
 				return;
 
-			var friendlyboard = helpers.getBoardBySocket(game.getSocketByPlayerNumber(selectedcard.ownernumber));
+			console.log("Adding buff to " + sourcecard.name);
 
 			var buff = new buffs.Buff("Raid leader aura");
 
@@ -66,12 +63,7 @@ module.exports = {
 			buff.isaura = true;
 			buff.sourcecard = selectedcard;
 
-			friendlyboard.forEach(function(card)
-			{
-				engineering.addBuff(card, buff);
-			});
-
-			
+			engineering.addBuff(sourcecard, buff);
 		}
 
 	},
