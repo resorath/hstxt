@@ -222,6 +222,29 @@ module.exports = {
 		var playernum = card.ownernumber;
 
 		return game.getSocketByPlayerNumber(playernum);
-	}
+	},
+
+	getBoardTotalSpellpower: function(board)
+	{
+		var t = 0;
+
+		board.forEach(function(card) {
+
+			console.log(card.spellDamage);
+
+			if(typeof card.spellDamage != 'undefined')
+				t+=card.spellDamage;
+
+			card.buffs.forEach(function(buff) {
+
+				if(typeof buff.spellDamage != 'undefined')
+					t+=buff.spellDamage;
+
+			});
+
+		});
+
+		return t;
+	},
 
 }

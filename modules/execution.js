@@ -446,13 +446,24 @@ module.exports = {
 		agame.updatePromptsWithDefault();
 	},
 
+
+	doUpdateTick: function(game)
+	{
+		console.log("Doing update tick for " + game.name);
+
+		// count spellpower for each player
+		game.player.p1.spellpower = helpers.getBoardTotalSpellpower(game.board.p1);
+		game.player.p2.spellpower = helpers.getBoardTotalSpellpower(game.board.p2);
+
+	},
+
 	// position is optional
 	// will _NOT_ execute the battlecry
 	summonMinion: function(socket, card, position)
 	{
 		var o = helpers.getGameObjectsBySocket(socket);
 
-		if(position == null || position === 'undefined')
+		if(position == null || typeof position == 'undefined')
 			position = o.decks.self.length;
 
 		// put minion on board

@@ -391,6 +391,9 @@ gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard
 
     trigger = trigger.toLowerCase();
 
+    // do global updates (updating spellpower, etc)
+    execution.doUpdateTick(game);
+
     // do secrets (only for the opposite player)
     var secretplayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
 
