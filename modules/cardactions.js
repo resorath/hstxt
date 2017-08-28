@@ -214,38 +214,20 @@ module.exports = {
 		// get card owner
 		var socketowner = helpers.getSocketFromCard(o.game, target);
 
-
+		// announce spell
 		o.game.io.to(o.game.name).emit('terminal', target.name + ' is transformed into a sheep!\n');
 
 		// remove target card, replace it with sheep (CS2_tk1) in same position
 		var index = engineering.removeCard(o.game, target, false);
 
+		// get sheep card ready
 		var sheep = helpers.getCardById("CS2_tk1");
 
-
+		// show sheep
 		o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(sheep));
 
-
+		// put sheep where the minion used to be
 		execution.summonMinion(socketowner, sheep, index);
-	},
-
-	// Raid Leader (aura)
-	CS2_122: function(socket, sourcecard, target, parts)
-	{
-		var buff = new buffs.Buff("Raid leader aura");
-
-		buff.changeattack = 1;
-		buff.sourcecard = sourcecard;
-		buff.isaura = true;
-
-		var friendlyboard = helpers.getBoardBySocket(socket, false);
-
-		friendlyboard.forEach(function(card)
-		{
-			if(card != sourcecard)
-				engineering.addBuff(card, buff);
-		});
-
 	},
 
 	// Nightblade

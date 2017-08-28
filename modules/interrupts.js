@@ -29,6 +29,7 @@ module.exports = {
 	// raid leader
 	CS2_122: {
 
+
 		// remove aura
 		onleaveplay: function(game, selectedcard, sourcecard, targetcard) {
 
@@ -49,22 +50,40 @@ module.exports = {
 
 		},
 
-		// give aura to new cards
+		// give aura to cards
 		onplay: function(game, selectedcard, sourcecard, targetcard) {
 
-			// don't buff raid leader self on play
+			// raid leader start aura
 			if(selectedcard == sourcecard)
-				return;
+			{
+				var buff = new buffs.Buff("Raid leader aura");
 
-			console.log("Adding buff to " + sourcecard.name);
+				buff.changeattack = 1;
+				buff.sourcecard = sourcecard;
+				buff.isaura = true;
 
-			var buff = new buffs.Buff("Raid leader aura");
+				var friendlyboard = helpers.getBoardBySocket(game.getSocketByPlayerNumber(selectedcard.ownernumber), false);
 
-			buff.changeattack = 1;
-			buff.isaura = true;
-			buff.sourcecard = selectedcard;
+				friendlyboard.forEach(function(card)
+				{
+					if(card != sourcecard)
+						engineering.addBuff(card, buff);
+				});
 
-			engineering.addBuff(sourcecard, buff);
+			}
+			// raid leader give aura to new cards on board
+			else
+			{
+				console.log("Adding buff to " + sourcecard.name);
+
+				var buff = new buffs.Buff("Raid leader aura");
+
+				buff.changeattack = 1;
+				buff.isaura = true;
+				buff.sourcecard = selectedcard;
+
+				engineering.addBuff(sourcecard, buff);
+			}
 		}
 
 	},
