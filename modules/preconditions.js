@@ -10,5 +10,17 @@ var engineering = require('./engineering');
 // card actions by internal CardID
 module.exports = {
 
+	// polymorph
+	CS2_022: function(socket, card, target, parts)
+	{
+		if(target.type != 'MINION')
+		{
+			socket.emit('terminal', 'Target must be a minion!');
+			return false;
+
+		}
+
+		return true;
+	}
 
 }

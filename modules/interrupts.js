@@ -15,6 +15,7 @@ var engineering = require('./engineering');
 * onminiondamaged
 * onheal
 * ondeath
+* onleaveplay
 *
 * signature
 * game: game to act on
@@ -29,7 +30,7 @@ module.exports = {
 	CS2_122: {
 
 		// remove aura
-		ondeath: function(game, selectedcard, sourcecard, targetcard) {
+		onleaveplay: function(game, selectedcard, sourcecard, targetcard) {
 
 			// remove aura only affects if self died
 			if(selectedcard != sourcecard)

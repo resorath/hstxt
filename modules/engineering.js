@@ -117,9 +117,14 @@ module.exports = {
 	  		gamevars.triggers.emit('doTrigger', constants.triggers.ondeath, agame, card, null);
 		}
 
+		gamevars.triggers.emit('doTrigger', constants.triggers.onleaveplay, agame, card, null);
+
 		var index = board.indexOf(card);
 
 		board.splice(index, 1);
+
+		// return location of removed card
+		return index;
 
 	},
 

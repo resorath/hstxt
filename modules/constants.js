@@ -16,7 +16,8 @@ module.exports = {
     	onherodamaged: "onherodamaged",
     	onminiondamaged: "onminiondamaged",
     	onheal: "onheal",
-    	ondeath: "ondeath"
+    	ondeath: "ondeath",
+        onleaveplay: "onleaveplay"
     }
 
 }

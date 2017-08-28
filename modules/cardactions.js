@@ -6,6 +6,7 @@ var execution = require('./execution');
 var constants = require('./constants');
 var buffs = require('./Buff');
 var engineering = require('./engineering');
+var display = require('./display');
 
 // card actions by internal CardID
 // spells, battlecries, and buff loading for actions/deathrattles
@@ -203,6 +204,29 @@ module.exports = {
 	EX1_015: function(socket, sourcecard, target, parts)
 	{
 		execution.drawCard(socket);
+	},
+
+	// Polymorph
+	CS2_022: function(socket, sourcecard, target, parts)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		// get card owner
+		var socketowner = helpers.getSocketFromCard(o.game, target);
+
+
+		o.game.io.to(o.game.name).emit('terminal', target.name + ' is transformed into a sheep!\n');
+
+		// remove target card, replace it with sheep (CS2_tk1) in same position
+		var index = engineering.removeCard(o.game, target, false);
+
+		var sheep = helpers.getCardById("CS2_tk1");
+
+
+		o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(sheep));
+
+
+		execution.summonMinion(socketowner, sheep, index);
 	},
 
 	// Raid Leader (aura)

@@ -62,5 +62,11 @@
         "attack": "This one's mine",
         "death": "whoaaa"
     }
+  },
+  {
+    "id": "CS2_tk1",
+    "quote": {
+        "play": "Baaaa!"
+    }
   }
 ]
