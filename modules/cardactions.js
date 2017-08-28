@@ -196,7 +196,7 @@ module.exports = {
 
 			execution.drawCard(socket);
 
-		}, 1000, 3);
+		}, 1000, 2);
 	},
 
 	// Novice Engineer
