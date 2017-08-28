@@ -478,7 +478,7 @@ module.exports = {
 
 	    // do sound effect
 	    if(typeof card["quote"] != 'undefined' && typeof card["quote"]["play"] != 'undefined')
-	      o.game.io.to(game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + card["name"] + '&gt; ' + card["quote"]["play"] + ']\n');
+	      o.game.io.to(o.game.name).emit('terminal', "[[;#FFBDC0;]&lt;" + card["name"] + '&gt; ' + card["quote"]["play"] + ']\n');
 
 	  	// do other events in response
 	  	gamevars.triggers.emit('doTrigger', constants.triggers.onplay, o.game, card, null);
