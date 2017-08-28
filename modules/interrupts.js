@@ -53,7 +53,7 @@ module.exports = {
 		// give aura to cards
 		onplay: function(game, selectedcard, sourcecard, targetcard) {
 
-			// raid leader start aura
+			// raid leader start aura (give to existing cards on the board)
 			if(selectedcard == sourcecard)
 			{
 				var buff = new buffs.Buff("Raid leader aura");

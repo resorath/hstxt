@@ -211,7 +211,7 @@ module.exports = {
 	{
 		var o = helpers.getGameObjectsBySocket(socket);
 
-		// get card owner
+		// get victim card owner
 		var socketowner = helpers.getSocketFromCard(o.game, target);
 
 		// announce spell
@@ -222,6 +222,7 @@ module.exports = {
 
 		// get sheep card ready
 		var sheep = helpers.getCardById("CS2_tk1");
+		sheep.ownernumber = socketowner.number;
 
 		// show sheep
 		o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(sheep));
