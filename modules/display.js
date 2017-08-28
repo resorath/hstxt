@@ -240,7 +240,7 @@ module.exports = {
 			var r = '';
 			var i = 1;
 			o.boards.self.forEach(function(card) {
-				r += "  o" + i + ": " + module.exports.printCard(card, true) + "\n";
+				r += "  m" + i + ": " + module.exports.printCard(card, true) + "\n";
 				i++;
 			});
 			return r;
