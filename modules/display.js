@@ -207,6 +207,120 @@ module.exports = {
 	  }
 
 	  socket.emit('terminal', printdeck);
+	},
+
+	printBoard: function(socket)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		var boardsize = 47;
+		var line = (function() {
+			var r = '';
+			for(i=0; i<boardsize; i++)
+				r += '═'
+			return r;
+		})();
+
+		var o_armor = o.players.opponent.armor > 0 ? '[' + o.players.opponent.armor + '] armor' : '';
+		var o_attack = o.players.opponent.attack > 0 ? o.players.opponent.attack + ' attack ' : '';
+		var o_weapon = o.players.opponent.weapon == null ? '(Nothing)' : module.exports.printCard(o.players.opponent.weapon);
+		var o_heropower = o.players.opponent.heropower.ready ? o.players.opponent.heropower.name + ' (' + o.players.opponent.heropower.cost + ')' : o.players.opponent.heropower.name + ' (inactive)'
+
+		var o_board = (function() {
+			var r = '';
+			var i = 1;
+			o.boards.opponent.forEach(function(card) {
+				r += "  o" + i + ": " + module.exports.printCard(card, true) + "\n";
+				i++;
+			});
+			return r;
+		})();
+
+		var m_board = (function() {
+			var r = '';
+			var i = 1;
+			o.boards.self.forEach(function(card) {
+				r += "  o" + i + ": " + module.exports.printCard(card, true) + "\n";
+				i++;
+			});
+			return r;
+		})();
+
+		var m_weapon = (function() {
+			if(o.players.self.weapon != null && o.players.self.attack > 0 && o.players.self.canattack)
+				return module.exports.printCard(o.players.self.weapon, 1, 1);
+			else if(o.players.self.weapon != null)
+				return module.exports.printCard(o.players.self.weapon, 1, 0);
+			else
+				return "(Nothing)";
+		})();
+
+
+		var m_heropower = (function() {
+			if(o.players.self.heropower.ready)
+			{
+				if(o.players.self.heropower.cost <= o.players.self.mana)
+					return '[[;lime;]' + o.players.self.heropower.name + '] (' + o.players.self.heropower.cost + ')'
+				else
+					return o.players.self.heropower.name + ' (' + o.players.self.heropower.cost + ')'
+			}
+			else
+				return o.players.self.heropower.name + ' (inactive)'
+		})();
+
+
+		var board = `
+Enemy ${o.players.opponent.character} [[;green;]${o.players.opponent.health}] HP [[;gold;]${o_armor}] [[;orange;]${o_attack}] [[;lightblue;]${o.players.opponent.mana}]/${o.players.opponent.maxmana} mana
+Cards - hand: ${o.hands.opponent.length}  deck: ${o.decks.opponent.length}
+Equipped: ${o_weapon}
+Hero power: ${o_heropower}
+
+╔${line}╗
+
+${o_board}
+╠${line}╣
+
+${m_board}
+╚${line}╝
+
+Your hero power: ${m_heropower}
+Your weapon: ${m_weapon}
+
+Your hand:`;
+
+		socket.emit('terminal', board);
+
+		module.exports.printHand(socket, {});
+
+	},
+
+	printHand: function(socket, parts)
+	{
+		i = 1;
+
+	      var player = helpers.getPlayerBySocket(socket, false);
+	      var board = helpers.getBoardBySocket(socket, false);
+
+	      var response = "\n";
+
+	      helpers.getHandBySocket(socket, false).forEach(function(card) {
+	        if(parts[0] != null && parts[0].indexOf("detail") === 0)
+	          response += "h" + i + ": " + module.exports.printDetailedCard(card) + "\n";
+	        else
+	        {
+	          // get play status
+	          var playstatus = 0;
+	          if(player.mana >= card.cost && !(card.type == "MINION" && board.size >= 7) )
+	            playstatus = 1;
+
+	          response += "h" + i + ": " + module.exports.printCard(card, false, playstatus) + "\n";
+	        }
+	        i++;
+	      });  
+
+	      response += "\n";
+
+	      socket.emit('terminal', response);
 	}
 
 

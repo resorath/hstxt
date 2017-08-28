@@ -71,37 +71,16 @@ module.exports = {
   hand: function(socket, parts)
   {
 
-      i = 1;
-
-      var player = helpers.getPlayerBySocket(socket, false);
-      var board = helpers.getBoardBySocket(socket, false);
-
-      var response = "\n";
-
-      helpers.getHandBySocket(socket, false).forEach(function(card) {
-        if(parts[0] != null && parts[0].indexOf("detail") === 0)
-          response += "h" + i + ": " + display.printDetailedCard(card) + "\n";
-        else
-        {
-          // get play status
-          var playstatus = 0;
-          if(player.mana >= card.cost && !(card.type == "MINION" && board.size >= 7) )
-            playstatus = 1;
-
-          response += "h" + i + ": " + display.printCard(card, false, playstatus) + "\n";
-        }
-        i++;
-      });  
-
-      response += "\n";
-
-      socket.emit('terminal', response);
+      display.printHand(socket, parts);
 
   },
 
   // print out board
   board: function(socket, parts)
   {
+    display.printBoard(socket);
+
+    /*
       var response = "\nYour opponent has " + helpers.getHandBySocket(socket, true).length + " cards\n" +
       "Opponent health: " + helpers.getPlayerBySocket(socket, true).health + " hp"
 
@@ -112,6 +91,10 @@ module.exports = {
 
       if(helpers.getPlayerBySocket(socket, true).weapon != null)
         response += "Equipped: " + display.printCard(helpers.getPlayerBySocket(socket, true).weapon, true, helpers.getPlayerBySocket(socket, true).canattack) +"\n";
+
+      var heropower_o = helpers.getPlayerBySocket(socket, true).heropower
+      if(heropower_o.ready)
+        response += "\nHero power: " + heropower_o.name + " (" + heropower_o.cost + ")\n";
 
       response += "\nOpponent's side:\n\n";
 
@@ -132,17 +115,17 @@ module.exports = {
       });  
 
       if(helpers.getPlayerBySocket(socket, false).weapon != null)
-        response += "Equipped: " + display.printCard(helpers.getPlayerBySocket(socket, false).weapon, true, helpers.getPlayerBySocket(socket, false).canattack) +"\n";
+        response += "\nEquipped: " + display.printCard(helpers.getPlayerBySocket(socket, false).weapon, true, helpers.getPlayerBySocket(socket, false).canattack) +"\n";
 
       var heropower = helpers.getPlayerBySocket(socket, false).heropower
-      if(heropower.ready)
-        response += "Hero power: " + heropower.name + " (" + heropower.cost + ")\n";
+      if(heropower.ready && heropower.cost)
+        response += "\nHero power: [[;lime;]" + heropower.name + "] (" + heropower.cost + ")\n";
 
       response += "\nYour hand:";
 
       socket.emit('terminal', response);
 
-      module.exports.hand(socket, parts);
+      module.exports.hand(socket, parts);*/
 
   },
 
@@ -736,6 +719,11 @@ module.exports = {
         socket.emit('terminal', '[[i;#D2B4DE;](debug) Dumping deck...]');
         var deck = helpers.getDeckBySocket(socket, false);
         deck.splice(0, deck.length);
+      }
+
+      if(subcommand == "testboard")
+      {
+        display.printBoard(socket);
       }
 
 
