@@ -89,12 +89,13 @@ module.exports = {
 	{
 		console.log("playing fireball");
 
-		var game = helpers.getGameBySocket(socket);
+		var o = helpers.getGameObjectsBySocket(socket);
 
-		var player = helpers.getPlayerBySocket(socket, false);
-		var opponent = helpers.getPlayerBySocket(socket, true);
+		var game = o.game;
 
-		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+		var player = o.players.self;
+		var opponent = o.players.opponent;
+		var opponentsocket = o.sockets.opponent;
 
 		var damage = 6 + player.spellpower;
 
@@ -129,11 +130,13 @@ module.exports = {
 	{
 		console.log("playing pyroblast");
 
-		var game = helpers.getGameBySocket(socket);
+		var o = helpers.getGameObjectsBySocket(socket);
 
-		var player = helpers.getPlayerBySocket(socket, false);
-		var opponent = helpers.getPlayerBySocket(socket, true);
-		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+		var game = o.game;
+
+		var player = o.players.self;
+		var opponent = o.players.opponent;
+		var opponentsocket = o.sockets.opponent;
 
 		var damage = 10 + player.spellpower;
 
@@ -168,12 +171,14 @@ module.exports = {
 	{
 		console.log("playing arcane explosion");
 
-		var game = helpers.getGameBySocket(socket);
+		var o = helpers.getGameObjectsBySocket(socket);
 
-		var player = helpers.getPlayerBySocket(socket, false);
-		var opponent = helpers.getPlayerBySocket(socket, true);
-		var enemyboard = helpers.getBoardBySocket(socket, true);
-		var opponentsocket = helpers.getOppositePlayerSocket(socket);
+		var game = o.game;
+
+		var player = o.players.self;
+		var opponent = o.players.opponent;
+		var enemyboard = o.boards.opponent;
+		var opponentsocket = o.sockets.opponent;
 
 		var damage = 1 + player.spellpower;
 
