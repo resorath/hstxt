@@ -637,10 +637,13 @@ module.exports = {
     {
       // list available commands
       var returnval = '\nAvailable commands: \n\n';
-      returnval += 'hand\nboard\nend\n';
-      returnval += 'look (any card)\n'
-      returnval += 'play (card in hand)\n';
-      returnval += 'attack (your card on board) (enemy card on board)\n';
+      returnval += '[[b;white;]hand] [detail] - look at your hand, and optionally with additional detail\n'
+      returnval += '[[b;white;]board] - look at the board and your hand\n'
+      returnval += '[[b;white;]end] - finish your turn\n';
+      returnval += '[[b;white;]look] (any card) - look at a card in detail\n'
+      returnval += '[[b;white;]play] (card in hand) [target] - play a card from your hand\n';
+      returnval += '[[b;white;]attack] (your card on board) (enemy card on board) - attack with a minion on the board\n';
+      returnval += '[[b;white;]hero] [target] - use your hero power\n'
 
       socket.emit('terminal', returnval);
 
