@@ -55,6 +55,8 @@ module.exports = {
         weapon: null,
         canattack: true,
         heropower: null,
+        emotes: null,
+        lastemote: 0,
       },
       p2: {
         number: 2,
@@ -73,6 +75,8 @@ module.exports = {
         weapon: null,
         canattack: true,
         heropower: null,
+        emotes: null,
+        lastemote: 0,
       }
     }
 

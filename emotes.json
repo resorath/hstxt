@@ -1,0 +1,17 @@
+{
+	"Jaina": {
+		"thanks": "Thank you.",
+		"well_played": "Well played.",
+		"greetings": "Hello.",
+		"wow": "Amazing.",
+		"oops": "Whoops.",
+		"threaten": "My magic will tear you apart!",
+		"concede": "You win this one.",
+		"attack": "I'm ready.",
+		"start": "You asked for it!",
+		"mirrored_start":"Oh, it is on.",
+		"time_short": "Time runs out on me!",
+		"low_cards": "I'm almost out of cards!",
+		"out_of_cards": "I'm out of cards!"
+	}
+}

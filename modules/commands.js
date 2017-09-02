@@ -435,6 +435,32 @@ module.exports = {
 
   },
 
+  // do an emote
+  emote: function(socket, parts)
+  {
+    var emote = parts.join("_").toLowerCase();
+
+    var emotes = ["thanks", "well_played", "greetings", "wow", "oops", "threaten"];
+
+    if(!emotes.includes(emote))
+    {
+      socket.emit('terminal', "Invalid emote!\n");
+      return;
+    }
+
+    var o = helpers.getGameObjectsBySocket(socket);
+
+    if(new Date().getTime() - o.players.self.lastemote < 5000)
+    {
+      socket.emit('terminal', 'You can only emote once every 5 seconds\n');
+      return;
+    }
+
+    o.game.io.to(o.game.name).emit('terminal', display.say(o.players.self.character, o.players.self.emotes[emote]));
+
+    o.players.self.lastemote = new Date().getTime();
+  },
+
 
   // attack a minion or hero into another minion or hero
   // play source destination

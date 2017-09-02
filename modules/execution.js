@@ -27,6 +27,10 @@ module.exports = {
 	  // load hero power
 	  player.heropower = gamevars.heroes[deck.hero].heropower;
 
+	  // bind emotes
+	  player.emotes = gamevars.emotes[player.character];
+
+
 	  for(cardid in deck.cards)
 	  {
 	    var cardname = deck.cards[cardid];
@@ -64,9 +68,35 @@ module.exports = {
 	{
 	  console.log(game.name + " mulligan phase");
 
+
 	  var firstPlayer = game.getSocketByPlayerNumber(game.playerTurn);
 	  var secondPlayer = game.getSocketByPlayerNumber(game.playerTurnOpposite());
 
+	  var o1 = helpers.getGameObjectsBySocket(firstPlayer);
+	  var o2 = helpers.getGameObjectsBySocket(secondPlayer);
+
+	  // do opening emotes
+
+	  // second player emotes to first player
+	  firstPlayer.emit('terminal', display.say(o2.players.opponent.character, o2.players.opponent.emotes.start));
+
+	  // first player emotes to self
+	  if(o1.players.opponent.character == o1.players.self.character)
+	  	firstPlayer.emit('terminal', display.say(o1.players.opponent.character, o1.players.opponent.emotes.mirrored_start));
+	  else
+		firstPlayer.emit('terminal', display.say(o1.players.opponent.character, o1.players.opponent.emotes.start));
+
+	  // first player emotes to second player
+	  secondPlayer.emit('terminal', display.say(o1.players.opponent.character, o1.players.opponent.emotes.start));
+
+	  // second player emotes to self
+	  if(o2.players.opponent.character == o2.players.self.character)
+	  	secondPlayer.emit('terminal', display.say(o2.players.opponent.character, o2.players.opponent.emotes.mirrored_start));
+	  else
+		secondPlayer.emit('terminal', display.say(o2.players.opponent.character, o2.players.opponent.emotes.start));
+
+
+	  // flip coin
 	  game.io.to(game.name).emit('terminal', '\n[[b;gold;black]Flipping the coin...]\n');
 
 	  firstPlayer.emit('terminal', 'You go first!\n');

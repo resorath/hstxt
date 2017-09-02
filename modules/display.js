@@ -321,6 +321,11 @@ Your hand:`;
 	      response += "\n";
 
 	      socket.emit('terminal', response);
+	},
+
+	say: function(source, message)
+	{
+		return "[[;#FFBDC0;]&lt;" + source + '&gt; ' + message + ']\n';
 	}
 
 

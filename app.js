@@ -37,6 +37,7 @@ var port = process.env.PORT || 8000;
 // load cards and decks
 gamevars.cards = JSON.parse(fs.readFileSync("cards.json"));
 gamevars.decks = JSON.parse(fs.readFileSync("decks.json"));
+gamevars.emotes = JSON.parse(fs.readFileSync("emotes.json"));
 util.bindQuotes(gamevars.cards, JSON.parse(fs.readFileSync("quotes.json")));
 
 // master games list.
