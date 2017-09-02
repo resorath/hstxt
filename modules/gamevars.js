@@ -5,6 +5,7 @@ module.exports = {
 	games: null,
 	triggers: null,
 	heroes: null,
+	emotes: null,
 
 
 }
