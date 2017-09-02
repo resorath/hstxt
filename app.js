@@ -32,6 +32,10 @@ app.get('/keyboard-event-polyfill.js', function(req, res) {
   res.sendFile(__dirname + '/keyboard-event-polyfill.js');
 });
 
+app.get('/games', function(req, res) {
+  res.jsonp({ count: gamevars.games.length });
+})
+
 var port = process.env.PORT || 8000;
 
 // load cards and decks

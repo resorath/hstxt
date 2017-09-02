@@ -444,7 +444,8 @@ module.exports = {
 
     if(!emotes.includes(emote))
     {
-      socket.emit('terminal', "Invalid emote!\n");
+      socket.emit('terminal', "Invalid emote!");
+      socket.emit('terminal', 'Valid emotes: ' + emotes.join(', ').replace('_', ' ') + "\n");
       return;
     }
 
@@ -669,7 +670,8 @@ module.exports = {
       returnval += '[[b;white;]look] (any card) - look at a card in detail\n'
       returnval += '[[b;white;]play] (card in hand) [target] - play a card from your hand\n';
       returnval += '[[b;white;]attack] (your card on board) (enemy card on board) - attack with a minion on the board\n';
-      returnval += '[[b;white;]hero] [target] - use your hero power\n'
+      returnval += '[[b;white;]hero] [target] - use your hero power\n';
+      returnval += '[[b;white;]emote] [emote] - send a message to your opponent\n';
 
       socket.emit('terminal', returnval);
 
