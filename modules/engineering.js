@@ -109,7 +109,11 @@ module.exports = {
 		else if(playerid == 2)
 			board = agame.board.p2;
 		else
+		{
 			console.log("FATAL: Card not owned");
+			console.log(card);
+			return;
+		}
 
 		if(deathrattle)
 		{

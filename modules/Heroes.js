@@ -25,7 +25,6 @@ module.exports = {
 				var damage = 1;
 
 				var heropowercard = helpers.getCardById("CS2_034");
-				console.log(heropowercard);
 				
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 

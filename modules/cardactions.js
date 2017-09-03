@@ -227,7 +227,7 @@ module.exports = {
 
 		// get sheep card ready
 		var sheep = helpers.getCardById("CS2_tk1");
-		sheep.ownernumber = socketowner.number;
+		sheep.ownernumber = helpers.getPlayerBySocket(socketowner).number;
 
 		// show sheep
 		o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(sheep));
