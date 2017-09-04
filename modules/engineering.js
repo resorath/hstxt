@@ -103,11 +103,18 @@ module.exports = {
 		var playerid = card.ownernumber;
 
 		var board = null;
+		var graveyard = null;
 
 		if(playerid == 1)
+		{
 			board = agame.board.p1;
+			graveyard = agame.graveyard.p1;
+		}
 		else if(playerid == 2)
+		{
 			board = agame.board.p2;
+			graveyard = agame.graveyard.p2;
+		}
 		else
 		{
 			console.log("FATAL: Card not owned");
@@ -125,7 +132,7 @@ module.exports = {
 
 		var index = board.indexOf(card);
 
-		board.splice(index, 1);
+		graveyard.push(board.splice(index, 1));
 
 		// return location of removed card
 		return index;

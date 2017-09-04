@@ -36,6 +36,12 @@ module.exports = {
       p2: []
     };
 
+    // each player's graveyard
+    this.graveyard = {
+      p1: [],
+      p2: [],
+    }
+
     // the player's actual characters
     this.player = {
       p1: {
@@ -134,6 +140,14 @@ module.exports = {
         return this.player.p1;
       else
         return this.player.p2;
+    }
+
+    this.getGraveyard = function (socket, getOppositePlayer)
+    {
+      if( (socket.id == this.p1socket.id && !getOppositePlayer) || (socket.id == this.p2socket.id && getOppositePlayer) )
+        return this.graveyard.p1;
+      else
+        return this.graveyard.p2;
     }
 
     this.getSocketByPlayerNumber = function (num)

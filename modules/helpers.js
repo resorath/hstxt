@@ -33,6 +33,11 @@ module.exports = {
 			hands: {
 				self: this.getHandBySocket(socket, false),
 				opponent: this.getHandBySocket(socket, true)
+			},
+
+			graveyards: {
+				self: this.getGraveyardBySocket(socket, false),
+				opponent: this.getGraveyardBySocket(socket, true)
 			}
 		};
 
@@ -73,6 +78,15 @@ module.exports = {
 
 	  if(agame != null)
 	    return agame.getDeck(socket, getOppositeDeck);
+	},
+
+	getGraveyardBySocket: function(socket, getOppositeDeck)
+	{
+	  // find game of socket first
+	  var agame = this.getGameBySocket(socket);
+
+	  if(agame != null)
+	    return agame.getGraveyard(socket, getOppositeDeck);
 	},
 
 	getGameBySocket: function(socket)
@@ -247,7 +261,7 @@ module.exports = {
 
 	getSocketFromCard: function(game, card)
 	{
-		// determine owner
+		// determine owner//////
 		var playernum = card.ownernumber;
 
 		return game.getSocketByPlayerNumber(playernum);

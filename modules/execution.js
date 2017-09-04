@@ -297,10 +297,14 @@ module.exports = {
 	      this.activateTurnTimer(agame);
 
 	      // tell first player to go
-      	  agame.getSocketByPlayerNumber(agame.playerTurn).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+	      var firstplayersocket = agame.getSocketByPlayerNumber(agame.playerTurn);
+      	  firstplayersocket.emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
       	  // give them a card
       	  module.exports.drawCard(agame.getSocketByPlayerNumber(agame.playerTurn));
+
+      	  // show them the board
+      	  display.printBoard(firstplayersocket);
 
 	},
 
@@ -358,7 +362,8 @@ module.exports = {
 	    opponent.heropower.ready = true;
 
 	    // tell new player it is their turn
-	    agame.getSocketByPlayerNumber(opponent.number).emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+	    var newplayersocket = agame.getSocketByPlayerNumber(opponent.number);
+	    newplayersocket.emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
 
 	    // do start of turn things
 	    gamevars.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
@@ -383,6 +388,9 @@ module.exports = {
 	    }
 
 	    agame.updatePromptsWithDefault();
+
+	    // show board?
+	    display.printBoard(newplayersocket);
 
 	    this.activateTurnTimer(agame);
 	},

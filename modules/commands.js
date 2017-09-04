@@ -608,12 +608,12 @@ module.exports = {
 
       if(!isSelfAttacking)
       {
-        agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage");
+        agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage.\n");
         execution.damagePlayer(agame, enemyplayer, sourceCard['attack']);
       }
       else
       {
-        agame.io.to(agame.name).emit('terminal', self.character + " attacks hero for " + self.attack + " damage");
+        agame.io.to(agame.name).emit('terminal', self.character + " attacks hero for " + self.attack + " damage,\n");
         execution.damagePlayer(agame, enemyplayer, self.attack);        
       }
     }
