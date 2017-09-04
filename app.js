@@ -420,17 +420,17 @@ gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard
     // go through each player status and see if it needs a trigger
     // load statuses with buff effects like freeze
     // example, remove freeze, remove temporary buffs (druids)
-    var currentPlayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
+    var currentPlayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurn, false));
     var oppositePlayer = secretplayer;
 
     currentPlayer.status.forEach(function (status) {
       if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
-        interrupts[status.id][trigger](game, status, sourcecard, targetcard);
+        interrupts[status.id][trigger](game, status, currentPlayer);
     });
 
     oppositePlayer.status.forEach(function (status) {
       if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
-        interrupts[status.id][trigger](game, status, sourcecard, targetcard);
+        interrupts[status.id][trigger](game, status, oppositePlayer);
     })
 
 

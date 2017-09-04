@@ -379,6 +379,9 @@ module.exports = {
 				o.players.self.armor += armor;
 
 				// add the +1 attack buff that expires at end of turn
+				o.players.self.status.push(heropowercard);
+
+				o.players.self.attack += 1;
 
 			}
 		}

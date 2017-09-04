@@ -111,6 +111,25 @@ module.exports = {
 
 		}
 
+	},
+
+	// druid hero power buff (shapeshift) - remove +1 attack
+	CS2_017: {
+
+		onendturn: function(game, statuscard, player)
+		{
+
+
+			// remove buff
+			util.filterInPlace(player.status, function(statuscard) {
+				return player.status.id == statuscard.id;
+			});
+
+			// reduce attack by 1
+			player.attack -= 1;
+
+		}
+
 	}
 
 

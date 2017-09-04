@@ -189,7 +189,7 @@ module.exports = {
       {
         for(aff in player.status)
         {
-          prompt += " " + player.status[aff] + " ";
+          prompt += " " + player.status[aff].name + " ";
         }
       }
 
