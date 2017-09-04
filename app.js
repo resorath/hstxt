@@ -415,6 +415,15 @@ gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard
     board.forEach(function (card) {
       if(typeof interrupts[card.id] !== 'undefined' && typeof interrupts[card.id][trigger] === 'function')
         interrupts[card.id][trigger](game, card, sourcecard, targetcard);
+
+      // go through any buffs on the card to see if they have their own action
+      if(typeof card.buffs !== 'undefined' && typeof cards.buffs != null)
+      {
+        card.buffs.forEach(function (buff) {
+          if(typeof interrupts[buff.id] !== 'undefined' && typeof interrupts[buff.id][trigger] === 'function')
+            interrupts[buff.id][trigger](game, buff, sourcecard, targetcard);
+        }
+      }
     });
 
     // go through each player status and see if it needs a trigger
