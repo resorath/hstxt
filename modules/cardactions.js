@@ -251,6 +251,36 @@ module.exports = {
 
 	},
 
+	// Ironforge Rifleman
+	CS2_141: function(socket, sourcecard, target, parts)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		var damage = 1;
+		var targname = null;
+
+		if(target == constants.selftarget)
+		{
+			execution.damagePlayer(o.game, o.players.self, damage);
+			targname = o.players.self.character;
+		}
+
+		else if(target == constants.opponenttarget)
+		{
+			execution.damagePlayer(o.game, o.players.opponent, damage);
+			targname = o.players.opponent.character;
+		}
+
+		else
+		{
+			engineering.damageCard(o.game, target, damage);
+			targname = target.name;
+		}
+
+		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + sourcecard.name + ' shoots ' + targname + ' for ' + damage + ' damage]\n\n');
+
+	},
+
 }
 
 

@@ -213,8 +213,18 @@ module.exports = {
 		if(typeof card['playRequirements'] == 'undefined')
 			return false;
 
-		if(requirement in card['playRequirements'])
-			return card['playRequirements'][requirement];
+		if(typeof requirement == 'string')
+		{
+			if(requirement in card['playRequirements'])
+				return card['playRequirements'][requirement];
+		}
+		else
+		{
+			requirement.forEach(function(req) {
+				if(req in card['playRequirements'])
+					return card['playRequirements'][req];
+			})
+		}
 	},
 
 	targetIsOpponent: function(target)

@@ -221,7 +221,7 @@ module.exports = {
 			return r;
 		})();
 
-		var o_armor = o.players.opponent.armor > 0 ? '[' + o.players.opponent.armor + '] armor' : '';
+		var o_armor = o.players.opponent.armor > 0 ? '[[[;gold;]' + o.players.opponent.armor + '] armor' : '';
 		var o_attack = o.players.opponent.attack > 0 ? o.players.opponent.attack + ' attack ' : '';
 		var o_weapon = o.players.opponent.weapon == null ? '(Nothing)' : module.exports.printCard(o.players.opponent.weapon);
 		var o_heropower = o.players.opponent.heropower.ready ? o.players.opponent.heropower.name + ' (' + o.players.opponent.heropower.cost + ')' : o.players.opponent.heropower.name + ' (inactive)'
@@ -270,7 +270,7 @@ module.exports = {
 
 
 		var board = `
-Enemy ${o.players.opponent.character} [[;green;]${o.players.opponent.health}] HP [[;gold;]${o_armor}] [[;orange;]${o_attack}] [[;lightblue;]${o.players.opponent.mana}]/${o.players.opponent.maxmana} mana
+Enemy ${o.players.opponent.character} [[;green;]${o.players.opponent.health}] HP ${o_armor} [[;orange;]${o_attack}] [[;lightblue;]${o.players.opponent.mana}]/${o.players.opponent.maxmana} mana
 Cards - hand: ${o.hands.opponent.length}  deck: ${o.decks.opponent.length}
 Equipped: ${o_weapon}
 Hero power: ${o_heropower}

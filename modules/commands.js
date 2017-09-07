@@ -257,7 +257,8 @@ module.exports = {
         case "MINION":
 
           // check if minion needs a target
-          if(helpers.cardHasPlayRequirement(cardtoplay, "REQ_TARGET_TO_PLAY") !== false && position == null && targetcard == null)
+          if( helpers.cardHasPlayRequirement(cardtoplay, ["REQ_TARGET_TO_PLAY", "REQ_TARGET_IF_AVAILABLE"]) !== false 
+              && targetcard == null )
           {
             socket.emit("terminal", "This card needs a position and target to play!\nplay [position] [target]\n");
             return;
