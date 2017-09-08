@@ -246,7 +246,7 @@ module.exports = {
 		o.sockets.self.emit('terminal', '[[;lightblue;]You deal ' + damage + ' to your opponent]\n\n');
 		o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent deals ' + damage + ' to you!]\n\n');
 
-		execution.damagePlayer(o.game, o.players.opponent, damage);
+		execution.damagePlayer(o.game, o.players.opponent, damRage);
 		
 
 	},

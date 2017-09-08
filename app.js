@@ -1,3 +1,7 @@
+'use strict';
+
+console.log("Loading modules...");
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -22,7 +26,9 @@ try {
 catch(err)
 { 
   serverVersion = "azure-dev"
-}  
+} 
+
+console.log("Starting webserve..."); 
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -38,6 +44,8 @@ app.get('/games', function(req, res) {
 
 var port = process.env.PORT || 8000;
 
+console.log("Loading data...");
+
 // load cards and decks
 gamevars.cards = JSON.parse(fs.readFileSync("cards.json"));
 gamevars.decks = JSON.parse(fs.readFileSync("decks.json"));
@@ -47,7 +55,9 @@ util.bindQuotes(gamevars.cards, JSON.parse(fs.readFileSync("quotes.json")));
 // master games list.
 gamevars.games = [];
 
-// setu triggers class
+console.log("Reticulating splines...");
+
+// setup triggers class
 class Trigger extends EventEmitter {}
 
 gamevars.triggers = new Trigger();
@@ -61,6 +71,8 @@ var matchmakingqueue = [];
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
+console.log("Textstone server ready!");
 
 
 /*process.stdin.resume();
@@ -141,7 +153,7 @@ io.on('connection', function(socket){
 
   socket.on('command', function(msg){
 
-    agame = helpers.getGameBySocket(socket);
+    var agame = helpers.getGameBySocket(socket);
     if(agame == null)
       return;
 
