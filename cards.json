@@ -154,7 +154,7 @@
     "playerClass": "PRIEST",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Destroy a minion with 5Â or more Attack.",
+    "text": "Destroy a minion with 5 or more Attack.",
     "type": "SPELL"
   },
   {
@@ -224,7 +224,7 @@
     "race": "DEMON",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "Whenever you summon a minion, deal 5 damage toÂ your hero.",
+    "text": "Whenever you summon a minion, deal 5 damage to your hero.",
     "type": "MINION"
   },
   {
@@ -519,7 +519,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 40371,
-    "flavor": "One of the most famous busts in Gadgetzanâ€™s history happened on Smugglerâ€™s Run, where Sergeant Sally apprehended a cadre of Grimy Goons transporting a massive number of illegal fish heads.",
+    "flavor": "One of the most famous busts in Gadgetzan€™s history happened on Smuggler€™s Run, where Sergeant Sally apprehended a cadre of Grimy Goons transporting a massive number of illegal fish heads.",
     "id": "CFM_305",
     "name": "Smuggler's Run",
     "playerClass": "PALADIN",
@@ -848,7 +848,7 @@
     "playerClass": "ROGUE",
     "rarity": "COMMON",
     "set": "UNGORO",
-    "text": "Add two Razorpetals toÂ your hand that dealÂ 1 damage.",
+    "text": "Add two Razorpetals to your hand that deal 1 damage.",
     "type": "SPELL"
   },
   {
@@ -933,7 +933,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] [[b;;]Adapt] a friendlyÂ Beast.",
+    "text": "[[b;;]Battlecry:] [[b;;]Adapt] a friendly Beast.",
     "type": "MINION"
   },
   {
@@ -1011,7 +1011,7 @@
     "collectible": true,
     "cost": 6,
     "dbfId": 40938,
-    "flavor": "No one was brave enough to fire the dragon in personâ€¦ so they made the potion do it.",
+    "flavor": "No one was brave enough to fire the dragon in person€¦ so they made the potion do it.",
     "id": "CFM_662",
     "name": "Dragonfire Potion",
     "playerClass": "PRIEST",
@@ -1490,7 +1490,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "RARE",
     "set": "LOE",
-    "text": "Canâ€™t attack unless itâ€™s the only minion in the battlefield.",
+    "text": "Can€™t attack unless it€™s the only minion in the battlefield.",
     "type": "MINION"
   },
   {
@@ -1508,7 +1508,7 @@
     "playerClass": "PALADIN",
     "rarity": "EPIC",
     "set": "EXPERT1",
-    "text": "Restore #8 Health. DrawÂ 3 cards.",
+    "text": "Restore #8 Health. Draw 3 cards.",
     "type": "SPELL"
   },
   {
@@ -1727,7 +1727,7 @@
       "DISCOVER"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] If you control another Murloc, [[b;;]Discover] aÂ Murloc.",
+    "text": "[[b;;]Battlecry:] If you control another Murloc, [[b;;]Discover] a Murloc.",
     "type": "MINION"
   },
   {
@@ -1905,7 +1905,7 @@
     "playerClass": "DRUID",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give your characters +2Â Attack this turn.",
+    "text": "Give your characters +2 Attack this turn.",
     "type": "SPELL"
   },
   {
@@ -1941,7 +1941,7 @@
     "cost": 5,
     "dbfId": 304,
     "durability": 2,
-    "flavor": "Noâ€¦ actually you should fear the Reaper.",
+    "flavor": "No€¦ actually you should fear the Reaper.",
     "howToEarn": "Unlocked at Level 10.",
     "howToEarnGolden": "Unlocked at Level 51.",
     "id": "CS2_112",
@@ -2113,7 +2113,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 41153,
-    "flavor": "What did you draw? Shhhhâ€¦ itâ€™s a secret.",
+    "flavor": "What did you draw? Shhhh€¦ it€™s a secret.",
     "health": 3,
     "id": "UNG_020",
     "mechanics": [
@@ -2437,7 +2437,7 @@
     "playerClass": "SHAMAN",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Deal $2 damage to 2Â random enemy minions. [[b;;]Overload:] (2)",
+    "text": "Deal $2 damage to 2 random enemy minions. [[b;;]Overload:] (2)",
     "type": "SPELL"
   },
   {
@@ -2506,7 +2506,7 @@
       "UNG_999t13",
       "UNG_999t14"
     ],
-    "flavor": "And so the bartender says, â€œWhy the long neck?â€",
+    "flavor": "And so the bartender says, €œWhy the long neck?€",
     "health": 1,
     "id": "UNG_109",
     "mechanics": [
@@ -2606,7 +2606,7 @@
     "playerClass": "SHAMAN",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give your minions +3Â Attack this turn.",
+    "text": "Give your minions +3 Attack this turn.",
     "type": "SPELL"
   },
   {
@@ -3031,7 +3031,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 41169,
-    "flavor": "This oneâ€™s a bird. And hereâ€™s a bunny!",
+    "flavor": "This one€™s a bird. And here€™s a bunny!",
     "id": "UNG_029",
     "name": "Shadow Visions",
     "playerClass": "PRIEST",
@@ -3298,7 +3298,7 @@
     "cost": 2,
     "dbfId": 41162,
     "elite": true,
-    "flavor": "If you strike her down, she shall become more powerful than you can possiblyâ€¦ well, she'll become a 6/6 anyways.",
+    "flavor": "If you strike her down, she shall become more powerful than you can possibly€¦ well, she'll become a 6/6 anyways.",
     "health": 2,
     "id": "UNG_027",
     "mechanics": [
@@ -3309,7 +3309,7 @@
     "race": "ELEMENTAL",
     "rarity": "LEGENDARY",
     "set": "UNGORO",
-    "text": "[[b;;]Deathrattle:] Return this toÂ your hand as a 6/6 that costs (6).",
+    "text": "[[b;;]Deathrattle:] Return this to your hand as a 6/6 that costs (6).",
     "type": "MINION"
   },
   {
@@ -3582,7 +3582,7 @@
       "SECRET"
     ],
     "set": "EXPERT1",
-    "text": "If you control a [[b;;]Secret] atÂ the end of your turn, gain +2/+2.",
+    "text": "If you control a [[b;;]Secret] at the end of your turn, gain +2/+2.",
     "type": "MINION"
   },
   {
@@ -4104,7 +4104,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "CREDITS",
-    "text": "[[b;;]Battlecry:]  Make your \n card back orange.  Actuallyâ€¦ make everything orange.",
+    "text": "[[b;;]Battlecry:]  Make your \n card back orange.  Actually€¦ make everything orange.",
     "type": "MINION"
   },
   {
@@ -4158,7 +4158,7 @@
     "cost": 4,
     "dbfId": 34,
     "faction": "HORDE",
-    "flavor": "The first time they tried to guard Silvermoon against the scourge, it didnâ€™t go so wellâ€¦",
+    "flavor": "The first time they tried to guard Silvermoon against the scourge, it didn€™t go so well€¦",
     "health": 3,
     "id": "EX1_023",
     "mechanics": [
@@ -4185,7 +4185,7 @@
     "playerClass": "WARLOCK",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $3 damage to ALLÂ characters.",
+    "text": "Deal $3 damage to ALL characters.",
     "type": "SPELL"
   },
   {
@@ -4337,7 +4337,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "COMMON",
     "set": "GANGS",
-    "text": "At the end of your turn, restore 1 Health to yourÂ hero.",
+    "text": "At the end of your turn, restore 1 Health to your hero.",
     "type": "MINION"
   },
   {
@@ -4628,7 +4628,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 41875,
-    "flavor": "Ear to the ground, he carefully interpreted the chittering noises: â€œYou wanna cast a spell? I wanna cast a spell!â€",
+    "flavor": "Ear to the ground, he carefully interpreted the chittering noises: €œYou wanna cast a spell? I wanna cast a spell!€",
     "health": 3,
     "id": "UNG_835",
     "mechanics": [
@@ -4842,7 +4842,7 @@
     "playerClass": "WARRIOR",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "Whenever a friendly minionÂ takes damage, gain 1 Armor.",
+    "text": "Whenever a friendly minion takes damage, gain 1 Armor.",
     "type": "MINION"
   },
   {
@@ -4885,7 +4885,7 @@
       "STEALTH"
     ],
     "set": "HOF",
-    "text": "Give your minions [[b;;]Stealth] until your nextÂ turn.",
+    "text": "Give your minions [[b;;]Stealth] until your next turn.",
     "type": "SPELL"
   },
   {
@@ -5011,7 +5011,7 @@
     "collectible": true,
     "cost": 4,
     "dbfId": 41945,
-    "flavor": "â€œCome now, Johnston. I think those horns are quite fetching on you.â€",
+    "flavor": "€œCome now, Johnston. I think those horns are quite fetching on you.€",
     "health": 4,
     "id": "UNG_962",
     "mechanics": [
@@ -5025,7 +5025,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] [[b;;]Adapt] your SilverÂ Hand Recruits.",
+    "text": "[[b;;]Battlecry:] [[b;;]Adapt] your Silver Hand Recruits.",
     "type": "MINION"
   },
   {
@@ -5184,7 +5184,7 @@
     "playerClass": "PALADIN",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give a minion +3Â Attack.",
+    "text": "Give a minion +3 Attack.",
     "type": "SPELL"
   },
   {
@@ -5294,7 +5294,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 40971,
-    "flavor": "Always sticking its neck into other peopleâ€™s business.",
+    "flavor": "Always sticking its neck into other people€™s business.",
     "health": 4,
     "id": "UNG_100",
     "mechanics": [
@@ -5383,7 +5383,7 @@
     "race": "DRAGON",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "Players only have 15 seconds to take theirÂ turns.",
+    "text": "Players only have 15 seconds to take their turns.",
     "type": "MINION"
   },
   {
@@ -6028,7 +6028,7 @@
     "playerClass": "SHAMAN",
     "rarity": "COMMON",
     "set": "KARA",
-    "text": "Whenever you cast a spell, summon a random basicÂ Totem.",
+    "text": "Whenever you cast a spell, summon a random basic Totem.",
     "type": "MINION"
   },
   {
@@ -6070,7 +6070,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 914,
-    "flavor": "Itâ€™s a Bolt.   It's made out of Shadow.   What more do you need to know!",
+    "flavor": "It€™s a Bolt.   It's made out of Shadow.   What more do you need to know!",
     "howToEarn": "Unlocked at Level 1.",
     "howToEarnGolden": "Unlocked at Level 47.",
     "id": "CS2_057",
@@ -6125,7 +6125,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "At the start of your turn, deal 2 damage to thisÂ minion.",
+    "text": "At the start of your turn, deal 2 damage to this minion.",
     "type": "MINION"
   },
   {
@@ -6136,7 +6136,7 @@
     "cost": 8,
     "dbfId": 374,
     "elite": true,
-    "flavor": "Ragnaros was summoned by the Dark Iron dwarves, who were eventually enslaved by the Firelord.  Summoning Ragnaros often doesnâ€™t work out the way you want it to.",
+    "flavor": "Ragnaros was summoned by the Dark Iron dwarves, who were eventually enslaved by the Firelord.  Summoning Ragnaros often doesn€™t work out the way you want it to.",
     "health": 8,
     "id": "EX1_298",
     "mechanics": [
@@ -6459,7 +6459,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "CREDITS",
-    "text": "[[b;;]Battlecry:] If everything \n is on fire, [[b;;]Adapt]. If itâ€™s 3AM, [[b;;]Adapt] again.",
+    "text": "[[b;;]Battlecry:] If everything \n is on fire, [[b;;]Adapt]. If it€™s 3AM, [[b;;]Adapt] again.",
     "type": "MINION"
   },
   {
@@ -6487,7 +6487,7 @@
     "cost": 9,
     "dbfId": 1144,
     "elite": true,
-    "flavor": "The best defense against King Krush is to have someone you donâ€™t like standing in front of you.",
+    "flavor": "The best defense against King Krush is to have someone you don€™t like standing in front of you.",
     "health": 8,
     "id": "EX1_543",
     "mechanics": [
@@ -6530,7 +6530,7 @@
     "cost": 2,
     "dbfId": 12,
     "faction": "ALLIANCE",
-    "flavor": "Sheâ€™s trying to kick the habit, but still takes some mana whenever she has a stressful day.",
+    "flavor": "She€™s trying to kick the habit, but still takes some mana whenever she has a stressful day.",
     "health": 3,
     "id": "EX1_055",
     "name": "Mana Addict",
@@ -6577,7 +6577,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Whenever this minion takes damage, gain +3Â Attack.",
+    "text": "Whenever this minion takes damage, gain +3 Attack.",
     "type": "MINION"
   },
   {
@@ -6946,7 +6946,7 @@
     "playerClass": "PALADIN",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $2 damage to allÂ enemies.",
+    "text": "Deal $2 damage to all enemies.",
     "type": "SPELL"
   },
   {
@@ -7088,7 +7088,7 @@
       "TAUNT"
     ],
     "set": "GVG",
-    "text": "[[b;;]Choose One -] Summon 5 Wisps; or GiveÂ a minion +5/+5 and [[b;;]Taunt].",
+    "text": "[[b;;]Choose One -] Summon 5 Wisps; or Give a minion +5/+5 and [[b;;]Taunt].",
     "type": "SPELL"
   },
   {
@@ -7731,7 +7731,7 @@
     "cost": 4,
     "dbfId": 41213,
     "durability": 3,
-    "flavor": "You know youâ€™re a Rogue when a sharp rock makes you go â€œOoh!Â  Dagger!â€",
+    "flavor": "You know you€™re a Rogue when a sharp rock makes you go €œOoh!  Dagger!€",
     "id": "UNG_061",
     "name": "Obsidian Shard",
     "playerClass": "ROGUE",
@@ -7928,7 +7928,7 @@
     "cost": 6,
     "dbfId": 759,
     "faction": "ALLIANCE",
-    "flavor": "She doesnâ€™t ACTUALLY walk on the Sun.  It's just a name.  Donâ€™t worry!",
+    "flavor": "She doesn€™t ACTUALLY walk on the Sun.  It's just a name.  Don€™t worry!",
     "health": 5,
     "id": "EX1_032",
     "mechanics": [
@@ -8001,7 +8001,7 @@
     "collectible": true,
     "cost": 4,
     "dbfId": 39491,
-    "flavor": "Heâ€™s really just a Blacksmith, but he thought the fancy title would bring in more business.",
+    "flavor": "He€™s really just a Blacksmith, but he thought the fancy title would bring in more business.",
     "health": 2,
     "howToEarn": "Unlocked in the Parlor, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Parlor, in One Night in Karazhan.",
@@ -8113,7 +8113,7 @@
     "playerClass": "SHAMAN",
     "rarity": "RARE",
     "set": "UNGORO",
-    "text": "Deal $15 damage randomly split among allÂ minions.\n[[b;;]Overload:] (2)",
+    "text": "Deal $15 damage randomly split among all minions.\n[[b;;]Overload:] (2)",
     "type": "SPELL"
   },
   {
@@ -9233,7 +9233,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 41871,
-    "flavor": "The most terrifying of Unâ€™goro magics is both silentâ€¦ AND deadly.",
+    "flavor": "The most terrifying of Un€™goro magics is both silent€¦ AND deadly.",
     "id": "UNG_831",
     "name": "Corrupting Mist",
     "playerClass": "WARLOCK",
@@ -9364,7 +9364,7 @@
     "race": "BEAST",
     "rarity": "EPIC",
     "set": "UNGORO",
-    "text": "Whenever this minion takes damage, deal 3 damage toÂ your hero.",
+    "text": "Whenever this minion takes damage, deal 3 damage to your hero.",
     "type": "MINION"
   },
   {
@@ -9946,7 +9946,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 510,
-    "flavor": "These are the brainy murlocs.  It turns out that doesnâ€™t mean much.",
+    "flavor": "These are the brainy murlocs.  It turns out that doesn€™t mean much.",
     "health": 1,
     "howToEarnGolden": "Unlocked at Warlock Level 53.",
     "id": "EX1_508",
@@ -10055,7 +10055,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 2029,
-    "flavor": "\"I'm bringing the guacamole!\" â€“ One of the most successful (yet rare) Silver Hand rallying cries",
+    "flavor": "\"I'm bringing the guacamole!\" €“ One of the most successful (yet rare) Silver Hand rallying cries",
     "id": "GVG_061",
     "name": "Muster for Battle",
     "playerClass": "PALADIN",
@@ -10135,7 +10135,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 40492,
-    "flavor": "Quit playing games with his heart. And his fingers. And foot.Â It's rude.",
+    "flavor": "Quit playing games with his heart. And his fingers. And foot. It's rude.",
     "health": 1,
     "id": "CFM_646",
     "mechanics": [
@@ -10377,7 +10377,7 @@
       "SHAMAN"
     ],
     "collectible": true,
-    "collectionText": "[[b;;]Battlecry:] Summon a [[b;;]JadeÂ Golem].",
+    "collectionText": "[[b;;]Battlecry:] Summon a [[b;;]Jade Golem].",
     "cost": 4,
     "dbfId": 40527,
     "flavor": "\"He's so cute!  I just want to squeeze him, then use him for Jade Golem parts!\" - Aya Blackpaw",
@@ -10392,7 +10392,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "COMMON",
     "set": "GANGS",
-    "text": "[[b;;]Battlecry:] Summon a{1} {0} [[b;;]JadeÂ Golem].",
+    "text": "[[b;;]Battlecry:] Summon a{1} {0} [[b;;]Jade Golem].",
     "type": "MINION"
   },
   {
@@ -11149,7 +11149,7 @@
       "TAUNT"
     ],
     "set": "GANGS",
-    "text": "[[b;;]Battlecry:] If an enemy minion has [[b;;]Taunt], gainÂ [[b;;]Charge].",
+    "text": "[[b;;]Battlecry:] If an enemy minion has [[b;;]Taunt], gain [[b;;]Charge].",
     "type": "MINION"
   },
   {
@@ -11194,7 +11194,7 @@
     "race": "BEAST",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Adjacent minions have +1Â Attack.",
+    "text": "Adjacent minions have +1 Attack.",
     "type": "MINION"
   },
   {
@@ -11217,7 +11217,7 @@
     "playerClass": "MAGE",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $3 damage to aÂ character and [[b;;]Freeze] it.",
+    "text": "Deal $3 damage to a character and [[b;;]Freeze] it.",
     "type": "SPELL"
   },
   {
@@ -11507,7 +11507,7 @@
     "playerClass": "PALADIN",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Whenever your hero attacks, restore 2Â Health to it.",
+    "text": "Whenever your hero attacks, restore 2 Health to it.",
     "type": "WEAPON"
   },
   {
@@ -11670,7 +11670,7 @@
     "playerClass": "WARRIOR",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "[[b;;]Battlecry:] Equip a 2/2Â weapon.",
+    "text": "[[b;;]Battlecry:] Equip a 2/2 weapon.",
     "type": "MINION"
   },
   {
@@ -11731,7 +11731,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 2225,
-    "flavor": "Likes: Hiking and the great outdoors. Dislikes: Goblin shredders and sandals. (Canâ€™t find any that fit!).",
+    "flavor": "Likes: Hiking and the great outdoors. Dislikes: Goblin shredders and sandals. (Can€™t find any that fit!).",
     "health": 4,
     "id": "GVG_032",
     "mechanics": [
@@ -11835,7 +11835,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] Shuffle a sealedÂ [[b;;]Un'Goro] pack intoÂ your deck.",
+    "text": "[[b;;]Battlecry:] Shuffle a sealed [[b;;]Un'Goro] pack into your deck.",
     "type": "MINION"
   },
   {
@@ -11916,7 +11916,7 @@
     "playerClass": "WARLOCK",
     "rarity": "EPIC",
     "set": "EXPERT1",
-    "text": "Deal $2 damage toÂ a character. If that kills it, summon a random Demon.",
+    "text": "Deal $2 damage to a character. If that kills it, summon a random Demon.",
     "type": "SPELL"
   },
   {
@@ -12484,7 +12484,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 1655,
-    "flavor": "Sheâ€™s smaller than her sisters Mediumwarden and Heavywarden.",
+    "flavor": "She€™s smaller than her sisters Mediumwarden and Heavywarden.",
     "health": 2,
     "id": "EX1_001",
     "name": "Lightwarden",
@@ -12714,7 +12714,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 39313,
-    "flavor": "Sheâ€™s much more cheerful after losing the â€˜nâ€™ in her name.",
+    "flavor": "She€™s much more cheerful after losing the €˜n€™ in her name.",
     "health": 3,
     "howToEarn": "Unlocked in the Spire, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Spire, in One Night in Karazhan.",
@@ -12752,7 +12752,7 @@
     "race": "BEAST",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Your other Beasts have +1Â Attack.",
+    "text": "Your other Beasts have +1 Attack.",
     "type": "MINION"
   },
   {
@@ -13445,7 +13445,7 @@
     "race": "ELEMENTAL",
     "rarity": "COMMON",
     "set": "UNGORO",
-    "text": "[[b;;]Taunt]\nHas +4 Attack during your opponentâ€™s turn.",
+    "text": "[[b;;]Taunt]\nHas +4 Attack during your opponent€™s turn.",
     "type": "MINION"
   },
   {
@@ -13600,7 +13600,7 @@
       "TAUNT"
     ],
     "set": "EXPERT1",
-    "text": "At the end of your turn, summon a 2/2 Gnoll withÂ [[b;;]Taunt].",
+    "text": "At the end of your turn, summon a 2/2 Gnoll with [[b;;]Taunt].",
     "type": "MINION"
   },
   {
@@ -13624,7 +13624,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 38669,
-    "flavor": "Really feels good about himself and is in a much better place now. Butâ€¦ he sure does miss piloting those shredders.",
+    "flavor": "Really feels good about himself and is in a much better place now. But€¦ he sure does miss piloting those shredders.",
     "health": 7,
     "id": "OG_200",
     "name": "Validated Doomsayer",
@@ -14260,7 +14260,7 @@
       "TAUNT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] If you control atÂ least 2 other minions, gain [[b;;]Taunt].",
+    "text": "[[b;;]Battlecry:] If you control at least 2 other minions, gain [[b;;]Taunt].",
     "type": "MINION"
   },
   {
@@ -14890,7 +14890,7 @@
     ],
     "set": "EXPERT1",
     "targetingArrowText": "[[b;;]Silence] a minion.",
-    "text": "[[b;;]Battlecry:] [[b;;]Silence] aÂ minion.",
+    "text": "[[b;;]Battlecry:] [[b;;]Silence] a minion.",
     "type": "MINION"
   },
   {
@@ -15025,7 +15025,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 41879,
-    "flavor": "I guess you can say theyâ€™reâ€¦ â€œsoul survivors.â€",
+    "flavor": "I guess you can say they€™re€¦ €œsoul survivors.€",
     "id": "UNG_956",
     "name": "Spirit Echo",
     "playerClass": "SHAMAN",
@@ -15034,7 +15034,7 @@
       "DEATHRATTLE"
     ],
     "set": "UNGORO",
-    "text": "Give your minions \"[[b;;]Deathrattle:] Return Â this to your hand.\"",
+    "text": "Give your minions \"[[b;;]Deathrattle:] Return  this to your hand.\"",
     "type": "SPELL"
   },
   {
@@ -15088,7 +15088,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 40928,
-    "flavor": "\"Hmmmmâ€¦  Call it a hunch, but I'm starting to think that there may be some kind of criminal activity going on in Gadgetzan.\"",
+    "flavor": "\"Hmmmm€¦  Call it a hunch, but I'm starting to think that there may be some kind of criminal activity going on in Gadgetzan.\"",
     "health": 6,
     "id": "CFM_656",
     "mechanics": [
@@ -15232,7 +15232,7 @@
     "playerClass": "MAGE",
     "rarity": "RARE",
     "set": "GANGS",
-    "text": "Deal $2 damage to allÂ minions.",
+    "text": "Deal $2 damage to all minions.",
     "type": "SPELL"
   },
   {
@@ -15255,7 +15255,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 860,
-    "flavor": "Generally demons are pretty obvious and you donâ€™t need a spell to sense them.",
+    "flavor": "Generally demons are pretty obvious and you don€™t need a spell to sense them.",
     "id": "EX1_317",
     "name": "Sense Demons",
     "playerClass": "WARLOCK",
@@ -15470,7 +15470,7 @@
     "playerClass": "SHAMAN",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give your Totems +2Â Health.",
+    "text": "Give your Totems +2 Health.",
     "type": "SPELL"
   },
   {
@@ -15870,7 +15870,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 40281,
-    "flavor": "It has double the Attack.  \"Go on.\"  And double the Health.  \"Yes??\"  And its trigger has twice the effect.  \"WHAT???\"  And it costsâ€¦  Five times more.",
+    "flavor": "It has double the Attack.  \"Go on.\"  And double the Health.  \"Yes??\"  And its trigger has twice the effect.  \"WHAT???\"  And it costs€¦  Five times more.",
     "health": 6,
     "id": "CFM_060",
     "name": "Red Mana Wyrm",
@@ -15899,7 +15899,7 @@
     "race": "DRAGON",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "[[b;;]Battlecry:] Destroy all other minions and discard yourÂ hand.",
+    "text": "[[b;;]Battlecry:] Destroy all other minions and discard your hand.",
     "type": "MINION"
   },
   {
@@ -16066,7 +16066,7 @@
     "playerClass": "HUNTER",
     "rarity": "EPIC",
     "set": "UNGORO",
-    "text": "Each time you play a Beast this turn, addÂ aÂ random Beast toÂ your hand.",
+    "text": "Each time you play a Beast this turn, add a random Beast to your hand.",
     "type": "SPELL"
   },
   {
@@ -16353,7 +16353,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 1133,
-    "flavor": "Heâ€™s not really that patient. It just takes a while for someone to walk by that he can actually reach.",
+    "flavor": "He€™s not really that patient. It just takes a while for someone to walk by that he can actually reach.",
     "health": 1,
     "id": "EX1_522",
     "mechanics": [
@@ -16411,7 +16411,7 @@
     "playerClass": "ROGUE",
     "rarity": "RARE",
     "set": "KARA",
-    "text": "[x][[b;;]Battlecry:] If you're holding\nany non-Rogue class cards,\nÂ reduce their Cost by (2).",
+    "text": "[x][[b;;]Battlecry:] If you're holding\nany non-Rogue class cards,\n reduce their Cost by (2).",
     "type": "MINION"
   },
   {
@@ -16568,7 +16568,7 @@
     "playerClass": "ROGUE",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $1 damage to all enemy minions. DrawÂ a card.",
+    "text": "Deal $1 damage to all enemy minions. Draw a card.",
     "type": "SPELL"
   },
   {
@@ -16896,7 +16896,7 @@
     "playerClass": "PALADIN",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "[[b;;]Secret:] When your hero takes damage, dealÂ that much damage to the enemy hero.",
+    "text": "[[b;;]Secret:] When your hero takes damage, deal that much damage to the enemy hero.",
     "type": "SPELL"
   },
   {
@@ -17239,7 +17239,7 @@
     "cost": 9,
     "dbfId": 2084,
     "elite": true,
-    "flavor": "He was obsessed with explosives until he discovered knitting. Now he yells, â€œSWEATERS! MORE SWEATERS!â€",
+    "flavor": "He was obsessed with explosives until he discovered knitting. Now he yells, €œSWEATERS! MORE SWEATERS!€",
     "health": 7,
     "id": "GVG_116",
     "name": "Mekgineer Thermaplugg",
@@ -17554,7 +17554,7 @@
     "playerClass": "WARLOCK",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "Destroy a minion. Restore #3 Health toÂ your hero.",
+    "text": "Destroy a minion. Restore #3 Health to your hero.",
     "type": "SPELL"
   },
   {
@@ -17910,7 +17910,7 @@
     "cost": 1,
     "dbfId": 41168,
     "elite": true,
-    "flavor": "Although powerful, the incantation is simple. Itâ€™s just a jump to the left, and then a step to the right.",
+    "flavor": "Although powerful, the incantation is simple. It€™s just a jump to the left, and then a step to the right.",
     "id": "UNG_028",
     "mechanics": [
       "QUEST"
@@ -17965,7 +17965,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "[[b;;]Deathrattle:] Deal 2 damage to the enemyÂ hero.",
+    "text": "[[b;;]Deathrattle:] Deal 2 damage to the enemy hero.",
     "type": "MINION"
   },
   {
@@ -18006,7 +18006,7 @@
     "race": "ELEMENTAL",
     "rarity": "EPIC",
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] If you played anÂ Elemental last turn, deal 5 damage.",
+    "text": "[[b;;]Battlecry:] If you played an Elemental last turn, deal 5 damage.",
     "type": "MINION"
   },
   {
@@ -18079,7 +18079,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 38913,
-    "flavor": "Wait, how can you have a light in the dark?  If you turn on a light while itâ€™s dark, doesnâ€™t that mean itâ€™s no longer dark?",
+    "flavor": "Wait, how can you have a light in the dark?  If you turn on a light while it€™s dark, doesn€™t that mean it€™s no longer dark?",
     "id": "OG_311",
     "name": "A Light in the Darkness",
     "playerClass": "PALADIN",
@@ -18264,7 +18264,7 @@
     "playerClass": "ROGUE",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $3 damage to theÂ enemy hero.",
+    "text": "Deal $3 damage to the enemy hero.",
     "type": "SPELL"
   },
   {
@@ -18503,7 +18503,7 @@
       "DISCOVER"
     ],
     "set": "GANGS",
-    "text": "[[b;;]Discover] a card withÂ [[b;;]Overload]. [[b;;]Overload:] (1)",
+    "text": "[[b;;]Discover] a card with [[b;;]Overload]. [[b;;]Overload:] (1)",
     "type": "SPELL"
   },
   {
@@ -19027,7 +19027,7 @@
       "FREEZE"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] [[b;;]Freeze] anÂ enemy.",
+    "text": "[[b;;]Battlecry:] [[b;;]Freeze] an enemy.",
     "type": "MINION"
   },
   {
@@ -19037,7 +19037,7 @@
     "collectible": true,
     "cost": 6,
     "dbfId": 38517,
-    "flavor": "Itâ€™s a self-reducing prophecy.",
+    "flavor": "It€™s a self-reducing prophecy.",
     "health": 4,
     "id": "OG_138",
     "name": "Nerubian Prophet",
@@ -19063,7 +19063,7 @@
     "collectible": true,
     "cost": 4,
     "dbfId": 40419,
-    "flavor": "When you really need a job doneâ€¦ but you don't really care if it gets done right.",
+    "flavor": "When you really need a job done€¦ but you don't really care if it gets done right.",
     "id": "CFM_310",
     "name": "Call in the Finishers",
     "playRequirements": {
@@ -19148,7 +19148,7 @@
     "rarity": "COMMON",
     "set": "EXPERT1",
     "targetingArrowText": "Give +2 Attack.",
-    "text": "[[b;;]Battlecry:] Give a minion +2Â Attack this turn.",
+    "text": "[[b;;]Battlecry:] Give a minion +2 Attack this turn.",
     "type": "MINION"
   },
   {
@@ -19321,7 +19321,7 @@
     "cost": 1,
     "dbfId": 41868,
     "elite": true,
-    "flavor": "â€œImpossible!â€ exclaimed the Silver Hand Recruit, his eyes filled with fear. Uther shook his head, turning the crystal until it caught the light: â€œLife finds a way.â€",
+    "flavor": "€œImpossible!€ exclaimed the Silver Hand Recruit, his eyes filled with fear. Uther shook his head, turning the crystal until it caught the light: €œLife finds a way.€",
     "id": "UNG_954",
     "mechanics": [
       "QUEST"
@@ -19940,7 +19940,7 @@
     "mechanics": [
       "AI_MUST_PLAY"
     ],
-    "name": "Djinnâ€™s Intuition",
+    "name": "Djinn€™s Intuition",
     "playerClass": "NEUTRAL",
     "set": "LOE",
     "text": "Draw a card.\nGive your opponent a Wish.",
@@ -20042,7 +20042,7 @@
     "playerClass": "PRIEST",
     "rarity": "RARE",
     "set": "OG",
-    "text": "[x][[b;;]Deathrattle:] Copy a card\nfrom your opponent's deck\nÂ and add it to your hand.",
+    "text": "[x][[b;;]Deathrattle:] Copy a card\nfrom your opponent's deck\n and add it to your hand.",
     "type": "MINION"
   },
   {
@@ -20310,7 +20310,7 @@
     "type": "ENCHANTMENT"
   },
   {
-    "artist": "Sean Oâ€™Daniels",
+    "artist": "Sean O€™Daniels",
     "attack": 5,
     "cardClass": "DRUID",
     "collectible": true,
@@ -20408,7 +20408,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "GANGS",
-    "text": "[x][[b;;]Battlecry:] If your deck\nhas no duplicates,\nÂ create a custom spell.",
+    "text": "[x][[b;;]Battlecry:] If your deck\nhas no duplicates,\n create a custom spell.",
     "type": "MINION"
   },
   {
@@ -20722,7 +20722,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 39477,
-    "flavor": "Originally joined to be Arcanagosâ€™ Templar, but has to admit that ordering pizza has become waaaay easier.",
+    "flavor": "Originally joined to be Arcanagos€™ Templar, but has to admit that ordering pizza has become waaaay easier.",
     "health": 3,
     "howToEarn": "Unlocked in the Menagerie, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Menagerie, in One Night in Karazhan.",
@@ -20914,7 +20914,7 @@
     "race": "DEMON",
     "rarity": "RARE",
     "set": "GVG",
-    "text": "Damage dealt by this minion also heals yourÂ hero.",
+    "text": "Damage dealt by this minion also heals your hero.",
     "type": "MINION"
   },
   {
@@ -21045,7 +21045,7 @@
     "rarity": "COMMON",
     "set": "EXPERT1",
     "targetingArrowText": "Deal 1 damage and grant +2 Attack.",
-    "text": "[[b;;]Battlecry:] Deal 1 damage to a minion and give it +2Â Attack.",
+    "text": "[[b;;]Battlecry:] Deal 1 damage to a minion and give it +2 Attack.",
     "type": "MINION"
   },
   {
@@ -21126,7 +21126,7 @@
     "cost": 7,
     "dbfId": 2010,
     "elite": true,
-    "flavor": "Neptulon is \"The Tidehunter\". Heâ€™s one of the four elemental lords. And he and Ragnaros get together and make really amazing saunas.",
+    "flavor": "Neptulon is \"The Tidehunter\". He€™s one of the four elemental lords. And he and Ragnaros get together and make really amazing saunas.",
     "health": 7,
     "id": "GVG_042",
     "mechanics": [
@@ -21447,7 +21447,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 38329,
-    "flavor": "The best part is the look on their face when you jump out of the cake! Errâ€¦ corpse.",
+    "flavor": "The best part is the look on their face when you jump out of the cake! Err€¦ corpse.",
     "id": "OG_045",
     "name": "Infest",
     "playerClass": "HUNTER",
@@ -21538,7 +21538,7 @@
     "cost": 1,
     "dbfId": 41856,
     "elite": true,
-    "flavor": "They asked, â€œAnd what must we give in return?â€ Gulâ€™dan lowered his hood and answered: â€œSixâ€¦ cardsâ€¦â€",
+    "flavor": "They asked, €œAnd what must we give in return?€ Gul€™dan lowered his hood and answered: €œSix€¦ cards€¦€",
     "id": "UNG_829",
     "mechanics": [
       "QUEST"
@@ -21618,7 +21618,7 @@
       "DEATHRATTLE"
     ],
     "set": "LOE",
-    "text": "[[b;;]Battlecry:] Choose a friendly minion. Gain a copy of itsÂ [[b;;]Deathrattle].",
+    "text": "[[b;;]Battlecry:] Choose a friendly minion. Gain a copy of its [[b;;]Deathrattle].",
     "type": "MINION"
   },
   {
@@ -22207,7 +22207,7 @@
     "playerClass": "HUNTER",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Look at the top 3 cards of your deck. Draw one and discard theÂ others.",
+    "text": "Look at the top 3 cards of your deck. Draw one and discard the others.",
     "type": "SPELL"
   },
   {
@@ -22231,7 +22231,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 1368,
-    "flavor": "If a bright light shines on a priest in Shadowformâ€¦ do they cast a shadow?",
+    "flavor": "If a bright light shines on a priest in Shadowform€¦ do they cast a shadow?",
     "id": "EX1_625",
     "name": "Shadowform",
     "playerClass": "PRIEST",
@@ -22367,7 +22367,7 @@
     "playerClass": "ROGUE",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give your weapon +2Â Attack.",
+    "text": "Give your weapon +2 Attack.",
     "type": "SPELL"
   },
   {
@@ -22401,7 +22401,7 @@
     "race": "DEMON",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "Whenever you play a card, summon a 2/1 Flame ofÂ Azzinoth.",
+    "text": "Whenever you play a card, summon a 2/1 Flame of Azzinoth.",
     "type": "MINION"
   },
   {
@@ -22415,7 +22415,7 @@
     "type": "HERO"
   },
   {
-    "artist": "Sean Oâ€™Daniels",
+    "artist": "Sean O€™Daniels",
     "cardClass": "DRUID",
     "collectible": true,
     "cost": 4,
@@ -23151,7 +23151,7 @@
     "collectible": true,
     "cost": 6,
     "dbfId": 39714,
-    "flavor": "Ain't no party like a Moonglade party â€˜cause a Moonglade party got bears.",
+    "flavor": "Ain't no party like a Moonglade party €˜cause a Moonglade party got bears.",
     "howToEarn": "Unlocked in the Spire, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Spire, in One Night in Karazhan.",
     "id": "KAR_075",
@@ -23201,7 +23201,7 @@
     "playerClass": "WARRIOR",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give your hero +4Â Attack this turn.",
+    "text": "Give your hero +4 Attack this turn.",
     "type": "SPELL"
   },
   {
@@ -23287,7 +23287,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] If you control atÂ least 2 other minions, [[b;;]Adapt.]",
+    "text": "[[b;;]Battlecry:] If you control at least 2 other minions, [[b;;]Adapt.]",
     "type": "MINION"
   },
   {
@@ -23552,7 +23552,7 @@
       "DISCOVER"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] [[b;;]Discover] a spellÂ and cast it with random targets.",
+    "text": "[[b;;]Battlecry:] [[b;;]Discover] a spell and cast it with random targets.",
     "type": "MINION"
   },
   {
@@ -23768,7 +23768,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 727,
-    "flavor": "This spell has been renamed so many times, even paladins donâ€™t know what it should be called anymore.",
+    "flavor": "This spell has been renamed so many times, even paladins don€™t know what it should be called anymore.",
     "howToEarn": "Unlocked at Level 1.",
     "howToEarnGolden": "Unlocked at Level 23.",
     "id": "EX1_371",
@@ -23809,7 +23809,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 41567,
-    "flavor": "It's not his faultâ€¦  Someone keeps stealing his soap!",
+    "flavor": "It's not his fault€¦  Someone keeps stealing his soap!",
     "health": 6,
     "id": "CFM_790",
     "mechanics": [
@@ -23892,7 +23892,7 @@
     "cost": 2,
     "dbfId": 415,
     "faction": "ALLIANCE",
-    "flavor": "His youthful enthusiasm doesnâ€™t always equal excellence in his brews.   Donâ€™t drink the Mogu Stout!",
+    "flavor": "His youthful enthusiasm doesn€™t always equal excellence in his brews.   Don€™t drink the Mogu Stout!",
     "health": 2,
     "id": "EX1_049",
     "mechanics": [
@@ -24124,7 +24124,7 @@
     "race": "MURLOC",
     "rarity": "LEGENDARY",
     "set": "GANGS",
-    "text": "[x][[b;;]Stealth]\n   Whenever this attacks and   \nkills a minion, summon 2\nÂ Murlocs from your deck.",
+    "text": "[x][[b;;]Stealth]\n   Whenever this attacks and   \nkills a minion, summon 2\n Murlocs from your deck.",
     "type": "MINION"
   },
   {
@@ -24200,7 +24200,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] [[b;;]Adapt], thenÂ [[b;;]Adapt].",
+    "text": "[[b;;]Battlecry:] [[b;;]Adapt], then [[b;;]Adapt].",
     "type": "MINION"
   },
   {
@@ -24217,7 +24217,7 @@
     "playerClass": "SHAMAN",
     "rarity": "RARE",
     "set": "KARA",
-    "text": "DealÂ $1Â damage toÂ allÂ enemyÂ minions. SummonÂ aÂ random\n1-Cost minion.",
+    "text": "Deal $1 damage to all enemy minions. Summon a random\n1-Cost minion.",
     "type": "SPELL"
   },
   {
@@ -24525,7 +24525,7 @@
     ],
     "set": "EXPERT1",
     "targetingArrowText": "[[b;;]Silence] a minion.",
-    "text": "[[b;;]Battlecry:] [[b;;]Silence] aÂ minion.",
+    "text": "[[b;;]Battlecry:] [[b;;]Silence] a minion.",
     "type": "MINION"
   },
   {
@@ -24869,7 +24869,7 @@
     "cost": 1,
     "dbfId": 41420,
     "durability": 1,
-    "flavor": "Itâ€™s a sword! Itâ€™s a knife! Itâ€™s a swizzle-stick!",
+    "flavor": "It€™s a sword! It€™s a knife! It€™s a swizzle-stick!",
     "id": "UNG_929",
     "name": "Molten Blade",
     "playerClass": "WARRIOR",
@@ -24979,7 +24979,7 @@
       "BATTLECRY"
     ],
     "set": "GANGS",
-    "text": "Whenever you summon a [[b;;]Battlecry] minion while thisÂ is in your hand, gainÂ +1/+1.",
+    "text": "Whenever you summon a [[b;;]Battlecry] minion while this is in your hand, gain +1/+1.",
     "type": "MINION"
   },
   {
@@ -24989,7 +24989,7 @@
     "collectible": true,
     "cost": 4,
     "dbfId": 38961,
-    "flavor": "Roll â€˜greedâ€™ OR THIS COULD HAPPEN TO YOU.",
+    "flavor": "Roll €˜greed€™ OR THIS COULD HAPPEN TO YOU.",
     "health": 2,
     "id": "OG_323",
     "mechanics": [
@@ -25141,7 +25141,7 @@
     "playerClass": "DRUID",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "Give your hero +4Â Attack this turn and 4 Armor.",
+    "text": "Give your hero +4 Attack this turn and 4 Armor.",
     "type": "SPELL"
   },
   {
@@ -25191,7 +25191,7 @@
     "cost": 2,
     "dbfId": 284,
     "faction": "ALLIANCE",
-    "flavor": "\"Half of this class will not graduateâ€¦ since they'll have been turned to chickens.\" - Tinkmaster Overspark, teaching Gizmos 101.",
+    "flavor": "\"Half of this class will not graduate€¦ since they'll have been turned to chickens.\" - Tinkmaster Overspark, teaching Gizmos 101.",
     "health": 1,
     "howToEarnGolden": "Unlocked at Druid Level 59.",
     "id": "EX1_015",
@@ -25239,7 +25239,7 @@
     "race": "ELEMENTAL",
     "rarity": "LEGENDARY",
     "set": "UNGORO",
-    "text": "[[b;;]Deathrattle:] Return this toÂ your hand as a 10/10 that costs (10).",
+    "text": "[[b;;]Deathrattle:] Return this to your hand as a 10/10 that costs (10).",
     "type": "MINION"
   },
   {
@@ -25451,7 +25451,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 2076,
-    "flavor": "For when you didnâ€™t combobulate quite right the first time around.",
+    "flavor": "For when you didn€™t combobulate quite right the first time around.",
     "health": 2,
     "id": "GVG_108",
     "mechanics": [
@@ -25514,7 +25514,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] Destroy a friendly minion to [[b;;]Adapt]Â twice.",
+    "text": "[[b;;]Battlecry:] Destroy a friendly minion to [[b;;]Adapt] twice.",
     "type": "MINION"
   },
   {
@@ -25571,7 +25571,7 @@
     "playerClass": "WARRIOR",
     "rarity": "RARE",
     "set": "UNGORO",
-    "text": "[[b;;]Taunt]. [[b;;]Battlecry:] Summon three 1/1 Raptors for yourÂ opponent.",
+    "text": "[[b;;]Taunt]. [[b;;]Battlecry:] Summon three 1/1 Raptors for your opponent.",
     "type": "MINION"
   },
   {
@@ -25835,7 +25835,7 @@
     "playerClass": "ROGUE",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Return a friendly minion to your hand. ItÂ costs (2) less.",
+    "text": "Return a friendly minion to your hand. It costs (2) less.",
     "type": "SPELL"
   },
   {
@@ -26446,7 +26446,7 @@
     "rarity": "COMMON",
     "set": "GANGS",
     "targetingArrowText": "Restore 2 Health.",
-    "text": "[[b;;]Battlecry:] Restore 2Â Health.",
+    "text": "[[b;;]Battlecry:] Restore 2 Health.",
     "type": "MINION"
   },
   {
@@ -27118,7 +27118,7 @@
       "WINDFURY"
     ],
     "set": "EXPERT1",
-    "text": "[[b;;]Enrage:] [[b;;]Windfury] and +1Â Attack.",
+    "text": "[[b;;]Enrage:] [[b;;]Windfury] and +1 Attack.",
     "type": "MINION"
   },
   {
@@ -27138,7 +27138,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "[x][[b;;]Battlecry:] If you control\na minion with 6 or more\nÂ Health, draw two cards.",
+    "text": "[x][[b;;]Battlecry:] If you control\na minion with 6 or more\n Health, draw two cards.",
     "type": "MINION"
   },
   {
@@ -27397,7 +27397,7 @@
     "rarity": "RARE",
     "set": "EXPERT1",
     "targetingArrowText": "Change Attack to 1.",
-    "text": "[[b;;]Battlecry:] Change anÂ enemy minion's Attack to 1.",
+    "text": "[[b;;]Battlecry:] Change an enemy minion's Attack to 1.",
     "type": "MINION"
   },
   {
@@ -27406,7 +27406,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 41170,
-    "flavor": "By accepting this healing, you agree to the following termsâ€¦",
+    "flavor": "By accepting this healing, you agree to the following terms€¦",
     "id": "UNG_030",
     "name": "Binding Heal",
     "playRequirements": {
@@ -27553,7 +27553,7 @@
     "playerClass": "WARRIOR",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $1 damage to ALLÂ minions.",
+    "text": "Deal $1 damage to ALL minions.",
     "type": "SPELL"
   },
   {
@@ -27844,7 +27844,7 @@
       "DIVINE_SHIELD"
     ],
     "set": "GANGS",
-    "text": "[x][[b;;]Taunt]\n[[b;;]Battlecry:] Give adjacent\nÂ minions [[b;;]Divine Shield].",
+    "text": "[x][[b;;]Taunt]\n[[b;;]Battlecry:] Give adjacent\n minions [[b;;]Divine Shield].",
     "type": "MINION"
   },
   {
@@ -27875,7 +27875,7 @@
     "playerClass": "DRUID",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give your hero +2Â Attack this turn. Gain 2 Armor.",
+    "text": "Give your hero +2 Attack this turn. Gain 2 Armor.",
     "type": "SPELL"
   },
   {
@@ -27949,7 +27949,7 @@
     "rarity": "COMMON",
     "set": "EXPERT1",
     "targetingArrowText": "Restore 3 Health.",
-    "text": "[[b;;]Battlecry:] Restore 3Â Health.",
+    "text": "[[b;;]Battlecry:] Restore 3 Health.",
     "type": "MINION"
   },
   {
@@ -28134,7 +28134,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 41252,
-    "flavor": "In the Tortollan tongue, Unâ€™goro is known as the â€œLand of the Lost and Found.â€",
+    "flavor": "In the Tortollan tongue, Un€™goro is known as the €œLand of the Lost and Found.€",
     "health": 2,
     "id": "UNG_078",
     "mechanics": [
@@ -28170,7 +28170,7 @@
     "rarity": "FREE",
     "set": "CORE",
     "targetingArrowText": "Restore 2 Health.",
-    "text": "[[b;;]Battlecry:] Restore 2Â Health.",
+    "text": "[[b;;]Battlecry:] Restore 2 Health.",
     "type": "MINION"
   },
   {
@@ -28888,7 +28888,7 @@
     "cost": 4,
     "dbfId": 38318,
     "elite": true,
-    "flavor": "Always manages to mention \"Back when I was creating the World Treeâ€¦\" in EVERY conversation. Sheesh! Enough already.",
+    "flavor": "Always manages to mention \"Back when I was creating the World Tree€¦\" in EVERY conversation. Sheesh! Enough already.",
     "health": 5,
     "id": "OG_044",
     "mechanics": [
@@ -29014,7 +29014,7 @@
     "playerClass": "ROGUE",
     "rarity": "EPIC",
     "set": "OG",
-    "text": "[[b;;]Battlecry:] Destroy a minion. Add its Attack and Health toÂ your C'Thun's <i>(wherever it is).</i>",
+    "text": "[[b;;]Battlecry:] Destroy a minion. Add its Attack and Health to your C'Thun's <i>(wherever it is).</i>",
     "type": "MINION"
   },
   {
@@ -29096,7 +29096,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 41357,
-    "flavor": "Theyâ€™re just baby teeth. Lots and lots of baby teeth.",
+    "flavor": "They€™re just baby teeth. Lots and lots of baby teeth.",
     "health": 1,
     "id": "UNG_914",
     "mechanics": [
@@ -29129,7 +29129,7 @@
     "race": "MURLOC",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "[[b;;]Battlecry:] Summon a 1/1Â Murloc Scout.",
+    "text": "[[b;;]Battlecry:] Summon a 1/1 Murloc Scout.",
     "type": "MINION"
   },
   {
@@ -29305,7 +29305,7 @@
     "race": "BEAST",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "[x][[b;;]Deathrattle:] Summon a\nnumber of 1/1 Rats equal\nÂ to this minion's Attack.",
+    "text": "[x][[b;;]Deathrattle:] Summon a\nnumber of 1/1 Rats equal\n to this minion's Attack.",
     "type": "MINION"
   },
   {
@@ -29753,7 +29753,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 41105,
-    "flavor": "Emits a sound only murlocs can hear, which is good because itâ€™s REALLY annoying.",
+    "flavor": "Emits a sound only murlocs can hear, which is good because it€™s REALLY annoying.",
     "health": 3,
     "id": "UNG_201",
     "name": "Primalfin Totem",
@@ -29995,7 +29995,7 @@
       "DISCOVER"
     ],
     "set": "UNGORO",
-    "text": "[x][[b;;]Battlecry:] If you played\nan Elemental last turn,\nÂ [[b;;]Discover] an Elemental.",
+    "text": "[x][[b;;]Battlecry:] If you played\nan Elemental last turn,\n [[b;;]Discover] an Elemental.",
     "type": "MINION"
   },
   {
@@ -30030,7 +30030,7 @@
     "race": "ELEMENTAL",
     "rarity": "COMMON",
     "set": "UNGORO",
-    "text": "[[b;;]Taunt]\n[[b;;]Battlecry:] Restore 3Â Health.",
+    "text": "[[b;;]Taunt]\n[[b;;]Battlecry:] Restore 3 Health.",
     "type": "MINION"
   },
   {
@@ -30045,7 +30045,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "CREDITS",
-    "text": "[[b;;]Taunt.] Friendly minions canâ€™t be [[b;;]Frozen.]",
+    "text": "[[b;;]Taunt.] Friendly minions can€™t be [[b;;]Frozen.]",
     "type": "MINION"
   },
   {
@@ -30203,7 +30203,7 @@
     "rarity": "COMMON",
     "set": "EXPERT1",
     "targetingArrowText": "Freeze a character.",
-    "text": "[[b;;]Battlecry:] [[b;;]Freeze] aÂ character.",
+    "text": "[[b;;]Battlecry:] [[b;;]Freeze] a character.",
     "type": "MINION"
   },
   {
@@ -30444,7 +30444,7 @@
       "TAUNT"
     ],
     "set": "UNGORO",
-    "text": "[x][[b;;]Battlecry:] If you played an\nElemental last turn, gain\nÂ [[b;;]Taunt] and [[b;;]DivineÂ Shield].",
+    "text": "[x][[b;;]Battlecry:] If you played an\nElemental last turn, gain\n [[b;;]Taunt] and [[b;;]Divine Shield].",
     "type": "MINION"
   },
   {
@@ -30543,7 +30543,7 @@
     "rarity": "COMMON",
     "set": "EXPERT1",
     "targetingArrowText": "Grant +2 Attack.",
-    "text": "[[b;;]Battlecry:] Give a minion +2Â Attack this turn.",
+    "text": "[[b;;]Battlecry:] Give a minion +2 Attack this turn.",
     "type": "MINION"
   },
   {
@@ -30570,7 +30570,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 41194,
-    "flavor": "Hi, Tar here. Long time lurking, first time tauntingâ€¦",
+    "flavor": "Hi, Tar here. Long time lurking, first time taunting€¦",
     "health": 7,
     "id": "UNG_049",
     "mechanics": [
@@ -30846,7 +30846,7 @@
     "playerClass": "SHAMAN",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "Deal $2-$3 damage to allÂ enemy minions. [[b;;]Overload:] (2)",
+    "text": "Deal $2-$3 damage to all enemy minions. [[b;;]Overload:] (2)",
     "type": "SPELL"
   },
   {
@@ -31201,7 +31201,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 38547,
-    "flavor": "Câ€™Thunâ€™s recruiting pitch involves cookies, which is why itâ€™s the most popular Old God.",
+    "flavor": "C€™Thun€™s recruiting pitch involves cookies, which is why it€™s the most popular Old God.",
     "health": 1,
     "id": "OG_162",
     "mechanics": [
@@ -31253,7 +31253,7 @@
     "type": "MINION"
   },
   {
-    "artist": "Sean Oâ€™Daniels",
+    "artist": "Sean O€™Daniels",
     "cardClass": "PRIEST",
     "collectible": true,
     "cost": 10,
@@ -31749,7 +31749,7 @@
     "race": "DRAGON",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "At the end of your turn, addÂ a Dream Card toÂ your hand.",
+    "text": "At the end of your turn, add a Dream Card to your hand.",
     "type": "MINION"
   },
   {
@@ -31848,7 +31848,7 @@
     "mechanics": [
       "AI_MUST_PLAY"
     ],
-    "name": "Djinnâ€™s Intuition",
+    "name": "Djinn€™s Intuition",
     "playerClass": "NEUTRAL",
     "set": "LOE",
     "text": "Draw a card. Gain a Mana Crystal. Give your opponent a Wish.",
@@ -32371,7 +32371,7 @@
     "playerClass": "MAGE",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "Whenever you cast a spell, add a 'Fireball' spell toÂ your hand.",
+    "text": "Whenever you cast a spell, add a 'Fireball' spell to your hand.",
     "type": "MINION"
   },
   {
@@ -32680,7 +32680,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "[[b;;]Battlecry:] Summon a 2/2Â Squire.",
+    "text": "[[b;;]Battlecry:] Summon a 2/2 Squire.",
     "type": "MINION"
   },
   {
@@ -32954,7 +32954,7 @@
     "name": "Sherazin, Seed",
     "playerClass": "ROGUE",
     "set": "UNGORO",
-    "text": "When you play 4 cards in aÂ turn, revive this minion.",
+    "text": "When you play 4 cards in a turn, revive this minion.",
     "type": "MINION"
   },
   {
@@ -33225,7 +33225,7 @@
     "cost": 4,
     "dbfId": 763,
     "faction": "ALLIANCE",
-    "flavor": "You wouldnâ€™t think that Argus would need this much defending.  But it does.",
+    "flavor": "You wouldn€™t think that Argus would need this much defending.  But it does.",
     "health": 3,
     "id": "EX1_093",
     "mechanics": [
@@ -33375,7 +33375,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 608,
-    "flavor": "They always have a spare flask of Sunwell Energy Drinkâ„¢!",
+    "flavor": "They always have a spare flask of Sunwell Energy Drink„¢!",
     "health": 2,
     "howToEarnGolden": "Unlocked at Priest Level 53.",
     "id": "EX1_019",
@@ -33857,7 +33857,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 38740,
-    "flavor": "\"Don't worry about meâ€¦ I'll just be here... under these tentacles.\"",
+    "flavor": "\"Don't worry about me€¦ I'll just be here... under these tentacles.\"",
     "health": 1,
     "id": "OG_221",
     "mechanics": [
@@ -34078,7 +34078,7 @@
     "playerClass": "PALADIN",
     "rarity": "EPIC",
     "set": "EXPERT1",
-    "text": "After you summon a minion, give it +1/+1 and this loses 1Â Durability.",
+    "text": "After you summon a minion, give it +1/+1 and this loses 1 Durability.",
     "type": "WEAPON"
   },
   {
@@ -34180,7 +34180,7 @@
       "DISCOVER"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Taunt]\n[[b;;]Battlecry:] [[b;;]Discover] a [[b;;]Taunt]Â minion.",
+    "text": "[[b;;]Taunt]\n[[b;;]Battlecry:] [[b;;]Discover] a [[b;;]Taunt] minion.",
     "type": "MINION"
   },
   {
@@ -34686,7 +34686,7 @@
       "SECRET"
     ],
     "set": "GANGS",
-    "text": "Costs (2) less for each [[b;;]Secret] you've played thisÂ game.",
+    "text": "Costs (2) less for each [[b;;]Secret] you've played this game.",
     "type": "MINION"
   },
   {
@@ -34764,7 +34764,7 @@
     "cost": 5,
     "dbfId": 39840,
     "elite": true,
-    "flavor": "He was super excited to acquire Gorehowl at a garage sale!Â  Then super disappointed to find out it was a foam reproduction.",
+    "flavor": "He was super excited to acquire Gorehowl at a garage sale!  Then super disappointed to find out it was a foam reproduction.",
     "health": 6,
     "howToEarn": "Unlocked in the Spire, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Spire, in One Night in Karazhan.",
@@ -35052,7 +35052,7 @@
     "playerClass": "DRUID",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Destroy a minion.\nYour opponent draws 2Â cards.",
+    "text": "Destroy a minion.\nYour opponent draws 2 cards.",
     "type": "SPELL"
   },
   {
@@ -35488,7 +35488,7 @@
     "race": "ELEMENTAL",
     "rarity": "RARE",
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] Reduce the Cost of Elementals in your handÂ by (1).",
+    "text": "[[b;;]Battlecry:] Reduce the Cost of Elementals in your hand by (1).",
     "type": "MINION"
   },
   {
@@ -36233,7 +36233,7 @@
     "collectible": true,
     "cost": 7,
     "dbfId": 1687,
-    "flavor": "You donâ€™t tame a Core Hound. You just train it to eat someone else before it eats you.",
+    "flavor": "You don€™t tame a Core Hound. You just train it to eat someone else before it eats you.",
     "health": 5,
     "howToEarnGolden": "Unlocked at Hunter Level 51.",
     "id": "CS2_201",
@@ -36710,7 +36710,7 @@
     "playerClass": "PRIEST",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Destroy a minion with 3Â or less Attack.",
+    "text": "Destroy a minion with 3 or less Attack.",
     "type": "SPELL"
   },
   {
@@ -36834,7 +36834,7 @@
     "playerClass": "MAGE",
     "rarity": "COMMON",
     "set": "UNGORO",
-    "text": "Deal $2 damage.\nAdd a 1/2 Elemental toÂ your hand.",
+    "text": "Deal $2 damage.\nAdd a 1/2 Elemental to your hand.",
     "type": "SPELL"
   },
   {
@@ -36896,7 +36896,7 @@
     "cost": 5,
     "dbfId": 912,
     "elite": true,
-    "flavor": "â€œThat belongs in the Hall of Explorers!â€",
+    "flavor": "€œThat belongs in the Hall of Explorers!€",
     "health": 4,
     "id": "EX1_558",
     "mechanics": [
@@ -36952,7 +36952,7 @@
     "race": "PIRATE",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "[[b;;]Taunt]\nCosts (1) less per Attack ofÂ your weapon.",
+    "text": "[[b;;]Taunt]\nCosts (1) less per Attack of your weapon.",
     "type": "MINION"
   },
   {
@@ -37227,7 +37227,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "[[b;;]Battlecry:] Give adjacentÂ minions [[b;;]SpellÂ Damage +1].",
+    "text": "[[b;;]Battlecry:] Give adjacent minions [[b;;]Spell Damage +1].",
     "type": "MINION"
   },
   {
@@ -37396,7 +37396,7 @@
     "collectible": true,
     "cost": 12,
     "dbfId": 39426,
-    "flavor": "Claims to be drawn to Karazhan because of the ley lines. Actually, just loves Moroesâ€™ cooking.",
+    "flavor": "Claims to be drawn to Karazhan because of the ley lines. Actually, just loves Moroes€™ cooking.",
     "health": 8,
     "howToEarn": "Unlocked in the Opera, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Opera, in One Night in Karazhan.",
@@ -38573,7 +38573,7 @@
     "rarity": "EPIC",
     "set": "EXPERT1",
     "targetingArrowText": "Return a minion to hand.",
-    "text": "[[b;;]Combo:] Return a minion toÂ its owner's hand.",
+    "text": "[[b;;]Combo:] Return a minion to its owner's hand.",
     "type": "MINION"
   },
   {
@@ -38631,7 +38631,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 940,
-    "flavor": "Hey you twoâ€¦could you stand next to each other for a secondâ€¦",
+    "flavor": "Hey you two€¦could you stand next to each other for a second€¦",
     "howToEarn": "Unlocked at Level 2.",
     "howToEarnGolden": "Unlocked at Level 40.",
     "id": "CS2_114",
@@ -38689,7 +38689,7 @@
     "playerClass": "ROGUE",
     "rarity": "EPIC",
     "set": "OG",
-    "text": "[[b;;]Battlecry:] Choose a friendly minion. Add a 1/1 copy toÂ your hand that costsÂ (1).",
+    "text": "[[b;;]Battlecry:] Choose a friendly minion. Add a 1/1 copy to your hand that costs (1).",
     "type": "MINION"
   },
   {
@@ -38859,7 +38859,7 @@
     "race": "MURLOC",
     "rarity": "RARE",
     "set": "GANGS",
-    "text": "[x][[b;;]Battlecry:] The next Murloc\nyou play this turn costs\nÂ Health instead of Mana.",
+    "text": "[x][[b;;]Battlecry:] The next Murloc\nyou play this turn costs\n Health instead of Mana.",
     "type": "MINION"
   },
   {
@@ -39072,7 +39072,7 @@
     "playerClass": "DRUID",
     "rarity": "COMMON",
     "set": "KARA",
-    "text": "[[b;;]Battlecry:] Choose a friendly Beast. Summon aÂ copy of it.",
+    "text": "[[b;;]Battlecry:] Choose a friendly Beast. Summon a copy of it.",
     "type": "MINION"
   },
   {
@@ -39244,7 +39244,7 @@
     "playerClass": "PRIEST",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "Whenever this minion isÂ healed, summon a 2/2Â Crystal.",
+    "text": "Whenever this minion is healed, summon a 2/2 Crystal.",
     "type": "MINION"
   },
   {
@@ -39389,7 +39389,7 @@
     "playerClass": "PRIEST",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Deal $2 damage to all enemies. Restore #2Â Health to all friendly characters.",
+    "text": "Deal $2 damage to all enemies. Restore #2 Health to all friendly characters.",
     "type": "SPELL"
   },
   {
@@ -39524,7 +39524,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 41353,
-    "flavor": "Itâ€™s not LITERALLY jeweled. The goblins were terribly disappointed.",
+    "flavor": "It€™s not LITERALLY jeweled. The goblins were terribly disappointed.",
     "health": 1,
     "id": "UNG_912",
     "mechanics": [
@@ -39925,7 +39925,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] [[b;;]Adapt] yourÂ Murlocs.",
+    "text": "[[b;;]Battlecry:] [[b;;]Adapt] your Murlocs.",
     "type": "MINION"
   },
   {
@@ -40273,7 +40273,7 @@
     "playerClass": "WARLOCK",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Deal $2 damage to a minion. If itâ€™s a friendly Demon, give it +2/+2 instead.",
+    "text": "Deal $2 damage to a minion. If it€™s a friendly Demon, give it +2/+2 instead.",
     "type": "SPELL"
   },
   {
@@ -40371,7 +40371,7 @@
     "race": "BEAST",
     "rarity": "LEGENDARY",
     "set": "UNGORO",
-    "text": "After your opponent plays a minion, attackÂ it.",
+    "text": "After your opponent plays a minion, attack it.",
     "type": "MINION"
   },
   {
@@ -40552,7 +40552,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry:] Destroy all cards in your deck that cost (3)Â or less.",
+    "text": "[[b;;]Battlecry:] Destroy all cards in your deck that cost (3) or less.",
     "type": "MINION"
   },
   {
@@ -40699,7 +40699,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "CREDITS",
-    "text": "[[b;;]Stealth].\n[[b;;]Deathrattle]: Those \nareâ€¦ myâ€¦ bootsâ€¦",
+    "text": "[[b;;]Stealth].\n[[b;;]Deathrattle]: Those \nare€¦ my€¦ boots€¦",
     "type": "MINION"
   },
   {
@@ -40864,7 +40864,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 41354,
-    "flavor": "Ferocious in combatâ€¦ and even more terrifying in pet battles.",
+    "flavor": "Ferocious in combat€¦ and even more terrifying in pet battles.",
     "health": 5,
     "id": "UNG_913",
     "mechanics": [
@@ -40927,7 +40927,7 @@
       "DISCOVER"
     ],
     "set": "UNGORO",
-    "text": "Replace your deck withÂ copies of \"[[b;;]Discover] a card.\"",
+    "text": "Replace your deck with copies of \"[[b;;]Discover] a card.\"",
     "type": "SPELL"
   },
   {
@@ -41128,7 +41128,7 @@
     "playerClass": "DRUID",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "[[b;;]Choose One -] Gain 2Â Mana Crystals; or Draw 3 cards.",
+    "text": "[[b;;]Choose One -] Gain 2 Mana Crystals; or Draw 3 cards.",
     "type": "SPELL"
   },
   {
@@ -41389,7 +41389,7 @@
     "playerClass": "PALADIN",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "[[b;;]Divine Shield]. [[b;;]Taunt]. [[b;;]Deathrattle:] Equip a 5/3Â Ashbringer.",
+    "text": "[[b;;]Divine Shield]. [[b;;]Taunt]. [[b;;]Deathrattle:] Equip a 5/3 Ashbringer.",
     "type": "MINION"
   },
   {
@@ -41536,7 +41536,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "COMMON",
     "set": "GANGS",
-    "text": "[[b;;]Battlecry:] Summon a 6/6Â Ogre.",
+    "text": "[[b;;]Battlecry:] Summon a 6/6 Ogre.",
     "type": "MINION"
   },
   {
@@ -41791,7 +41791,7 @@
       "DISCOVER"
     ],
     "set": "GANGS",
-    "text": "[x][[b;;]Battlecry:] If you're holding a\nDragon, [[b;;]Discover] a card in\nÂ your opponent's deck.",
+    "text": "[x][[b;;]Battlecry:] If you're holding a\nDragon, [[b;;]Discover] a card in\n your opponent's deck.",
     "type": "MINION"
   },
   {
@@ -42118,7 +42118,7 @@
     "playerClass": "PRIEST",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Restore #4 Health to ALLÂ minions.",
+    "text": "Restore #4 Health to ALL minions.",
     "type": "SPELL"
   },
   {
@@ -42639,7 +42639,7 @@
     "playerClass": "SHAMAN",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "[x]After this minion attacks\na hero, transform it into a\nÂ random 6-Cost minion.",
+    "text": "[x]After this minion attacks\na hero, transform it into a\n random 6-Cost minion.",
     "type": "MINION"
   },
   {
@@ -42769,7 +42769,7 @@
     "playerClass": "PRIEST",
     "rarity": "COMMON",
     "set": "UNGORO",
-    "text": "[x][[b;;]Taunt]\n[[b;;]Deathrattle:] Give a random\nÂ friendly minion +1/+1.",
+    "text": "[x][[b;;]Taunt]\n[[b;;]Deathrattle:] Give a random\n friendly minion +1/+1.",
     "type": "MINION"
   },
   {
@@ -43077,7 +43077,7 @@
     "race": "ELEMENTAL",
     "rarity": "RARE",
     "set": "UNGORO",
-    "text": "[x][[b;;]Deathrattle:] Copy a card\nfrom your opponent's deck\nÂ and add it to your hand.",
+    "text": "[x][[b;;]Deathrattle:] Copy a card\nfrom your opponent's deck\n and add it to your hand.",
     "type": "MINION"
   },
   {
@@ -43280,7 +43280,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 40929,
-    "flavor": "Gadgetzan Writerâ€™s Award goes to the player who writes the most compelling fanfic about why this Arakkoa has a golden frog in his hand!",
+    "flavor": "Gadgetzan Writer€™s Award goes to the player who writes the most compelling fanfic about why this Arakkoa has a golden frog in his hand!",
     "health": 5,
     "id": "CFM_657",
     "mechanics": [
@@ -43510,7 +43510,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 38781,
-    "flavor": "Sometimes the Old Gods' corruptions gives you power untold, sometimes you get +1 Attack. We canâ€™t all be winners in the Eldritch lottery.",
+    "flavor": "Sometimes the Old Gods' corruptions gives you power untold, sometimes you get +1 Attack. We can€™t all be winners in the Eldritch lottery.",
     "health": 1,
     "id": "OG_247",
     "mechanics": [
@@ -43562,7 +43562,7 @@
     "playerClass": "PALADIN",
     "rarity": "RARE",
     "set": "EXPERT1",
-    "text": "Draw a card and dealÂ damage equal toÂ its Cost.",
+    "text": "Draw a card and deal damage equal to its Cost.",
     "type": "SPELL"
   },
   {
@@ -43637,7 +43637,7 @@
     "playerClass": "WARRIOR",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Deal $1 damage to a minion and give it +2Â Attack.",
+    "text": "Deal $1 damage to a minion and give it +2 Attack.",
     "type": "SPELL"
   },
   {
@@ -43672,7 +43672,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "[[b;;]Battlecry]: If you played anÂ Elemental last turn, [[b;;]Adapt].",
+    "text": "[[b;;]Battlecry]: If you played an Elemental last turn, [[b;;]Adapt].",
     "type": "MINION"
   },
   {
@@ -43749,7 +43749,7 @@
     "race": "ELEMENTAL",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Whenever you play a cardÂ with [[b;;]Overload], gainÂ +1/+1.",
+    "text": "Whenever you play a card with [[b;;]Overload], gain +1/+1.",
     "type": "MINION"
   },
   {
@@ -44039,7 +44039,7 @@
     "rarity": "COMMON",
     "set": "GVG",
     "targetingArrowText": "Give -2 Attack this turn.",
-    "text": "[[b;;]Battlecry:] Give a minion -2Â Attack this turn.",
+    "text": "[[b;;]Battlecry:] Give a minion -2 Attack this turn.",
     "type": "MINION"
   },
   {
@@ -44195,7 +44195,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 2063,
-    "flavor": "Heâ€™s not such a binge exploder anymore. These days, he only explodes socially.",
+    "flavor": "He€™s not such a binge exploder anymore. These days, he only explodes socially.",
     "health": 4,
     "id": "GVG_095",
     "mechanics": [
@@ -44528,7 +44528,7 @@
     "race": "DEMON",
     "rarity": "LEGENDARY",
     "set": "GANGS",
-    "text": "[x][[b;;]Battlecry:] If your deck has\nno duplicates, summon all\nÂ Demons from your hand.Â ",
+    "text": "[x][[b;;]Battlecry:] If your deck has\nno duplicates, summon all\n Demons from your hand. ",
     "type": "MINION"
   },
   {
@@ -44645,7 +44645,7 @@
     "cost": 8,
     "dbfId": 526,
     "elite": true,
-    "flavor": "He's Gruul \"the Dragonkiller\".  He just wanted to cuddle themâ€¦ he never meant toâ€¦",
+    "flavor": "He's Gruul \"the Dragonkiller\".  He just wanted to cuddle them€¦ he never meant to€¦",
     "health": 7,
     "id": "NEW1_038",
     "name": "Gruul",
@@ -44825,14 +44825,14 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 1659,
-    "flavor": "He trained when he was younger to be an acolyte of joy, but things didnâ€™t work out like he thought they would.",
+    "flavor": "He trained when he was younger to be an acolyte of joy, but things didn€™t work out like he thought they would.",
     "health": 3,
     "id": "EX1_007",
     "name": "Acolyte of Pain",
     "playerClass": "NEUTRAL",
     "rarity": "COMMON",
     "set": "EXPERT1",
-    "text": "Whenever this minion takes damage, draw aÂ card.",
+    "text": "Whenever this minion takes damage, draw a card.",
     "type": "MINION"
   },
   {
@@ -45095,7 +45095,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 2275,
-    "flavor": "Flamewakers HATE being confused for Flamewalkers. They just wake up fire, they donâ€™t walk on it. Walking on fire is CRAZY.",
+    "flavor": "Flamewakers HATE being confused for Flamewalkers. They just wake up fire, they don€™t walk on it. Walking on fire is CRAZY.",
     "health": 4,
     "howToEarn": "Unlocked in Blackwing Lair, in the Blackrock Mountain adventure.",
     "howToEarnGolden": "Crafting unlocked in Blackwing Lair, in the Blackrock Mountain adventure.",
@@ -45468,7 +45468,7 @@
     "race": "BEAST",
     "rarity": "COMMON",
     "set": "GANGS",
-    "text": "[[b;;]Battlecry:] Summon a 1/1Â Cat.",
+    "text": "[[b;;]Battlecry:] Summon a 1/1 Cat.",
     "type": "MINION"
   },
   {
@@ -45615,7 +45615,7 @@
     "collectible": true,
     "cost": 3,
     "dbfId": 2052,
-    "flavor": "To operate, this contraption needs a hula doll on the dashboard. Otherwise it's just a â€œfalling machine.â€",
+    "flavor": "To operate, this contraption needs a hula doll on the dashboard. Otherwise it's just a €œfalling machine.€",
     "health": 4,
     "id": "GVG_084",
     "mechanics": [
@@ -45891,7 +45891,7 @@
     "collectible": true,
     "cost": 0,
     "dbfId": 40437,
-    "flavor": "There is something funny about this coinâ€¦ can't quite put my finger on itâ€¦",
+    "flavor": "There is something funny about this coin€¦ can't quite put my finger on it€¦",
     "id": "CFM_630",
     "name": "Counterfeit Coin",
     "playerClass": "ROGUE",
@@ -46055,7 +46055,7 @@
     "race": "MECHANICAL",
     "rarity": "EPIC",
     "set": "GANGS",
-    "text": "Whenever this attacks a minion and survives, drawÂ a card.",
+    "text": "Whenever this attacks a minion and survives, draw a card.",
     "type": "MINION"
   },
   {
@@ -46314,7 +46314,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "[[b;;]Battlecry:] Summon a 1/1Â Boar.",
+    "text": "[[b;;]Battlecry:] Summon a 1/1 Boar.",
     "type": "MINION"
   },
   {
@@ -46600,7 +46600,7 @@
     "collectible": true,
     "cost": 2,
     "dbfId": 39481,
-    "flavor": "\"Goodness! Whatâ€¦ abundant drool you have.\"",
+    "flavor": "\"Goodness! What€¦ abundant drool you have.\"",
     "health": 1,
     "howToEarn": "Unlocked in the Opera, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Opera, in One Night in Karazhan.",
@@ -46733,7 +46733,7 @@
       "SILENCE"
     ],
     "set": "EXPERT1",
-    "text": "[[b;;]Choose One -] DealÂ 2Â damage; or [[b;;]Silence] a minion.",
+    "text": "[[b;;]Choose One -] Deal 2 damage; or [[b;;]Silence] a minion.",
     "type": "MINION"
   },
   {
@@ -46995,7 +46995,7 @@
     "race": "TOTEM",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Adjacent minions have +2Â Attack.",
+    "text": "Adjacent minions have +2 Attack.",
     "type": "MINION"
   },
   {
@@ -47154,7 +47154,7 @@
     "type": "MINION"
   },
   {
-    "artist": "Sean Oâ€™Daniels",
+    "artist": "Sean O€™Daniels",
     "cardClass": "ROGUE",
     "collectible": true,
     "cost": 6,
@@ -47749,7 +47749,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "CREDITS",
-    "text": "<i>Wait, wait! Iâ€™m having one of those thingsâ€¦ itâ€™s like a headache with picturesâ€¦ oh right, AN IDEA!</i>",
+    "text": "<i>Wait, wait! I€™m having one of those things€¦ it€™s like a headache with pictures€¦ oh right, AN IDEA!</i>",
     "type": "MINION"
   },
   {
@@ -47904,7 +47904,7 @@
     "type": "HERO"
   },
   {
-    "artist": "Sean Oâ€™Daniels",
+    "artist": "Sean O€™Daniels",
     "attack": 0,
     "cardClass": "NEUTRAL",
     "collectible": true,
@@ -48079,7 +48079,7 @@
     "cost": 7,
     "dbfId": 39225,
     "elite": true,
-    "flavor": "The Curator guards Azerothâ€™s deadliest creatures, but itâ€™s secretly terrified of squirrels.",
+    "flavor": "The Curator guards Azeroth€™s deadliest creatures, but it€™s secretly terrified of squirrels.",
     "health": 6,
     "howToEarn": "Unlocked in the Menagerie, in One Night in Karazhan.",
     "howToEarnGolden": "Crafting unlocked in the Menagerie, in One Night in Karazhan.",
@@ -48902,7 +48902,7 @@
     "playerClass": "PRIEST",
     "rarity": "FREE",
     "set": "CORE",
-    "text": "Give a minion +2Â Health.\nDraw a card.",
+    "text": "Give a minion +2 Health.\nDraw a card.",
     "type": "SPELL"
   },
   {
@@ -48970,7 +48970,7 @@
       "ADAPT"
     ],
     "set": "UNGORO",
-    "text": "After this minion attacks aÂ hero, [[b;;]Adapt].",
+    "text": "After this minion attacks a hero, [[b;;]Adapt].",
     "type": "MINION"
   },
   {
@@ -49197,7 +49197,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 40839,
-    "flavor": "Wellâ€¦ a guy who knows a guy.",
+    "flavor": "Well€¦ a guy who knows a guy.",
     "id": "CFM_940",
     "mechanics": [
       "DISCOVER"
@@ -49282,7 +49282,7 @@
     "collectible": true,
     "cost": 5,
     "dbfId": 38426,
-    "flavor": "Because you're wrapped in a protective layer ofâ€¦ tentacles?",
+    "flavor": "Because you're wrapped in a protective layer of€¦ tentacles?",
     "id": "OG_094",
     "name": "Power Word: Tentacles",
     "playRequirements": {
@@ -49400,7 +49400,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "CREDITS",
-    "text": "[[b;;]Battlecry:] Create a custom spellâ€¦ in under 48 hours.",
+    "text": "[[b;;]Battlecry:] Create a custom spell€¦ in under 48 hours.",
     "type": "MINION"
   },
   {
@@ -49448,7 +49448,7 @@
     "playerClass": "NEUTRAL",
     "rarity": "LEGENDARY",
     "set": "EXPERT1",
-    "text": "Whenever a player casts a spell, put a copy into the other playerâ€™s hand.",
+    "text": "Whenever a player casts a spell, put a copy into the other player€™s hand.",
     "type": "MINION"
   },
   {
@@ -49475,7 +49475,7 @@
     "collectible": true,
     "cost": 1,
     "dbfId": 140,
-    "flavor": "I am not sure how you get demptioned the first time.  Itâ€™s a mystery!",
+    "flavor": "I am not sure how you get demptioned the first time.  It€™s a mystery!",
     "id": "EX1_136",
     "mechanics": [
       "SECRET"
