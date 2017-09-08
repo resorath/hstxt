@@ -139,11 +139,21 @@ module.exports = {
 	    
 	    if(typeof card["text"] != 'undefined')
 	    	returnval += "\n" + card["text"];
+
+	    // do buffs
+	    if(typeof card['buffs'] != 'undefined')
+	    {
+	    	returnval += "\n"
+	    	card.buffs.forEach(function(buff)
+	    	{
+	    		returnval += "[[;lightblue;]\n" + buff.name + " (" + buff.sourcecard.text + ")]";
+	    	});
+	    }
 	  }
 
 	  if(card["type"] == "SPELL" || card["type"] == "HERO_POWER")
 	  {
-	    var returnval = "[[b;lightblue;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
+	    var returnval = "[[b;lightblue;]" + card["name"] + "]\n" + "Cost: " + card["cost"] + "\n";
 	    
 	    if(typeof card["rarity"] != 'undefined' && card["rarity"] != "FREE")
 	   		returnval += card["rarity"] + " ";
