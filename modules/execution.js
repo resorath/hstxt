@@ -553,7 +553,7 @@ module.exports = {
 	deactivateTurnTimer: function(game)
 	{
 		if(game.turntimercallback != null)
-			clearTimeout(agame.turntimercallback);
+			clearTimeout(game.turntimercallback);
 	},
 
 	quitGame: function(game)

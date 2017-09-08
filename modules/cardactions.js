@@ -281,6 +281,36 @@ module.exports = {
 
 	},
 
+	// Stormpike Commando
+	CS2_150: function(socket, sourcecard, target, parts)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		var damage = 2;
+		var targname = null;
+
+		if(target == constants.selftarget)
+		{
+			execution.damagePlayer(o.game, o.players.self, damage);
+			targname = o.players.self.character;
+		}
+
+		else if(target == constants.opponenttarget)
+		{
+			execution.damagePlayer(o.game, o.players.opponent, damage);
+			targname = o.players.opponent.character;
+		}
+
+		else
+		{
+			engineering.damageCard(o.game, target, damage);
+			targname = target.name;
+		}
+
+		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + sourcecard.name + ' shoots ' + targname + ' for ' + damage + ' damage]\n\n');
+
+	},
+
 	// Holy Light
 	CS2_089: function(socket, sourcecard, target, parts)
 	{
@@ -311,7 +341,21 @@ module.exports = {
 		
 			engineering.healCard(o.game, target, healing);
 		}
+	},
 
+	// blessing of might
+	CS2_087: function(socket, sourcecard, target, parts)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		var buff = new buffs.Buff(sourcecard.name);
+
+		buff.changeattack = 3;
+		buff.sourcecard = sourcecard;
+
+		engineering.addBuff(target, buff);
+
+		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + target.name + ' gains +3 damage]\n\n');
 
 	}
 
