@@ -220,7 +220,7 @@ module.exports = {
 		var socketowner = helpers.getSocketFromCard(o.game, target);
 
 		// announce spell
-		o.game.io.to(o.game.name).emit('terminal', target.name + ' is transformed into a sheep!\n');
+		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + target.name + ' is transformed into a sheep!]\n');
 
 		// remove target card, replace it with sheep (CS2_tk1) in same position
 		var index = engineering.removeCard(o.game, target, false);
