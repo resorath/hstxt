@@ -43,8 +43,8 @@ app.get('/keyboard-event-polyfill.js', function(req, res) {
 });
 
 app.get('/games', function(req, res) {
-  res.jsonp({ count: gamevars.games.length });
-})
+  res.jsonp(JSON.stringify({ count: gamevars.games.length }));
+});
 
 var port = process.env.PORT || 8000;
 

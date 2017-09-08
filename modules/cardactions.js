@@ -102,7 +102,7 @@ module.exports = {
 		if(target == constants.selftarget)
 		{
 			socket.emit('terminal', '[[;lightblue;]Your fireball explodes violently in your hands, dealing '+ damage +' damage!]\n\n');
-			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball explodes in their hands! dealing '+ damage + 'damage]\n\n');
+			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball explodes in their hands! dealing '+ damage + ' damage]\n\n');
 		
 			execution.damagePlayer(game, player, damage);
 		}
@@ -246,7 +246,7 @@ module.exports = {
 		o.sockets.self.emit('terminal', '[[;lightblue;]You deal ' + damage + ' to your opponent]\n\n');
 		o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent deals ' + damage + ' to you!]\n\n');
 
-		execution.damagePlayer(o.game, o.players.opponent, damRage);
+		execution.damagePlayer(o.game, o.players.opponent, damage);
 		
 
 	},
@@ -280,6 +280,40 @@ module.exports = {
 		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + sourcecard.name + ' shoots ' + targname + ' for ' + damage + ' damage]\n\n');
 
 	},
+
+	// Holy Light
+	CS2_089: function(socket, sourcecard, target, parts)
+	{
+		var o = helpers.getGameObjectsBySocket(socket);
+
+		var healing = 6 + o.players.self.spellpower;
+
+		if(target == constants.selftarget)
+		{
+			o.sockets.self.emit('terminal', '[[;lightblue;]You heal yourself for '+ healing +' healing]\n\n');
+			o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent heals themselves for '+ healing + ' healing]\n\n');
+		
+			execution.healPlayer(o.game, o.players.self, healing);
+		}
+
+		else if(target == constants.opponenttarget)
+		{
+			o.sockets.self.emit('terminal', '[[;lightblue;]You heal your opponent for '+ healing +' healing.]\n\n');
+			o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent heals you for '+ healing + ' healing.]\n\n');
+		
+			execution.healPlayer(o.game, o.players.opponent, healing);
+		}
+
+		else
+		{
+			o.sockets.self.emit('terminal', '[[;lightblue;]You heal '+ target.name + ' for ' + healing +' healing]\n\n');
+			o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent heals ' + target.name + ' for ' + healing + ' healing.]\n\n');
+		
+			engineering.healCard(o.game, target, healing);
+		}
+
+
+	}
 
 }
 
