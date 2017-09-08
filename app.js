@@ -1,4 +1,8 @@
-'use strict';
+"use strict";
+/** 
+ * Hearthstone Text Edition (Textstone)
+ * Author: Sean Feil (https://www.github.com/resorath/hstxt)
+ */
 
 console.log("Loading modules...");
 
@@ -28,7 +32,7 @@ catch(err)
   serverVersion = "azure-dev"
 } 
 
-console.log("Starting webserve..."); 
+console.log("Starting web server..."); 
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
