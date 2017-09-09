@@ -32,25 +32,21 @@ module.exports = {
 				{
 					o.sockets.self.emit('terminal', '[[;lightblue;]Your fireblast explodes violently in your hands, dealing '+ damage +' damage!]\n');
 					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fireblast explodes in their hands! dealing '+ damage + ' damage]\n');
-				
-					execution.damagePlayer(o.game, o.players.self, damage);
 				}
 
 				else if(target == constants.opponenttarget)
 				{
 					o.sockets.self.emit('terminal', '[[;lightblue;]Your fireblast streaks across the board to your opponent, dealing '+ damage +' damage]\n');
 					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fireblast hits you for '+ damage + ' damage!]\n');
-				
-					execution.damagePlayer(o.game, o.players.opponent, damage);
 				}
 
 				else
 				{
 					o.sockets.self.emit('terminal', '[[;lightblue;]Your fireblast collides with '+ target.name + ', dealing ' + damage +' damage]\n');
 					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s fireblast collides with ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
-				
-					engineering.damageCard(o.game, target, damage);
 				}
+
+				engineering.damageTarget(o.game, target, damage);
 
 			}
 
@@ -82,7 +78,7 @@ module.exports = {
 					o.sockets.self.emit('terminal', '[[;lightblue;]The warmth of your spell heals for '+ heal +' health!]\n');
 					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s lesser heal restores '+ heal + 'health to themselves]\n');
 				
-					execution.healPlayer(o.game, o.players.self, heal);
+					//execution.healPlayer(o.game, o.players.self, heal);
 				}
 
 				else if(target == constants.opponenttarget)
@@ -90,7 +86,7 @@ module.exports = {
 					o.sockets.self.emit('terminal', '[[;lightblue;]Your spell heals your opponent for '+ heal +' health]\n');
 					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s lesser heal restores '+ heal + ' health to you!]\n');
 				
-					execution.healPlayer(o.game, o.players.opponent, heal);
+					//execution.healPlayer(o.game, o.players.opponent, heal);
 				}
 
 				else
@@ -98,8 +94,10 @@ module.exports = {
 					o.sockets.self.emit('terminal', '[[;lightblue;]Your spell heals '+ target.name + ' for ' + heal +' health]\n');
 					o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s lesser heal restores ' + heal + ' health to ' + target.name + ']\n\n');
 				
-					engineering.healCard(o.game, target, heal);
+					//engineering.healCard(o.game, target, heal);
 				}
+
+				engineering.healTarget(o.game, target, heal);
 
 			}
 
@@ -130,7 +128,7 @@ module.exports = {
 				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent suffers ' + damage + ' damage]\n');
 			
 
-				execution.damagePlayer(o.game, o.players.self, damage);
+				engineering.damagePlayer(o.game, o.players.self, damage);
 
 				execution.drawCard(socket);
 
@@ -277,7 +275,7 @@ module.exports = {
 				o.sockets.self.emit('terminal', '[[;lightblue;]You deal '+ damage+ ' damage to your opponent]\n');
 				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent deals ' + damage + ' to you]\n\n');
 
-				execution.damagePlayer(o.game, o.players.opponent, damage);
+				engineering.damagePlayer(o.game, o.players.opponent, damage);
 
 			}
 

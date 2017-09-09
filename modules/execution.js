@@ -438,52 +438,6 @@ module.exports = {
 
 	},
 
-	damagePlayer: function(agame, player, amount)
-	{
-		if(player.armor < amount)
-		{
-			amount -= player.armor;
-
-			player.armor = 0;
-		}
-		else
-		{
-			player.armor -= amount;
-
-			amount = 0;
-		}
-
-		player.health -= amount;
-
-		gamevars.triggers.emit('doTrigger', constants.triggers.onherodamaged, agame, null, null);
-
-		agame.updatePromptsWithDefault();
-
-		// check if game is over
-		// todo: refactor this so we don't need to retrieve the socket
-		if(player.health <= 0)
-		{
-			var socket = agame.getSocketByPlayerNumber(player.number);
-			socket.emit('terminal', 'Game over, you lose!\n');
-			helpers.getOppositePlayerSocket(socket).emit('terminal', 'Game over, you win!\n');
-
-			module.exports.quitGame(agame);
-		}
-
-	},
-
-	healPlayer: function(agame, player, amount)
-	{
-		player.health += amount;
-
-		if(player.health > player.maxhealth)
-			player.health = player.maxhealth
-
-		gamevars.triggers.emit('doTrigger', constants.triggers.onheal, agame, null, null);
-
-		agame.updatePromptsWithDefault();
-	},
-
 
 	doUpdateTick: function(game)
 	{

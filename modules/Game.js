@@ -206,6 +206,22 @@ module.exports = {
       return (socket.player == this.playerTurn)
     }
 
+    this.currentPlayer = function()
+    {
+      if(this.playerTurn == 1)
+        return this.player.p1;
+      else
+        return this.player.p2;
+    }
+
+    this.oppositePlayer = function()
+    {
+      if(this.playerTurn == 1)
+        return this.player.p2;
+      else
+        return this.player.p1;
+    }
+
 
   }
 }

@@ -58,7 +58,7 @@ module.exports = {
 				o.sockets.self.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
 				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
 				
-				execution.damagePlayer(o.game, o.players.opponent, 1);
+				engineering.damagePlayer(o.game, o.players.opponent, 1);
 				return;
 			}
 
@@ -68,7 +68,7 @@ module.exports = {
 			{
 				o.sockets.self.emit('terminal', '[[;lightblue;]Your arcane missiles deal 1 damage to your opponent\'s hero\n\n');
 				o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent\'s arcane missiles deal 1 damage to your hero\n\n');
-				execution.damagePlayer(o.game, o.players.opponent, 1);
+				engineering.damagePlayer(o.game, o.players.opponent, 1);
 				return;
 			}
 			else
@@ -103,26 +103,21 @@ module.exports = {
 		{
 			socket.emit('terminal', '[[;lightblue;]Your fireball explodes violently in your hands, dealing '+ damage +' damage!]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball explodes in their hands! dealing '+ damage + ' damage]\n\n');
-		
-			execution.damagePlayer(game, player, damage);
 		}
 
 		else if(target == constants.opponenttarget)
 		{
 			socket.emit('terminal', '[[;lightblue;]Your fireball streaks across the board to your opponent, dealing '+ damage +' damage]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball hits you for '+ damage + ' damage!]\n\n');
-		
-			execution.damagePlayer(game, opponent, damage);
 		}
 
 		else
 		{
 			socket.emit('terminal', '[[;lightblue;]Your fireball collides with '+ target.name + ', dealing ' + damage +' damage]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s fireball collides with ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
-		
-			engineering.damageCard(game, target, damage);
 		}
 
+		engineering.damageTarget(game, target, damage);
 	},
 
 	// Pyroblast
@@ -144,25 +139,21 @@ module.exports = {
 		{
 			socket.emit('terminal', '[[;lightblue; You hurl an immense fiery boulder at... yourself, dealing '+ damage +' damage!]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent hurls an immense fiery boulder at... themselves! dealing '+ damage + 'damage]\n\n');
-		
-			execution.damagePlayer(game, player, damage);
 		}
 
 		else if(target == constants.opponenttarget)
 		{
 			socket.emit('terminal', '[[;lightblue;]You hurl an immense fiery boulder at your opponent, dealing '+ damage +' damage]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent hurls an immense fiery boulder at you, dealing '+ damage + ' damage!]\n\n');
-		
-			execution.damagePlayer(game, opponent, damage);
 		}
 
 		else
 		{
 			socket.emit('terminal', '[[;lightblue;]You hurl an immense fiery boulder at '+ target.name + ', dealing ' + damage +' damage]\n\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent hurls an immense fiery boulder at ' + target.name + ', dealing ' + damage + ' damage!]\n\n');
-		
-			engineering.damageCard(game, target, damage);
 		}
+
+		engineering.damageTarget(game, target, damage);
 
 	},
 
@@ -246,7 +237,7 @@ module.exports = {
 		o.sockets.self.emit('terminal', '[[;lightblue;]You deal ' + damage + ' to your opponent]\n\n');
 		o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent deals ' + damage + ' to you!]\n\n');
 
-		execution.damagePlayer(o.game, o.players.opponent, damage);
+		engineering.damagePlayer(o.game, o.players.opponent, damage);
 		
 
 	},
@@ -260,24 +251,15 @@ module.exports = {
 		var targname = null;
 
 		if(target == constants.selftarget)
-		{
-			execution.damagePlayer(o.game, o.players.self, damage);
 			targname = o.players.self.character;
-		}
-
 		else if(target == constants.opponenttarget)
-		{
-			execution.damagePlayer(o.game, o.players.opponent, damage);
 			targname = o.players.opponent.character;
-		}
-
 		else
-		{
-			engineering.damageCard(o.game, target, damage);
 			targname = target.name;
-		}
 
 		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + sourcecard.name + ' shoots ' + targname + ' for ' + damage + ' damage]\n\n');
+
+		engineering.damageTarget(o.game, target, damage);
 
 	},
 
@@ -291,23 +273,22 @@ module.exports = {
 
 		if(target == constants.selftarget)
 		{
-			execution.damagePlayer(o.game, o.players.self, damage);
 			targname = o.players.self.character;
 		}
 
 		else if(target == constants.opponenttarget)
 		{
-			execution.damagePlayer(o.game, o.players.opponent, damage);
 			targname = o.players.opponent.character;
 		}
 
 		else
 		{
-			engineering.damageCard(o.game, target, damage);
 			targname = target.name;
 		}
 
 		o.game.io.to(o.game.name).emit('terminal', '[[;lightblue;]' + sourcecard.name + ' shoots ' + targname + ' for ' + damage + ' damage]\n\n');
+
+		engineering.damageTarget(o.game, target, damage);
 
 	},
 
@@ -322,25 +303,21 @@ module.exports = {
 		{
 			o.sockets.self.emit('terminal', '[[;lightblue;]You heal yourself for '+ healing +' healing]\n\n');
 			o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent heals themselves for '+ healing + ' healing]\n\n');
-		
-			execution.healPlayer(o.game, o.players.self, healing);
 		}
 
 		else if(target == constants.opponenttarget)
 		{
 			o.sockets.self.emit('terminal', '[[;lightblue;]You heal your opponent for '+ healing +' healing.]\n\n');
 			o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent heals you for '+ healing + ' healing.]\n\n');
-		
-			execution.healPlayer(o.game, o.players.opponent, healing);
 		}
 
 		else
 		{
 			o.sockets.self.emit('terminal', '[[;lightblue;]You heal '+ target.name + ' for ' + healing +' healing]\n\n');
 			o.sockets.opponent.emit('terminal', '[[;lightblue;]Your opponent heals ' + target.name + ' for ' + healing + ' healing.]\n\n');
-		
-			engineering.healCard(o.game, target, healing);
 		}
+
+		engineering.healTarget(o.game, target, healing);
 	},
 
 	// blessing of might
