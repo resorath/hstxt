@@ -122,12 +122,11 @@ module.exports = {
 
 		  	if(spelldamage != null)
 		  	{
-		  		console.log("Spellpower: " + spellpower + " spell damage on card: " + spelldamage);
-
 			  	var totaldamage = +spelldamage + +spellpower;
 			  	cardtext = cardtext.replace(re, "[[;;bold]*" + totaldamage + "*]");
 			}
 		}
+		// if there is no spellpower, simply remove the $ on the card description
 		else
 		{
 			cardtext = cardtext.replace('$', '');
