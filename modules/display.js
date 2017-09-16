@@ -1,4 +1,5 @@
 var helpers = require('./helpers');
+var util = require('./util');
 
 module.exports = {
 
@@ -259,10 +260,33 @@ module.exports = {
 		var boardsize = 47;
 		var line = (function() {
 			var r = '';
-			for(i=0; i<boardsize; i++)
-				r += '═'
+			r += Array(boardsize).join('═');
 			return r;
 		})();
+
+		var emptyline = (function() {
+			var r = '';
+			r += Array(boardsize).join(' ');
+			return r;
+		})();
+
+		var boardLine = function(card, i, o) {
+
+			// get card
+			var vcard = module.exports.printCard(card, true);
+
+			// remove non-printing character blocks
+			var strippedcard = util.stripColorCoding(vcard);
+
+			// get length
+			var linelength = strippedcard.length + 5;
+
+			var r = "\n║ " + o + i + ": " + vcard;
+			r += Array(boardsize - linelength).join(' ');
+			r += "║";
+
+			return r;
+		}
 
 		var o_armor = o.players.opponent.armor > 0 ? '[[[;gold;]' + o.players.opponent.armor + '] armor' : '';
 		var o_attack = o.players.opponent.attack > 0 ? o.players.opponent.attack + ' attack ' : '';
@@ -270,20 +294,20 @@ module.exports = {
 		var o_heropower = o.players.opponent.heropower.ready ? o.players.opponent.heropower.name + ' (' + o.players.opponent.heropower.cost + ')' : o.players.opponent.heropower.name + ' (inactive)'
 
 		var o_board = (function() {
-			var r = '';
+			var r = '║' + emptyline + '║';
 			var i = 1;
 			o.boards.opponent.forEach(function(card) {
-				r += "  o" + i + ": " + module.exports.printCard(card, true) + "\n";
+				r += boardLine(card, i, 'o');
 				i++;
 			});
 			return r;
 		})();
 
 		var m_board = (function() {
-			var r = '';
+			var r = '║' + emptyline + '║';
 			var i = 1;
 			o.boards.self.forEach(function(card) {
-				r += "  m" + i + ": " + module.exports.printCard(card, true) + "\n";
+				r += boardLine(card, i, 'm');
 				i++;
 			});
 			return r;
@@ -319,11 +343,11 @@ Equipped: ${o_weapon}
 Hero power: ${o_heropower}
 
 ╔${line}╗
-
 ${o_board}
+║${emptyline}║
 ╠${line}╣
-
 ${m_board}
+║${emptyline}║
 ╚${line}╝
 
 Your hero power: ${m_heropower}

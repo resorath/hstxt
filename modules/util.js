@@ -62,6 +62,24 @@ module.exports = {
 			});			
 		});
 
+	},
+
+	stripColorCoding: function(formattedString) {
+
+		var pattern = /\[\[([!gbiuso]*;[^;\]]*;[^;\]]*(?:;|[^\]()]*);?[^\]]*)\]([^\]]*\\\][^\]]*|[^\]]*|[^[]*\[[^\]]*)\]/gi;
+		var match = pattern.exec(formattedString);
+
+		var result = formattedString;
+		while(match != null)
+		{
+			if(match != null)
+				result = result.replace(match[0], match[2]);
+
+			match = pattern.exec(formattedString);
+		}
+
+		return result;
+
 	}
 
 }
