@@ -98,9 +98,43 @@ module.exports = {
 
 	},
 
-	printDetailedCard: function(card)
+	printDetailedCard: function(card, spellpower)
 	{
 	  var basecard = helpers.getCardById(card.id);
+
+	  if(typeof spellpower == 'undefined' || spellpower == null)
+	  	spellpower = 0;
+
+	  var cardtext = "";
+
+	  if(typeof card["text"] != 'undefined')
+	  {
+	  	cardtext = card["text"];
+
+	  	// replace spell damage in string with added spellpower
+	  	if(spellpower > 0)
+	  	{
+		  	var re = /\$([0-9]+)/
+		  	var spelldamagematch = cardtext.match(re);
+		  	var spelldamage = null;
+		  	if(spelldamagematch != null)
+		  		spelldamage = spelldamagematch[1];
+
+		  	if(spelldamage != null)
+		  	{
+		  		console.log("Spellpower: " + spellpower + " spell damage on card: " + spelldamage);
+
+			  	var totaldamage = +spelldamage + +spellpower;
+			  	cardtext = cardtext.replace(re, "[[;;bold]*" + totaldamage + "*]");
+			}
+		}
+		else
+		{
+			cardtext = cardtext.replace('$', '');
+		}
+	  }
+
+
 
 	  if(card["type"] == "MINION")
 	  {
@@ -137,8 +171,8 @@ module.exports = {
 	    if(typeof card["race"] != 'undefined')
 	    	returnval += card["race"] + " ";
 	    
-	    if(typeof card["text"] != 'undefined')
-	    	returnval += "\n" + card["text"];
+	    if(cardtext != "")
+	    	returnval += "\n" + cardtext;
 
 	    // do buffs
 	    if(typeof card['buffs'] != 'undefined')
@@ -161,8 +195,8 @@ module.exports = {
 	    if(typeof card["type"] != 'undefined' && card["type"] != "HERO_POWER")
 	    	returnval += card["type"] + "\n";
 	    
-	    if(typeof card["text"] != 'undefined')
-	    	returnval += card["text"];
+	    if(cardtext != "")
+	    	returnval += cardtext + "\n";
 
 	  }
 
@@ -196,8 +230,8 @@ module.exports = {
 	    if(typeof card["type"] != 'undefined')
 	    	returnval += card["type"];
 
-	   	if(typeof card["text"] != 'undefined')
-	    	returnval += "\n" + card["text"];
+	   	if(cardtext != "")
+	    	returnval += "\n" + cardtext;
 	  }
 
 

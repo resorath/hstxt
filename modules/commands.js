@@ -55,9 +55,11 @@ module.exports = {
     if(!lookatindex)
       return null;
 
+
+
     if(lookatindex.toLowerCase() == "hero")
     {
-      socket.emit('terminal', display.printDetailedCard(helpers.getCardById(helpers.getPlayerBySocket(socket).heropower.card)));
+      socket.emit('terminal', display.printDetailedCard(helpers.getCardById(player.heropower.card)));
       return;
     }
 
@@ -66,7 +68,10 @@ module.exports = {
     if(index == null)
       return;
 
-    socket.emit('terminal', display.printDetailedCard(index));
+
+    var player = helpers.getPlayerBySocket(socket);
+
+    socket.emit('terminal', display.printDetailedCard(index, player.spellpower));
 
   },
 
@@ -311,7 +316,7 @@ module.exports = {
       // announce play to player
       socket.emit('terminal', 'Playing...');
 
-      game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand));
+      game.io.to(game.name).emit('terminal', display.printDetailedCard(cardinhand, player.spellpower));
 
       // Do specific things to put the card on the board
       switch(cardtoplay.type)
@@ -716,7 +721,7 @@ module.exports = {
       if(subcommand == "mana")
       {
         player.mana = parts[1];
-        socket.emit('terminal', '[[i;#D2B4DE;](debug) set mana to ' + parts[1] + "]");
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) set mana to ' + parts[1] + "]\n");
         game.defaultPrompt(socket);
       }
 
@@ -726,35 +731,35 @@ module.exports = {
         if(card != null)
         {
           card.ownernumber = helpers.getPlayerBySocket(socket, false).number;
-          socket.emit('terminal', '[[i;#D2B4DE;](debug) card '+ card["name"] +' added to hand]');
+          socket.emit('terminal', '[[i;#D2B4DE;](debug) card '+ card["name"] +' added to hand]\n');
           helpers.getHandBySocket(socket).push(card);
-          socket.emit('terminal', display.printDetailedCard(card));
+          socket.emit('terminal', display.printDetailedCard(card, player.spellpower));
         }
         else
-          socket.emit('terminal', '[[i;#D2B4DE;](debug) card id not found]');
+          socket.emit('terminal', '[[i;#D2B4DE;](debug) card id not found]\n');
       }
 
       if(subcommand == "stoptimer")
       {
-        socket.emit('terminal', '[[i;#D2B4DE;](debug) Game timer stopped]');
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Game timer stopped]\n');
         execution.deactivateTurnTimer(game);
       }
 
       if(subcommand == "starttimer")
       {
-        socket.emit('terminal', '[[i;#D2B4DE;](debug) Game timer started]');
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Game timer started]\n');
         execution.activateTurnTimer(game);
       }
 
       if(subcommand == "draw")
       {
-        socket.emit('terminal', '[[i;#D2B4DE;](debug) Drawing card]');
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Drawing card]\n');
         execution.drawCard(socket);
       }
 
       if(subcommand == "fatigue")
       {
-        socket.emit('terminal', '[[i;#D2B4DE;](debug) Dumping deck...]');
+        socket.emit('terminal', '[[i;#D2B4DE;](debug) Dumping deck...]\n');
         var deck = helpers.getDeckBySocket(socket, false);
         deck.splice(0, deck.length);
       }
@@ -762,6 +767,17 @@ module.exports = {
       if(subcommand == "testboard")
       {
         display.printBoard(socket);
+      }
+
+      if(subcommand == "spellpower")
+      {
+        if(parts[1] != null)
+        {
+          player.spellpower = parts[1];
+          socket.emit('terminal', '[[i;#D2B4DE;](debug) Spellpower set to ' + parts[1] + ']\n');
+        }
+        else
+          socket.emit('terminal', '[[i;#D2B4DE;](debug) Spellpower: ' + player.spellpower + ']\n');
       }
 
 

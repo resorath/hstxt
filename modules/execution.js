@@ -423,14 +423,14 @@ module.exports = {
 	    	
 	    	socket.emit("terminal", "[[;red;black]You have too many cards in your hand! You lost...]");
 
-	    	agame.io.to(agame.name).emit('terminal', display.printDetailedCard(draw));
+	    	agame.io.to(agame.name).emit('terminal', display.printDetailedCard(draw, player.spellpower));
 
 	    }
 	    else
 	    {
 	    	helpers.getOppositePlayerSocket(socket).emit('terminal', 'Your opponent draws a card\n');
 	    	socket.emit("terminal", "You draw...");
-	    	socket.emit("terminal", display.printDetailedCard(draw));
+	    	socket.emit("terminal", display.printDetailedCard(draw, player.spellpower));
 
 	    	helpers.getHandBySocket(socket, false).push(draw);
 	    }
