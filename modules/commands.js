@@ -55,6 +55,12 @@ module.exports = {
     if(!lookatindex)
       return null;
 
+    if(lookatindex.toLowerCase() == "hero")
+    {
+      socket.emit('terminal', display.printDetailedCard(helpers.getCardById(helpers.getPlayerBySocket(socket).heropower.card)));
+      return;
+    }
+
     var index = helpers.boardIndexToCard(lookatindex, socket);
 
     if(index == null)

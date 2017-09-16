@@ -175,6 +175,12 @@ module.exports = {
 	{
 	  var returnVal = null;
 
+	  if(typeof id == 'undefined' || id == null)
+	  {
+	  	console.log("WARNING: Get undefined ID in getCardById");
+	  	return;
+	  }
+
 	  gamevars.cards.forEach(function(card)
 	  {
 	    if(card["id"] && card["id"].toUpperCase() === id.toUpperCase())

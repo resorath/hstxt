@@ -18,13 +18,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: true,
+			card: "CS2_034",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var damage = 1;
 
-				var heropowercard = helpers.getCardById("CS2_034");
+				var heropowercard = helpers.getCardById(this.card);
 				
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
@@ -63,13 +64,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: true,
+			card: "CS1h_001_H1",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var heal = 2;
 
-				var heropowercard = helpers.getCardById("CS1h_001_H1");
+				var heropowercard = helpers.getCardById(this.card);
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
@@ -114,13 +116,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "CS2_056",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var damage = 2;
 
-				var heropowercard = helpers.getCardById("CS2_056");
+				var heropowercard = helpers.getCardById(this.card);
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
@@ -148,13 +151,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "CS2_083b",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var damage = 2;
 
-				var heropowercard = helpers.getCardById("CS2_083b");
+				var heropowercard = helpers.getCardById(this.card);
 				var knife = helpers.getCardById("CS2_082");
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
@@ -192,13 +196,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "CS2_049_H1",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var damage = 2;
 
-				var heropowercard = helpers.getCardById("CS2_049_H1");
+				var heropowercard = helpers.getCardById(this.card);
 
 				// make sure there is enough space on the board
 				if(o.boards.self.length >= 7)
@@ -262,13 +267,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "DS1h_292",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var damage = 2;
 
-				var heropowercard = helpers.getCardById("DS1h_292");
+				var heropowercard = helpers.getCardById(this.card);
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
@@ -292,6 +298,7 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "CS2_101",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
@@ -302,7 +309,7 @@ module.exports = {
 					return false;
 				}
 
-				var heropowercard = helpers.getCardById("CS2_101");
+				var heropowercard = helpers.getCardById(this.card);
 				var recruit = helpers.getCardById("CS2_101t");
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
@@ -328,13 +335,14 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "CS2_102",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
 
 				var armor = 2;
 
-				var heropowercard = helpers.getCardById("CS2_102");
+				var heropowercard = helpers.getCardById(this.card);
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
@@ -359,6 +367,7 @@ module.exports = {
 			cost: 2,
 			ready: true,
 			targetrequired: false,
+			card: "CS2_017",
 			cast: function(socket, target) {
 				
 				var o = helpers.getGameObjectsBySocket(socket);
@@ -366,7 +375,7 @@ module.exports = {
 				var armor = 1;
 				var attack = 1;
 
-				var heropowercard = helpers.getCardById("CS2_017");
+				var heropowercard = helpers.getCardById(this.card);
 
 				o.game.io.to(o.game.name).emit('terminal', display.printDetailedCard(heropowercard));
 
