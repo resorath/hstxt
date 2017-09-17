@@ -31,6 +31,6 @@ module.exports = {
         rightMiddleConnector: "╣"
     },
 
-    boardSize: 47
+    boardSize: 67
 
 }

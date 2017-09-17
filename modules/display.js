@@ -254,11 +254,13 @@ module.exports = {
 	  socket.emit('terminal', printdeck);
 	},
 
-	printBoard: function(socket)
+	printBoard: function(socket, boardsize)
 	{
 		var o = helpers.getGameObjectsBySocket(socket);
 
-		var boardsize = constants.boardSize;
+		if(typeof boardsize == 'undefined' || boardsize == null)
+			boardsize = constants.boardSize;
+
 		var line = (function() {
 			var r = '';
 			r += Array(boardsize).join(constants.borderCharacters.horizontalEdge);
@@ -281,6 +283,13 @@ module.exports = {
 
 			// get length
 			var linelength = strippedcard.length + 5;
+
+			// sanity check
+			if( (boardsize - linelength) <= 0 )
+			{
+				console.log("Warning: Line length too long!");
+				boardsize = linelength + 1;
+			}
 
 			var r = "\n" + constants.borderCharacters.verticalEdge + " " + o + i + ": " + vcard;
 			r += Array(boardsize - linelength).join(' ');
