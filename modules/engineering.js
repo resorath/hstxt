@@ -91,7 +91,7 @@ module.exports = {
 
 		if(card.health <= 0)
 		{
-			agame.io.to(agame.name).emit('terminal', card['name'] + " is destroyed!\n");
+			agame.io.to(agame.name).emit('terminal', '[[' + constants.formatcolor.death + ']' + card['name'] + " is destroyed!]\n");
 
 			module.exports.removeCard(agame, card, true);
 		}

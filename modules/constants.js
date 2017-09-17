@@ -39,7 +39,8 @@ module.exports = {
         criticalerror: "b;red;",
         spell: ";lightblue;",
         quote: ";#FFBDC0;",
-        attack: ";#FFA22C;"
+        attack: ";#FFA22C;",
+        death: 'b;#D60000;'
 
     }
 
