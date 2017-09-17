@@ -176,7 +176,8 @@ module.exports = {
 		socket.emit('terminal', '[[;lightblue;]You emit a powerful arcane shockwave]\n\n');
 		opponentsocket.emit('terminal', '[[;lightblue;]Your opponent emits a powerful arcane shockwave]\n\n');
 
-		enemyboard.forEach(function(card)
+		var enemyboardclone = JSON.parse(JSON.stringify(enemyboard));
+		enemyboardclone.forEach(function(card)
 		{
 			socket.emit('terminal', '[[;lightblue;]Your arcane explosion deals '+damage+' to '+card.name+']\n');
 			opponentsocket.emit('terminal', '[[;lightblue;]Your opponent\'s arcane explosion deals '+damage+' to '+card.name+']\n');
