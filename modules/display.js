@@ -1,5 +1,6 @@
 var helpers = require('./helpers');
 var util = require('./util');
+var constants = require('./constants');
 
 module.exports = {
 
@@ -257,10 +258,10 @@ module.exports = {
 	{
 		var o = helpers.getGameObjectsBySocket(socket);
 
-		var boardsize = 47;
+		var boardsize = constants.boardSize;
 		var line = (function() {
 			var r = '';
-			r += Array(boardsize).join('═');
+			r += Array(boardsize).join(constants.borderCharacters.horizontalEdge);
 			return r;
 		})();
 
@@ -281,9 +282,9 @@ module.exports = {
 			// get length
 			var linelength = strippedcard.length + 5;
 
-			var r = "\n║ " + o + i + ": " + vcard;
+			var r = "\n" + constants.borderCharacters.verticalEdge + " " + o + i + ": " + vcard;
 			r += Array(boardsize - linelength).join(' ');
-			r += "║";
+			r += constants.borderCharacters.verticalEdge;
 
 			return r;
 		}
@@ -294,7 +295,7 @@ module.exports = {
 		var o_heropower = o.players.opponent.heropower.ready ? o.players.opponent.heropower.name + ' (' + o.players.opponent.heropower.cost + ')' : o.players.opponent.heropower.name + ' (inactive)'
 
 		var o_board = (function() {
-			var r = '║' + emptyline + '║';
+			var r = constants.borderCharacters.verticalEdge + emptyline + constants.borderCharacters.verticalEdge;
 			var i = 1;
 			o.boards.opponent.forEach(function(card) {
 				r += boardLine(card, i, 'o');
@@ -304,7 +305,7 @@ module.exports = {
 		})();
 
 		var m_board = (function() {
-			var r = '║' + emptyline + '║';
+			var r = constants.borderCharacters.verticalEdge + emptyline + constants.borderCharacters.verticalEdge;
 			var i = 1;
 			o.boards.self.forEach(function(card) {
 				r += boardLine(card, i, 'm');
@@ -342,13 +343,13 @@ Cards - hand: ${o.hands.opponent.length}  deck: ${o.decks.opponent.length}
 Equipped: ${o_weapon}
 Hero power: ${o_heropower}
 
-╔${line}╗
+${constants.borderCharacters.topLeftCorner}${line}${constants.borderCharacters.topRightCorner}
 ${o_board}
-║${emptyline}║
-╠${line}╣
+${constants.borderCharacters.verticalEdge}${emptyline}${constants.borderCharacters.verticalEdge}
+${constants.borderCharacters.leftMiddleConnector}${line}${constants.borderCharacters.rightMiddleConnector}
 ${m_board}
-║${emptyline}║
-╚${line}╝
+${constants.borderCharacters.verticalEdge}${emptyline}${constants.borderCharacters.verticalEdge}
+${constants.borderCharacters.bottomLeftCorner}${line}${constants.borderCharacters.bottomRightCorner}
 
 Your hero power: ${m_heropower}
 Your weapon: ${m_weapon}

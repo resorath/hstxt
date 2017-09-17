@@ -18,6 +18,19 @@ module.exports = {
     	onheal: "onheal",
     	ondeath: "ondeath",
         onleaveplay: "onleaveplay"
-    }
+    },
+
+    borderCharacters: {
+        verticalEdge: "║",
+        horizontalEdge: "═",
+        topLeftCorner: "╔",
+        bottomLeftCorner: "╚",
+        bottomRightCorner: "╝",
+        topRightCorner: "╗",
+        leftMiddleConnector: "╠",
+        rightMiddleConnector: "╣"
+    },
+
+    boardSize: 47
 
 }

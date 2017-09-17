@@ -64,6 +64,7 @@ module.exports = {
 
 	},
 
+	// Removes formatting from strings, useful for seeing the string without codes
 	stripColorCoding: function(formattedString) {
 
 		var pattern = /\[\[([!gbiuso]*;[^;\]]*;[^;\]]*(?:;|[^\]()]*);?[^\]]*)\]([^\]]*\\\][^\]]*|[^\]]*|[^[]*\[[^\]]*)\]/gi;
