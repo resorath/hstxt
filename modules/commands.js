@@ -791,7 +791,6 @@ module.exports = {
           socket.emit('terminal', '[[i;#D2B4DE;](debug) Spellpower: ' + player.spellpower + ']\n');
       }
 
-
   }
 
 
