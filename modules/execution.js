@@ -97,7 +97,7 @@ module.exports = {
 
 
 	  // flip coin
-	  game.io.to(game.name).emit('terminal', '\n[[b;gold;black]Flipping the coin...]\n');
+	  game.io.to(game.name).emit('terminal', '\n[[b;gold;]Flipping the coin...]\n');
 
 	  firstPlayer.emit('terminal', 'You go first!\n');
 	  secondPlayer.emit('terminal', 'You get an extra card!\n');
@@ -254,9 +254,9 @@ module.exports = {
 	    mulligantoprint += "\n" +  i + ": ";
 
 	    if(keep)
-	      mulligantoprint += "[[b;limegreen;black]&#91;KEEP&#93;]";
+	      mulligantoprint += "[[b;limegreen;]&#91;KEEP&#93;]";
 	    else
-	      mulligantoprint += "[[b;red;black]&#91;DISCARD&#93;]"
+	      mulligantoprint += "[[b;red;]&#91;DISCARD&#93;]"
 
 	    mulligantoprint += " " + display.printDetailedCard(card);
 	    i++;
@@ -286,7 +286,7 @@ module.exports = {
 	      agame.round = 1;
 
 	      agame.getHand(agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false)).push(helpers.getCardById("GAME_005"));
-	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\n[[;lightblue;black]The Coin mysteriously appears in your hand...]');
+	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', '\n[[;lightblue;]The Coin mysteriously appears in your hand...]');
 	      agame.getSocketByPlayerNumber(agame.playerTurnOpposite(), false).emit('terminal', display.printDetailedCard(helpers.getCardById("GAME_005")));
 
 
@@ -298,7 +298,7 @@ module.exports = {
 
 	      // tell first player to go
 	      var firstplayersocket = agame.getSocketByPlayerNumber(agame.playerTurn);
-      	  firstplayersocket.emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+      	  firstplayersocket.emit("terminal", "\n[[b;limegreen;]Your turn!]\n");
 
       	  // give them a card
       	  module.exports.drawCard(agame.getSocketByPlayerNumber(agame.playerTurn));
@@ -363,7 +363,7 @@ module.exports = {
 
 	    // tell new player it is their turn
 	    var newplayersocket = agame.getSocketByPlayerNumber(opponent.number);
-	    newplayersocket.emit("terminal", "\n[[b;limegreen;black]Your turn!]\n");
+	    newplayersocket.emit("terminal", "\n[[b;limegreen;]Your turn!]\n");
 
 	    // do start of turn things
 	    gamevars.triggers.emit('doTrigger', constants.triggers.onstartturn, agame, null, null);
@@ -487,7 +487,7 @@ module.exports = {
 	    // do rope stuff
 	    // trigger character rope speech TBD
 
-	    agame.io.to(agame.name).emit('terminal', '\n[[b;orange;black]There is only ' + agame.turntimerrope + ' seconds left in the turn!\n]');
+	    agame.io.to(agame.name).emit('terminal', '\n[[b;orange;]There is only ' + agame.turntimerrope + ' seconds left in the turn!\n]');
 
 	    agame.turntimercallback = setTimeout(function() {
 
@@ -495,7 +495,7 @@ module.exports = {
 
 	      var currentplayersocket = agame.getSocketByPlayerNumber(agame.playerTurn);
 
-	      currentplayersocket.emit('terminal', '\n[[b;red;black]You ran out of time on your turn!]\n');
+	      currentplayersocket.emit('terminal', '\n[[b;red;]You ran out of time on your turn!]\n');
 	      
 	      that.endTurn(currentplayersocket);
 

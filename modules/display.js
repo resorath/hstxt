@@ -143,7 +143,7 @@ module.exports = {
 
 	  	var returnval = "";
 
-	    returnval += "[[b;white;black]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: ";
+	    returnval += "[[b;white;]" + card["name"] + "]\n" + "Cost: " + card["cost"] + " Attack: ";
 
 	    if(card.attack < basecard.attack)
 	    	returnval += "[[;red;]" + card.attack + "]";

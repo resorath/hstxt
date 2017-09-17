@@ -194,7 +194,7 @@ module.exports = {
       }
 
       if(player.number == this.playerTurn)
-        prompt += " [[;aquamarine;black]YOUR TURN]> ";
+        prompt += " [[;aquamarine;]YOUR TURN]> ";
       else
         prompt += " ENEMY TURN> ";
 

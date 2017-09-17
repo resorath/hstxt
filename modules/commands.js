@@ -504,6 +504,9 @@ module.exports = {
     var agame = helpers.getGameBySocket(socket);
 
     var self = helpers.getPlayerBySocket(socket, false);
+    var opponent = helpers.getPlayerBySocket(socket, true);
+
+    var opponentsocket = helpers.getOppositePlayerSocket(socket);
 
     // can only play a card on turn
     if(!agame.isPlayerTurn(socket))
@@ -631,12 +634,18 @@ module.exports = {
 
       if(!isSelfAttacking)
       {
-        agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage.\n");
+        socket.emit('terminal', '[[' + constants.formatcolor.attack + ']' + sourceCard['name'] +' attacks enemy ' + opponent.character + ' for ' + sourceCard['attack'] + ' damage.]\n');
+        opponentsocket.emit('terminal', '[[' + constants.formatcolor.attack + ']' + sourceCard['name'] + ' attacks YOU for ' + sourceCard['attack'] + ' damage.]\n');
+
+        //agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks hero for " + sourceCard['attack'] + " damage.\n");
         engineering.damagePlayer(agame, enemyplayer, sourceCard['attack']);
       }
       else
       {
-        agame.io.to(agame.name).emit('terminal', self.character + " attacks hero for " + self.attack + " damage,\n");
+        socket.emit('terminal', '[[' + constants.formatcolor.attack + ']You attack enemy ' + opponent.character + ' for ' + sourceCard['attack'] + ' damage.]\n');
+        opponentsocket.emit('terminal', '[[' + constants.formatcolor.attack + ']Enemy ' + self.character + ' attacks YOU for ' + sourceCard['attack'] + ' damage.]\n');
+
+        //agame.io.to(agame.name).emit('terminal', self.character + " attacks hero for " + self.attack + " damage,\n");
         engineering.damagePlayer(agame, enemyplayer, self.attack);        
       }
     }
@@ -645,14 +654,15 @@ module.exports = {
 
       if(!isSelfAttacking)
       {
-        agame.io.to(agame.name).emit('terminal', sourceCard['name'] + " attacks " + destinationCard['name'] + " for " + sourceCard['attack'] + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
+        agame.io.to(agame.name).emit('terminal', '[[' + constants.formatcolor.attack + ']' + sourceCard['name'] + " attacks " + destinationCard['name'] + " for " + sourceCard['attack'] + " damage and suffers " + destinationCard['attack'] + " damage in return.]\n");
 
         engineering.damageCard(agame, destinationCard, sourceCard['attack']);
         engineering.damageCard(agame, sourceCard, destinationCard['attack']);
       }
       else
       {
-        agame.io.to(agame.name).emit('terminal', self.character + " attacks " + destinationCard['name'] + " for " + self.attack + " damage and suffers " + destinationCard['attack'] + " damage in return.\n");
+        socket.emit('terminal', '[[' + constants.formatcolor.attack + ']You attack ' + destinationCard['name'] + " for " + self.attack + " damage and suffer " + destinationCard['attack'] + " damage in return.]\n");
+        opponentsocket.emit('terminal', '[[' + constants.formatcolor.attack + ']Enemy ' + self.character + ' attacks ' + destinationCard['name'] + " for " + self.attack + " damage and suffers " + destinationCard['attack'] + " damage in return.]\n");
 
         engineering.damageCard(agame, destinationCard, self.attack);
         engineering.damagePlayer(agame, self, destinationCard['attack']);

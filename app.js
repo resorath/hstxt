@@ -84,7 +84,7 @@ console.log("Textstone server ready!");
 /*process.stdin.resume();
 
 function exitHandler(options, err) {
-  io.sockets.emit('terminal', '\n[[bu;red;black]server going down...]\n');
+  io.sockets.emit('terminal', '\n[[bu;red;]server going down...]\n');
 
   if (options.cleanup) console.log('clean');
   if (err)console.log(err.stack);

@@ -31,6 +31,16 @@ module.exports = {
         rightMiddleConnector: "╣"
     },
 
-    boardSize: 67
+    boardSize: 67,
+
+    formatcolor: {
+        default: ";#AAAAAA;",
+        error: ";red;",
+        criticalerror: "b;red;",
+        spell: ";lightblue;",
+        quote: ";#FFBDC0;",
+        attack: ";#FFA22C;"
+
+    }
 
 }
