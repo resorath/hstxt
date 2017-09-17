@@ -55,7 +55,7 @@ module.exports = {
     if(!lookatindex)
       return null;
 
-
+    var player = helpers.getPlayerBySocket(socket);
 
     if(lookatindex.toLowerCase() == "hero")
     {
@@ -63,13 +63,24 @@ module.exports = {
       return;
     }
 
+    if(lookatindex.toLowerCase() == "weapon")
+    {
+      if(player.weapon != null)
+      {
+        socket.emit('terminal', display.printDetailedCard(player.weapon));
+        return;
+      }
+      else
+      {
+        socket.emit('terminal', 'You don\'t have a weapon equipped\n');
+        return;
+      }
+    }
+
     var index = helpers.boardIndexToCard(lookatindex, socket);
 
     if(index == null)
       return;
-
-
-    var player = helpers.getPlayerBySocket(socket);
 
     socket.emit('terminal', display.printDetailedCard(index, player.spellpower));
 
