@@ -414,9 +414,6 @@ gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard
 
     trigger = trigger.toLowerCase();
 
-    // do global updates (updating spellpower, etc)
-    execution.doUpdateTick(game);
-
     // do secrets (only for the opposite player)
     var secretplayer = game.getPlayer(game.getSocketByPlayerNumber(game.playerTurnOpposite(), false));
 
@@ -460,6 +457,9 @@ gamevars.triggers.on('doTrigger', function(trigger, game, sourcecard, targetcard
       if(typeof interrupts[status.id] !== 'undefined' && typeof interrupts[status.id][trigger] === 'function')
         interrupts[status.id][trigger](game, status, oppositePlayer);
     })
+
+    // do global updates (updating spellpower, etc)
+    execution.doUpdateTick(game);
 
 
 });
